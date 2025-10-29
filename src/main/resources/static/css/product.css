@@ -12,6 +12,7 @@
     width: 400px;
     display: flex;
     flex-direction: column;
+    gap: 0.5em;
 }
 
 .all-reviews {
@@ -41,11 +42,22 @@
     gap: 0.25em;
 }
 
+.product-info h2 {
+    margin: 0;
+}
+
 .review p {
-    margin: 0px;
+    margin: 0;
 }
 .review .rating-block {
-    margin-top: 0.5em;
+    display: flex;
+    flex-direction: row;
+    gap: 1em;
+    margin: 0.5em 0;
+}
+
+.your-review p {
+    margin: 0;
 }
 
 .your-review .rating-controls {
