@@ -3,10 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>LAYOUT</title>
+
+    <link rel="stylesheet" href="/css/layout.css" />
 </head>
 <body>
-    <header th:replace="fragments/header :: header"></header>
-    <article layout:fragment="content"></article>
-    <footer th:replace="fragments/footer :: footer"></footer>
+    <div class="page">
+        <header th:replace="fragments/header :: header"></header>
+        <div class="content">
+            <article layout:fragment="content"></article>
+        </div>
+        <footer th:replace="fragments/footer :: footer"></footer>
+    </div>
 </body>
 </html>

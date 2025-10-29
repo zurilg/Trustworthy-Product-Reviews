@@ -11,4 +11,9 @@ public class HomeController {
     public String home(Model model) {
         return "pages/home";
     }
+
+    @GetMapping("/product")
+    public String product(Model model) {
+        return "pages/product";
+    }
 }
