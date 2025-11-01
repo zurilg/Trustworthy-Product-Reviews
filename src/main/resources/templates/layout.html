@@ -5,9 +5,11 @@
     <title>LAYOUT</title>
 
     <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+    <script src="/js/loginModal.js"></script>
 
     <link rel="stylesheet" href="/css/layout.css" />
     <link rel="stylesheet" href="/css/header.css" />
+    <link rel="stylesheet" href="/css/loginModal.css"/>
 </head>
 <body>
     <div class="page">
@@ -17,5 +19,6 @@
         </div>
         <footer th:replace="fragments/footer :: footer"></footer>
     </div>
+    <div th:replace="fragments/loginModal :: login"></div>
 </body>
 </html>
