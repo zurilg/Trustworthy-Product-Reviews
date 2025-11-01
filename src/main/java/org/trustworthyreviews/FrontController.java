@@ -27,8 +27,8 @@ public class FrontController {
     @GetMapping("/")
     public String home(Model model) {
         // Get a list of products and add to the model
-        List<Product> products = productRepository.findAll();
-        model.addAttribute("products", products);
+        // List<Product> products = productRepository.findAll();
+        // model.addAttribute("products", products);
 
         return "pages/home";
     }
