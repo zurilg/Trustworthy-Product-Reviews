@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.trustworthyreviews.repository.ProductRepository;
 import org.trustworthyreviews.repository.ReviewRepository;
 
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -23,6 +24,10 @@ public class FrontController {
 
     @GetMapping("/")
     public String home(Model model) {
+        // Get a list of products and add to the model
+        List<Product> products = productRepository.findAll();
+        model.addAttribute("products", products);
+
         return "pages/home";
     }
 

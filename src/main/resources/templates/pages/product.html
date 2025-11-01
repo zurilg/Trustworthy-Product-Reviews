@@ -10,7 +10,7 @@
     <div class="product-columns">
         <div class="product-info border">
             <div class="title-block flex-columns-spacebetween">
-                <h2>Crate</h2>
+                <h2 th:text="${product.getName()}"></h2>
                 <div class="rating-block">
                     <div class="icon-box">
                         <img src="/images/star_fill.svg" alt="Star Filled" width="16"/>
@@ -19,13 +19,13 @@
                         <img src="/images/star_out.svg" alt="Star Empty" width="16"/>
                         <img src="/images/star_out.svg" alt="Star Empty" width="16"/>
                     </div>
-                    <p>(200)</p>
+                    <p th:text="'(' + ${reviews.size()} + ' Reviews)'"></p>
                 </div>
             </div>
             <img src="https://m.media-amazon.com/images/I/81NKzEV0+2L.jpg"  alt="Product Image" width="400px"/>
             <div class="flex-columns-spacebetween">
-                <p>Category: Containers</p>
-                <p>Created: 2025-10-29</p>
+                <p th:text="'Category: ' + ${product.getCategory()}"></p>
+                <p th:text="'Created: ' + ${product.getCreatedAt().toString()}"></p>
             </div>
         </div>
         <div class="your-review border">

@@ -8,6 +8,9 @@
     <article layout:fragment="content">
         <h3>Home</h3>
         <p>Hello World</p>
+        <div th:each="product: ${products}">
+            <a th:text="${product.getName()}" th:href="${'/product/' + product.getId().toString()}"></a>
+        </div>
     </article>
 </body>
 </html>
