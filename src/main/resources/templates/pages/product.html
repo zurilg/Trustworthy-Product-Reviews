@@ -25,7 +25,7 @@
             <img src="https://m.media-amazon.com/images/I/81NKzEV0+2L.jpg"  alt="Product Image" width="400px"/>
             <div class="flex-columns-spacebetween">
                 <p th:text="'Category: ' + ${product.getCategory()}"></p>
-                <p th:text="'Created: ' + ${product.getCreatedAt().toString()}"></p>
+                <p th:text="'Created: ' + ${#temporals.format(product.getCreatedAt(), 'yyyy-MM-dd', 'America/New_York')}"></p>
             </div>
         </div>
         <div class="your-review border">
@@ -76,7 +76,7 @@
                     <img src="/images/star_out.svg" alt="Star Empty" width="16"/>
                     <img src="/images/star_out.svg" alt="Star Empty" width="16"/>
                 </div>
-                <p th:text="${review.getCreatedAt().toString()}">/p>
+                <p th:text="${#temporals.format(review.getCreatedAt(), 'yyyy-MM-dd', 'America/New_York')}">/p>
             </div>
             <p>It was a very cool crate.</p>
         </div>
