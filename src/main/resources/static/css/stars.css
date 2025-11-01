@@ -1,0 +1,19 @@
+.star-box {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.star {
+    width: 1em;
+    height: 1em;
+}
+.full {
+    background-image: url("../images/star_fill.svg");
+}
+.half {
+    background-image: url("../images/star_half.svg");
+}
+.out {
+    background-image: url("../images/star_out.svg");
+}

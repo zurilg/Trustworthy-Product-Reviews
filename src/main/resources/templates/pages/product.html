@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>TrustworthyProductReviews - Product</title>
+
+    <script src="/js/stars.js"></script>
+
     <link rel="stylesheet" href="/css/product.css" />
+    <link rel="stylesheet" href="/css/stars.css" />
 </head>
 <body>
 <article layout:fragment="content">
@@ -12,13 +16,7 @@
             <div class="title-block flex-columns-spacebetween">
                 <h2 th:text="${product.getName()}"></h2>
                 <div class="rating-block">
-                    <div class="icon-box">
-                        <img src="/images/star_fill.svg" alt="Star Filled" width="16"/>
-                        <img src="/images/star_fill.svg" alt="Star Filled" width="16"/>
-                        <img src="/images/star_half.svg" alt="Star Half Filled" width="16"/>
-                        <img src="/images/star_out.svg" alt="Star Empty" width="16"/>
-                        <img src="/images/star_out.svg" alt="Star Empty" width="16"/>
-                    </div>
+                    <div class="star-box" th:attr="data-stars=${product.avgRating()}"></div>
                     <p th:text="'(' + ${reviews.size()} + ' Reviews)'"></p>
                 </div>
             </div>
@@ -34,13 +32,7 @@
             <div class="rating-block flex-columns-spacebetween">
                 <div class="rating-controls">
                     <button>-</button>
-                    <div class="icon-box">
-                        <img src="/images/star_fill.svg" alt="Star Filled" width="16"/>
-                        <img src="/images/star_fill.svg" alt="Star Filled" width="16"/>
-                        <img src="/images/star_half.svg" alt="Star Half Filled" width="16"/>
-                        <img src="/images/star_out.svg" alt="Star Empty" width="16"/>
-                        <img src="/images/star_out.svg" alt="Star Empty" width="16"/>
-                    </div>
+                    <div class="star-box" th:attr="data-stars=2.5"></div>
                     <button>+</button>
                 </div>
                 <p>Reviewed: 2025-10-29</p>
@@ -57,25 +49,13 @@
     <div class="all-reviews border">
         <div class="all-reviews-header">
             <h3>All Reviews</h3>
-            <div class="icon-box">
-                <img src="/images/star_fill.svg" alt="Star Filled" width="16"/>
-                <img src="/images/star_fill.svg" alt="Star Filled" width="16"/>
-                <img src="/images/star_half.svg" alt="Star Half Filled" width="16"/>
-                <img src="/images/star_out.svg" alt="Star Empty" width="16"/>
-                <img src="/images/star_out.svg" alt="Star Empty" width="16"/>
-            </div>
+            <div class="star-box" th:attr="data-stars=${product.avgRating()}"></div>
             <p th:text="'(' + ${reviews.size()} + ' Reviews)'"></p>
         </div>
         <div th:each="review : ${reviews}" class="review border">
             <p th:text="${review.getAuthor().getDisplayName()}"></p>
             <div class="rating-block">
-                <div class="icon-box">
-                    <img src="/images/star_fill.svg" alt="Star Filled" width="16"/>
-                    <img src="/images/star_fill.svg" alt="Star Filled" width="16"/>
-                    <img src="/images/star_half.svg" alt="Star Half Filled" width="16"/>
-                    <img src="/images/star_out.svg" alt="Star Empty" width="16"/>
-                    <img src="/images/star_out.svg" alt="Star Empty" width="16"/>
-                </div>
+                <div class="star-box" th:attr="data-stars=4.5"></div>
                 <p th:text="${#temporals.format(review.getCreatedAt(), 'yyyy-MM-dd', 'America/New_York')}">/p>
             </div>
             <p>It was a very cool crate.</p>
