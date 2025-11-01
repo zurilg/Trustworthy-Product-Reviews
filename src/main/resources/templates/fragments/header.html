@@ -6,7 +6,18 @@
 </head>
 <body>
     <header th:fragment="header">
-        <h1>Trustworthy Product Reviews</h1>
+        <div class="flex-header">
+            <a href="/">
+                <h1>Trustworthy Product Reviews</h1>
+            </a>
+            <div class="header-right">
+                <div class="search-bar">
+                    <input type="text"/>
+                    <button>Search</button>
+                </div>
+                <button>Login</button>
+            </div>
+        </div>
     </header>
 </body>
 </html>
