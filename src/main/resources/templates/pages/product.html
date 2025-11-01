@@ -28,7 +28,7 @@
         </div>
         <div class="your-review border">
             <h3>Your Review</h3>
-            <p>Username</p>
+            <p th:text="${currentUser.getDisplayName()}"></p>
             <div class="rating-block flex-columns-spacebetween">
                 <div class="rating-controls">
                     <button>-</button>

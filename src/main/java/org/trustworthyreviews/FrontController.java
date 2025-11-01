@@ -67,6 +67,8 @@ public class FrontController {
 
         // Get the current user from the email and add it to the model
         // This will be done in the next milestone and an email? will be supplied from the client as a cookie
+        User currentUser = new User("you", "YOU!!", "you@email.com");
+        model.addAttribute("currentUser", currentUser);
 
         // Return the thymeleaf template
         return "pages/product";
