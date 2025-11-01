@@ -64,10 +64,10 @@
                 <img src="/images/star_out.svg" alt="Star Empty" width="16"/>
                 <img src="/images/star_out.svg" alt="Star Empty" width="16"/>
             </div>
-            <p>(200 Reviews)</p>
+            <p th:text="'(' + ${reviews.size()} + ' Reviews)'"></p>
         </div>
-        <div class="review border">
-            <p>User1</p>
+        <div th:each="review : ${reviews}" class="review border">
+            <p th:text="${review.getAuthor().getDisplayName()}"></p>
             <div class="rating-block">
                 <div class="icon-box">
                     <img src="/images/star_fill.svg" alt="Star Filled" width="16"/>
@@ -76,16 +76,16 @@
                     <img src="/images/star_out.svg" alt="Star Empty" width="16"/>
                     <img src="/images/star_out.svg" alt="Star Empty" width="16"/>
                 </div>
-                <p>2025-10-29</p>
+                <p th:text="${review.getCreatedAt().toString()}">/p>
             </div>
             <p>It was a very cool crate.</p>
         </div>
         <div class="page-controls">
-            <button>First</button>
-            <button>Prev</button>
-            <p>1</p>
-            <button>Next</button>
-            <button>Last</button>
+            <button th:disabled="${pageNo le 1}">First</button>
+            <button th:disabled="${pageNo le 1}">Prev</button>
+            <p th:text="${pageNo}"></p>
+            <button th:disabled="${pageNo ge pageMax}">Next</button>
+            <button th:disabled="${pageNo ge pageMax}">Last</button>
         </div>
     </div>
 </article>
