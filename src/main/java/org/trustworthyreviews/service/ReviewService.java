@@ -44,7 +44,7 @@ public class ReviewService implements ReviewInterface {
         Review review = new Review();
         review.setProduct(product);
         review.setAuthor(author);
-        review.setCreatedAt(Instant.now()); // simple until @CreationTimestamp is added
+        review.setCreatedAt(Instant.now());
 
         return reviews.save(review);
     }
@@ -54,7 +54,6 @@ public class ReviewService implements ReviewInterface {
     public Page<Review> listForProduct(UUID productId, Pageable pageable) {
         // Optional: assert product exists to return 404-style error earlier
         products.findById(productId).orElseThrow(() -> new NoSuchElementException("product not found"));
-        // Recommended repository method name (nested path with underscore):
         return reviews.findByProductId(productId, pageable);
         // If you cannot rename, you can try: return reviews.findByProductId(productId, pageable);
     }
