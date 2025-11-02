@@ -1,0 +1,25 @@
+header {
+    border-bottom: 1px solid black;
+}
+
+.flex-header {
+    margin: 0 2em;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-right {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    gap: 4em;
+    height: min-content;
+}
+
+.search-bar {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5em;
+}

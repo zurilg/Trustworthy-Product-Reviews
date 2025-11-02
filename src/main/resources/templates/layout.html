@@ -3,10 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>LAYOUT</title>
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+    <script src="/js/loginModal.js"></script>
+
+    <link rel="stylesheet" href="/css/layout.css" />
+    <link rel="stylesheet" href="/css/header.css" />
+    <link rel="stylesheet" href="/css/loginModal.css"/>
 </head>
 <body>
-    <header th:replace="fragments/header :: header"></header>
-    <article layout:fragment="content"></article>
-    <footer th:replace="fragments/footer :: footer"></footer>
+    <div class="page">
+        <header th:replace="fragments/header :: header"></header>
+        <div class="content">
+            <article layout:fragment="content"></article>
+        </div>
+        <footer th:replace="fragments/footer :: footer"></footer>
+    </div>
+    <div th:replace="fragments/loginModal :: login"></div>
 </body>
 </html>

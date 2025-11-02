@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>TrustworthyProductReviews - Product</title>
+
+    <script src="/js/stars.js"></script>
+
+    <link rel="stylesheet" href="/css/product.css" />
+    <link rel="stylesheet" href="/css/stars.css" />
+</head>
+<body>
+<article layout:fragment="content">
+    <div class="product-columns">
+        <div class="product-info border">
+            <div class="title-block flex-columns-spacebetween">
+                <h2 th:text="${product.getName()}"></h2>
+                <div class="rating-block">
+                    <div class="star-box" th:attr="data-stars=${product.avgRating()}"></div>
+                    <p th:text="'(' + ${reviews.size()} + ' Reviews)'"></p>
+                </div>
+            </div>
+            <img src="https://m.media-amazon.com/images/I/81NKzEV0+2L.jpg"  alt="Product Image" width="400px"/>
+            <div class="flex-columns-spacebetween">
+                <p th:text="'Category: ' + ${product.getCategory()}"></p>
+                <p th:text="'Created: ' + ${#temporals.format(product.getCreatedAt(), 'yyyy-MM-dd', 'America/New_York')}"></p>
+            </div>
+        </div>
+        <div class="your-review border">
+            <h3>Your Review</h3>
+            <p th:text="${currentUser.getDisplayName()}"></p>
+            <div class="rating-block flex-columns-spacebetween">
+                <div class="rating-controls">
+                    <button>-</button>
+                    <div class="star-box" th:attr="data-stars=2.5"></div>
+                    <button>+</button>
+                </div>
+                <p>Reviewed: 2025-10-29</p>
+            </div>
+            <textarea id="rating-text">
+
+            </textarea>
+            <div class="flex-columns-spacebetween">
+                <button>Review</button>
+                <button>Delete</button>
+            </div>
+        </div>
+    </div>
+    <div class="all-reviews border">
+        <div class="all-reviews-header">
+            <h3>All Reviews</h3>
+            <div class="star-box" th:attr="data-stars=${product.avgRating()}"></div>
+            <p th:text="'(' + ${reviews.size()} + ' Reviews)'"></p>
+        </div>
+        <div th:each="review : ${reviews}" class="review border">
+            <p th:text="${review.getAuthor().getDisplayName()}"></p>
+            <div class="rating-block">
+                <div class="star-box" th:attr="data-stars=4.5"></div>
+                <p th:text="${#temporals.format(review.getCreatedAt(), 'yyyy-MM-dd', 'America/New_York')}">/p>
+            </div>
+            <p>It was a very cool crate.</p>
+        </div>
+        <div class="page-controls">
+            <button th:disabled="${pageNo le 1}">First</button>
+            <button th:disabled="${pageNo le 1}">Prev</button>
+            <p th:text="${pageNo}"></p>
+            <button th:disabled="${pageNo ge pageMax}">Next</button>
+            <button th:disabled="${pageNo ge pageMax}">Last</button>
+        </div>
+    </div>
+</article>
+</body>
+</html>

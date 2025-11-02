@@ -1,0 +1,86 @@
+.product-columns {
+    display: flex;
+    flex-direction: row;
+    gap: 2em;
+}
+
+.product-info {
+    width: 400px;
+}
+
+.your-review {
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+}
+
+.all-reviews {
+    margin-top: 2em;
+}
+
+.page-controls {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5em;
+    align-items: center;
+    width: min-content;
+    margin: 0 auto;
+}
+
+.rating-block {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.25em;
+}
+
+.product-info h2 {
+    margin: 0;
+}
+
+.review p {
+    margin: 0;
+}
+.review .rating-block {
+    display: flex;
+    flex-direction: row;
+    gap: 1em;
+    margin: 0.5em 0;
+}
+
+.your-review p {
+    margin: 0;
+}
+
+.your-review .rating-controls {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5em;
+}
+
+.your-review textarea {
+    resize: none;
+    width: auto;
+    flex-grow: 1;
+    margin: 1em 0;
+}
+
+.all-reviews .all-reviews-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1em;
+}
+
+.flex-columns-spacebetween {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.border {
+    border: 1px solid black;
+    padding: 0.5em;
+}
