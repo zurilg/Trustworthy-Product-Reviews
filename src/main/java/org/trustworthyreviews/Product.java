@@ -16,6 +16,8 @@ public class Product {
 
     private String canonicalURL;
 
+    private String pictureURL; // NEW: URL for product picture
+
     private String category;
 
     private Instant createdAt;
@@ -58,6 +60,16 @@ public class Product {
     /*Setter for URL*/
     public void setCanonicalURL(String canonicalURL) {
         this.canonicalURL = canonicalURL;
+    }
+
+    /*Getter for Picture URL*/
+    public String getPictureURL() {
+        return pictureURL;
+    }
+
+    /*Setter for Picture URL*/
+    public void setPictureURL(String pictureURL) {
+        this.pictureURL = pictureURL;
     }
 
     /*Getter for Category*/
@@ -108,9 +120,17 @@ public class Product {
         this.reviews.remove(review);
     }
 
-    //TODO
+    //Completed avgRating
     public double avgRating() {
-        return 1;
+        double total = 0.0;
+        if (reviews.isEmpty()) {
+            return 0.0;
+        } else {
+            for (Review review : reviews) {
+                total += review.getRating();
+            }
+        }
+        return total / reviews.size();
     }
 
     /**

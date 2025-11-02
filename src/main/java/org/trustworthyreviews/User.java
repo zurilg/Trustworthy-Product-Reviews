@@ -9,7 +9,8 @@ public class User {
     @GeneratedValue
     private UUID id;
 
-    @OneToMany(mappedBy = "author")
+    // NEW: added cascade and orphanRemoval to manage reviews lifecycle
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews;
 
     private String userName;
@@ -74,5 +75,13 @@ public class User {
     /*Getter for user email*/
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    // Extra Functions --------------------------------------------
+    public void addReview(Review review) {
+        if (this.reviews == null) {
+            this.reviews = new ArrayList<>();
+        }
+        this.reviews.add(review);
     }
 }
