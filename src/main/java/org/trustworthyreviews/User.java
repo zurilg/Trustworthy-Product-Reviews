@@ -3,6 +3,7 @@ import java.util.*;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "APP_USER") // Added to ensure test class passes
 public class User {
     @Id
     @GeneratedValue

@@ -17,12 +17,23 @@ public class Review {
 
     private Instant createdAt;
 
+    @Column(nullable = false)
+    private int rating;   // NEW: 1..5
+
     public Review() {}
 
     public Review(Product product, User author, Instant createdAt) {
         this.product = product;
         this.author = author;
         this.createdAt = createdAt;
+    }
+
+    // Optional convenience constructor to set rating when constructing
+    public Review(Product product, User author, Instant createdAt, int rating) {
+        this.product = product;
+        this.author = author;
+        this.createdAt = createdAt;
+        this.rating = rating;
     }
 
     /*Getter for Id*/
@@ -54,6 +65,12 @@ public class Review {
     public void setAuthor(User author) {
         this.author = author;
     }
+
+    /*Getter for rating*/
+    public int getRating() { return rating; }
+
+    /*Setter for rating*/
+    public void setRating(int rating) { this.rating = rating; }
 
     /*Getter for the createdAt*/
     public Instant getCreatedAt() {
