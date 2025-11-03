@@ -58,6 +58,6 @@ This diagram represents the core entities (`Product`, `Review`, `User`) and thei
 |:-----|:--|
 | Damon Ricci | 0 |
 | Elias Pantazopoulos | 101273477 |
-| Jacob Wilde | 0 |
+| Jacob Wilde | 101188310 |
 | Mehedi Hasan Rafid | 0 |
 | Zuri Lane-Griffore | 101241678 |
