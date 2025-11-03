@@ -10,7 +10,7 @@ public class Product {
     private UUID id;
 
     @OneToMany(mappedBy = "product")
-    private List<Review> reviews;
+    private List<Review> reviews = new ArrayList<>();
 
     private String name;
 
@@ -24,13 +24,24 @@ public class Product {
 
     public Product() {}
 
-    public Product(UUID id, String name, String canonicalURL, String category, Instant createdAt) {
+    public Product(UUID id, String name, String canonicalURL, String pictureURL, String category, Instant createdAt) {
         this.id = id;
         this.name = name;
         this.canonicalURL = canonicalURL;
+        this.pictureURL = pictureURL;
         this.category = category;
         this.createdAt = createdAt;
     }
+
+    // Constructor without id (for new products) since id is generated
+    public Product(String name, String canonicalURL, String pictureURL, String category, Instant createdAt) {
+        this.name = name;
+        this.canonicalURL = canonicalURL;
+        this.pictureURL = pictureURL;
+        this.category = category;
+        this.createdAt = createdAt;
+    }
+
 
     /*Getter for id*/
     public UUID getId() {

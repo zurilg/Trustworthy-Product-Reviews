@@ -76,12 +76,4 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
-
-    // Extra Functions --------------------------------------------
-    public void addReview(Review review) {
-        if (this.reviews == null) {
-            this.reviews = new ArrayList<>();
-        }
-        this.reviews.add(review);
-    }
 }

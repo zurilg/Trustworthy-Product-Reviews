@@ -24,6 +24,15 @@ public class Review {
 
     public Review() {}
 
+    public Review(UUID id, Product product, User author, Instant createdAt, int rating, String content) {
+        this.id = id;
+        this.product = product;
+        this.author = author;
+        this.createdAt = createdAt;
+        this.rating = rating;
+        this.content = content;
+    }
+
     public Review(Product product, User author, Instant createdAt) {
         this.product = product;
         this.author = author;
@@ -31,11 +40,12 @@ public class Review {
     }
 
     // Optional convenience constructor to set rating when constructing
-    public Review(Product product, User author, Instant createdAt, int rating) {
+    public Review(Product product, User author, Instant createdAt, int rating, String content) {
         this.product = product;
         this.author = author;
         this.createdAt = createdAt;
         this.rating = rating;
+        this.content = content;
     }
 
     /*Getter for Id*/
