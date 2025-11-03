@@ -77,5 +77,5 @@ This diagram represents the core entities (`Product`, `Review`, `User`) and thei
 | Damon Ricci | 101229913 |
 | Elias Pantazopoulos | 101273477 |
 | Jacob Wilde | 101188310 |
-| Mehedi Hasan Rafid | 0 |
+| Mehedi Hasan Rafid | 101180076 |
 | Zuri Lane-Griffore | 101241678 |
