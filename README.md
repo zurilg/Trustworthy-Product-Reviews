@@ -40,6 +40,8 @@ Key use cases for *Milestone 1*:
 ### UML Class Diagram:
 This diagram represents the core entities (`Product`, `Review`, `User`) and their relationships.
 
+![alt text](https://github.com/zurilg/Trustworthy-Product-Reviews/blob/testing-documentation/documentation/UML/Milestone_1-UML_Class_Diagram.png "Class Diagram")
+
 **Key Relationships:**
 
 | Entity | Relationship | Type        | Multiplicity                           |
