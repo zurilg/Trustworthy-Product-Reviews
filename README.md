@@ -55,6 +55,22 @@ This diagram represents the core entities (`Product`, `Review`, `User`) and thei
 
 ---
 
+### Brainstorming Goals for Next Sprint (*Milestone 2*)
+- User login: allow users to login to their account and edit their account details.
+- Following: allow logged in user to follow other users.
+- Posting reviews: allow logged-in user to post product reviews.
+- Product Addition: allow a logged-in user to add a new product to the website.
+- Categories: allow a logged-in user to view all products within a specific category.
+- Jaccard Distance: a logged-in user should be able to view the Jaccard distance between themselves and other users.
+- Degree of Separation: a logged-in user should be able to view the degree of separation between themselves and other users.
+- User Searching 1: allows a logged-in user to find friends (other users) by viewing a list of users sorted by the Jaccard distance between themselves and the user.
+- User Searching 2: allows a logged-in user to find friends (other users) by viewing a list of most-followed users.
+- Advanced Sorting 1: have reviews on the product browsing page be sorted and tailored to the logged-in user.
+- Advanced Sorting 2: have the reviews on a product's page be sorted and tailored to the logged-in user.
+- Add Searching: allow a user to search for a product.
+
+---
+
 ### Team Members:
 | Name | Student Number |
 |:-----|:--|
