@@ -5,7 +5,15 @@ import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Test class for Review.
+ *
+ * @version 11-03-2025
+ */
 public class ReviewTest {
+    /**
+     * Method to test the creation of a Review object.
+     */
     @org.junit.Test
     public void testReviewCreation() {
         // Create product and user for the review
@@ -23,6 +31,9 @@ public class ReviewTest {
         assertEquals("Great product!", review.getContent());
     }
 
+    /**
+     * Method to test the setters of a Review object.
+     */
     @org.junit.Test
     public void testReviewSetters(){
         // Create products and users for the review setter testing

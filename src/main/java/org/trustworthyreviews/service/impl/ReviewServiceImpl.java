@@ -27,6 +27,8 @@ import java.util.UUID;
  * DI via constructor.
  * @Transactional on write; readOnly on read paths.
  * Handles null Pageable by applying a default (page 0, size 10, newest first).
+ *
+ * @version 11-03-2025
  */
 @Service
 public class ReviewServiceImpl implements ReviewService {
@@ -35,6 +37,13 @@ public class ReviewServiceImpl implements ReviewService {
     private final ProductRepository products;
     private final UserRepository users;
 
+    /**
+     * Constructor for ReviewServiceImpl with dependency injection.
+     *
+     * @param reviews  The ReviewRepository
+     * @param products The ProductRepository
+     * @param users    The UserRepository
+     */
     public ReviewServiceImpl(ReviewRepository reviews,
                              ProductRepository products,
                              UserRepository users) {

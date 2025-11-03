@@ -15,6 +15,8 @@ import java.util.UUID;
  * GET  /api/reviews/product/{productId} : list reviews (pageable optional)
  * GET  /api/reviews/product/{productId}/count : count only
  * If 'page' or 'size' is missing, we pass null Pageable so the service applies defaults.
+ *
+ * @version 11-03-2025
  */
 @RestController
 @RequestMapping("/api/reviews")

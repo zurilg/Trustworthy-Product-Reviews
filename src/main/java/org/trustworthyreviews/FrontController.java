@@ -10,6 +10,11 @@ import org.trustworthyreviews.repository.ReviewRepository;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Front controller for handling web requests.
+ *
+ * @version 11-03-2025
+ */
 @Controller
 public class FrontController {
 
@@ -17,11 +22,23 @@ public class FrontController {
     private final ReviewRepository reviewRepository;
     private final ProductRepository productRepository;
 
+    /**
+     * Constructor for FrontController.
+     *
+     * @param reviewRepository The review repository
+     * @param productRepository The product repository
+     */
     public FrontController(ReviewRepository reviewRepository, ProductRepository productRepository) {
         this.reviewRepository = reviewRepository;
         this.productRepository = productRepository;
     }
 
+    /**
+     * The home page handler.
+     *
+     * @param model The model to be used by the view.
+     * @return The name of the view to be rendered.
+     */
     @GetMapping("/")
     public String home(Model model) {
         // Get a list of products and add to the model
@@ -31,6 +48,13 @@ public class FrontController {
         return "pages/home";
     }
 
+    /**
+     * The product page handler.
+     *
+     * @param productId The ID of the product
+     * @param model The model to be used by the view
+     * @return The name of the view to be rendered
+     */
     @GetMapping("/product/{productId}")
     public String product(@PathVariable("productId") UUID productId, Model model) {
 

@@ -6,7 +6,15 @@ import java.util.UUID;
 
 import static org.junit.Assert.*;
 
+/**
+ * Test class for Product.
+ *
+ * @version 11-03-2025
+ */
 public class ProductTest {
+    /**
+     * Method to test product creation and attribute retrieval.
+     */
     @org.junit.Test
     public void testProductCreation() {
         Instant createdAt = Instant.now();
@@ -19,6 +27,9 @@ public class ProductTest {
         assertEquals(createdAt, p.getCreatedAt());
     }
 
+    /**
+     * Method to test product setters.
+     */
     @org.junit.Test
     public void testProductSetters() {
         Instant createdAt = Instant.now();
@@ -55,6 +66,9 @@ public class ProductTest {
         }
     }
 
+    /**
+     * Method to test adding and removing reviews, and verifying average rating and review count.
+     */
     @org.junit.Test
     public void testProductRatings(){
         // Create product
@@ -68,7 +82,6 @@ public class ProductTest {
                 new Review(UUID.randomUUID(), p, user, Instant.now(), ratings[2], "It's ok."),
                 new Review(UUID.randomUUID(), p, user, Instant.now(), ratings[3], "Pretty good."),
                 new Review(UUID.randomUUID(), p, user, Instant.now(), ratings[4], "Not great."));
-
 
         p.addReview(reviews.get(0));                                   // Add first review
         assertEquals(1, p.reviewsCount());               // Verify one review added
@@ -112,7 +125,13 @@ public class ProductTest {
         assertTrue(checkReviewRemoved(p, reviews.get(4)));
     }
 
-    // Helper method to check for removed review
+    /**
+     * Helper method to check if a review has been removed from a product.
+     *
+     * @param p The product to check.
+     * @param r The review to check for removal.
+     * @return True if the review has been removed from the product, false otherwise.
+     */
     public boolean checkReviewRemoved(Product p, Review r) {
         for(Review review : p.getReviews()) {
             if(review.getId().equals(r.getId())) {
@@ -121,5 +140,4 @@ public class ProductTest {
         }
         return true; // Review successfully removed
     }
-
 }

@@ -5,7 +5,15 @@ import java.util.List;
 import java.util.UUID;
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Test class for User.
+ *
+ * @version 11-03-2025
+ */
 public class UserTest {
+    /**
+     * Method to test user creation.
+     */
     @org.junit.Test
     public void testUserCreation() {
         // Test code for user creation
@@ -15,6 +23,9 @@ public class UserTest {
         assertEquals("email@email.com", user.getEmail());
     }
 
+    /**
+     * Method to test user setters.
+     */
     @org.junit.Test
     public void testUserSetters() {
         // Create a user
