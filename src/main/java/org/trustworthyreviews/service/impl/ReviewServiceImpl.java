@@ -58,7 +58,7 @@ public class ReviewServiceImpl implements ReviewService {
      */
     @Override
     @Transactional
-    public ReviewModel create(UUID productId, UUID authorId, int rating) {
+    public ReviewModel create(UUID productId, UUID authorId, int rating, String content) {
         // Basic invariant: rating must be 1..5
         if (rating < 1 || rating > 5) {
             throw new IllegalArgumentException("rating must be between 1 and 5");
@@ -118,6 +118,7 @@ public class ReviewServiceImpl implements ReviewService {
                 r.getProduct() != null ? r.getProduct().getId() : null,
                 r.getAuthor() != null ? r.getAuthor().getId() : null,
                 r.getRating(),
+                r.getContent(),
                 r.getCreatedAt()
         );
     }

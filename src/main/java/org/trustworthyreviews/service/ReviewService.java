@@ -15,7 +15,7 @@ import java.util.UUID;
  * @version 11-03-2025
  */
 public interface ReviewService {
-    ReviewModel create(UUID productId, UUID authorId, int rating);
+    ReviewModel create(UUID productId, UUID authorId, int rating, String content);
 
     /**
      * NOTE: Pageable may be null (e.g., UI didn't supply page/size). Implementation

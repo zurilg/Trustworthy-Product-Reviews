@@ -49,7 +49,7 @@ class ReviewServiceImplTest {
         var u = users.save(new User("jdoe", "John", "j@e.com"));
 
         // Act: create one review + list
-        ReviewModel created = service.create(p.getId(), u.getId(), 5);
+        ReviewModel created = service.create(p.getId(), u.getId(), 5, "Great product!");
         var page = service.listForProduct(p.getId(), PageRequest.of(0, 10));
 
         // Assert: DTO has expected fields; count matches

@@ -16,6 +16,7 @@ public class ReviewModel {
     private final UUID productId;
     private final UUID authorId;
     private final int rating;        // 1..5
+    private final String content;
     private final Instant createdAt; // server timestamp
 
     /**
@@ -27,11 +28,12 @@ public class ReviewModel {
      * @param rating The rating given in the review
      * @param createdAt The creation timestamp of the review
      */
-    public ReviewModel(UUID id, UUID productId, UUID authorId, int rating, Instant createdAt) {
+    public ReviewModel(UUID id, UUID productId, UUID authorId, int rating, String content, Instant createdAt) {
         this.id = id;
         this.productId = productId;
         this.authorId = authorId;
         this.rating = rating;
+        this.content = content;
         this.createdAt = createdAt;
     }
 
@@ -67,6 +69,15 @@ public class ReviewModel {
      */
     public int getRating() {
         return rating;
+    }
+
+    /**
+     * Getter for content
+     *
+     * @return The content of the review
+     */
+    public String getContent() {
+        return content;
     }
 
     /**

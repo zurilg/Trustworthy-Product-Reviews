@@ -36,8 +36,9 @@ public class ReviewApi {
     @PostMapping
     public ReviewModel create(@RequestParam UUID productId,
                               @RequestParam UUID authorId,
-                              @RequestParam int rating) {
-        return reviews.create(productId, authorId, rating);
+                              @RequestParam int rating,
+                              @RequestParam String content) {
+        return reviews.create(productId, authorId, rating, content);
     }
 
     /**
