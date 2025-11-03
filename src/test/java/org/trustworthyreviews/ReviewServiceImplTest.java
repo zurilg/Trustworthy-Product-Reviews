@@ -19,6 +19,8 @@ import static org.junit.jupiter.api.Assertions.*;
  * Lightweight service test
  * Uses @DataJpaTest with @Import(ServiceImpl) so we can run against H2/JPA quickly.
  * Verifies create + list + count + DTO mapping (no web server needed).
+ *
+ * @version 11-03-2025
  */
 @DataJpaTest
 @Import(ReviewServiceImpl.class)
@@ -31,6 +33,9 @@ class ReviewServiceImplTest {
     @Autowired
     private UserRepository users;
 
+    /**
+     * Test method for create() and listForProduct().
+     */
     @Test
     void createAndList_modelsNotEntities() {
         // Arrange: seed a product + user quickly
@@ -44,7 +49,7 @@ class ReviewServiceImplTest {
         var u = users.save(new User("jdoe", "John", "j@e.com"));
 
         // Act: create one review + list
-        ReviewModel created = service.create(p.getId(), u.getId(), 5);
+        ReviewModel created = service.create(p.getId(), u.getId(), 5, "Great product!");
         var page = service.listForProduct(p.getId(), PageRequest.of(0, 10));
 
         // Assert: DTO has expected fields; count matches

@@ -27,6 +27,8 @@ import java.util.UUID;
  * DI via constructor.
  * @Transactional on write; readOnly on read paths.
  * Handles null Pageable by applying a default (page 0, size 10, newest first).
+ *
+ * @version 11-03-2025
  */
 @Service
 public class ReviewServiceImpl implements ReviewService {
@@ -35,6 +37,13 @@ public class ReviewServiceImpl implements ReviewService {
     private final ProductRepository products;
     private final UserRepository users;
 
+    /**
+     * Constructor for ReviewServiceImpl with dependency injection.
+     *
+     * @param reviews  The ReviewRepository
+     * @param products The ProductRepository
+     * @param users    The UserRepository
+     */
     public ReviewServiceImpl(ReviewRepository reviews,
                              ProductRepository products,
                              UserRepository users) {
@@ -49,7 +58,7 @@ public class ReviewServiceImpl implements ReviewService {
      */
     @Override
     @Transactional
-    public ReviewModel create(UUID productId, UUID authorId, int rating) {
+    public ReviewModel create(UUID productId, UUID authorId, int rating, String content) {
         // Basic invariant: rating must be 1..5
         if (rating < 1 || rating > 5) {
             throw new IllegalArgumentException("rating must be between 1 and 5");
@@ -109,6 +118,7 @@ public class ReviewServiceImpl implements ReviewService {
                 r.getProduct() != null ? r.getProduct().getId() : null,
                 r.getAuthor() != null ? r.getAuthor().getId() : null,
                 r.getRating(),
+                r.getContent(),
                 r.getCreatedAt()
         );
     }

@@ -10,13 +10,31 @@ import org.trustworthyreviews.repository.UserRepository;
 
 import java.util.Random;
 
+/**
+ * The main application class for Trustworthy Product Reviews.
+ *
+ * @version 11-03-2025
+ */
 @SpringBootApplication
 public class TrustworthyProductReviewsApplication {
 
+    /**
+     * The main method to start the Spring Boot application.
+     *
+     * @param args Unused.
+     */
     public static void main(String[] args) {
         SpringApplication.run(TrustworthyProductReviewsApplication.class, args);
     }
 
+    /**
+     * Populates the repositories with sample data on application startup.
+     *
+     * @param productRepo The product repository
+     * @param reviewRepo The review repository
+     * @param userRepo The user repository
+     * @return A CommandLineRunner to populate sample data
+     */
     @Bean
     public CommandLineRunner demo(ProductRepository productRepo, ReviewRepository reviewRepo, UserRepository userRepo) {
         return (args) -> {
@@ -42,7 +60,7 @@ public class TrustworthyProductReviewsApplication {
             for(int i = 0; i < numberOfProductsToCreate; i++) {
                 Product product = new Product();
                 product.setName(products[i]);
-                product.setCategory("Category " + (i % 2));
+                product.setCategory(categories[i]);
                 product.setCanonicalURL(productPhotos[i]);
                 product.setPictureURL(productPhotos[i]);
                 product.setCreatedAt(java.time.Instant.now());

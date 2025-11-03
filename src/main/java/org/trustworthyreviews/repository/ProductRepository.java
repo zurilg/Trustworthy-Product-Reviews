@@ -11,12 +11,35 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * The ProductRepository interface for managing Product entities.
+ *
+ * @version 11-03-2025
+ */
 @Repository
 public interface ProductRepository extends JpaRepository<Product, UUID>, JpaSpecificationExecutor<Product> {
-
+    /**
+     * Find a product by its name.
+     *
+     * @param name The name of the product
+     * @return An Optional containing the product if found, or empty if not found
+     */
     Optional<Product> findByName(String name);
 
+    /**
+     * Find products by their category.
+     *
+     * @param category The category of the products
+     * @return A list of products in the specified category
+     */
     List<Product> findByCategory(String category);
 
+    /**
+     * Find all products in a category with pagination, ordered by creation date descending.
+     *
+     * @param category The category of the products
+     * @param pageable The pagination information
+     * @return A page of products in the specified category
+     */
     Page<Product> findAllByCategoryOrderByCreatedAtDesc(String category, Pageable pageable);
 }
