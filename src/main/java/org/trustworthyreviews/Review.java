@@ -20,6 +20,8 @@ public class Review {
     @Column(nullable = false)
     private int rating;   // NEW: 1..5
 
+    private String content; // NEW: review text content
+
     public Review() {}
 
     public Review(Product product, User author, Instant createdAt) {
@@ -81,4 +83,10 @@ public class Review {
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
     }
+
+    /*Setter for the review's content*/
+    public String getContent() {return content;}
+
+    /*Getter for the review's content*/
+    public void setContent(String content) {this.content = content;}
 }

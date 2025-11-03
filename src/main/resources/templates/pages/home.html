@@ -5,12 +5,15 @@
     <title>TrustworthyProductReviews - Home</title>
 </head>
 <body>
-    <article layout:fragment="content">
-        <h3>Home</h3>
-        <p>Hello World</p>
-        <div th:each="product: ${products}">
-            <a th:text="${product.getName()}" th:href="${'/product/' + product.getId().toString()}"></a>
-        </div>
-    </article>
+<article layout:fragment="content">
+    <h3>Home</h3>
+    <p>Hello World</p>
+    <div th:if="${#lists.isEmpty(products)}">
+        <p>No products available.</p>
+    </div>
+    <div th:each="product: ${products}">
+        <a th:text="${product.getName()}" th:href="${'/product/' + product.getId().toString()}"></a>
+    </div>
+</article>
 </body>
 </html>

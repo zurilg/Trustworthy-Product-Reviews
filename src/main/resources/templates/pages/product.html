@@ -20,7 +20,7 @@
                     <p th:text="'(' + ${reviews.size()} + ' Reviews)'"></p>
                 </div>
             </div>
-            <img src="https://m.media-amazon.com/images/I/81NKzEV0+2L.jpg"  alt="Product Image" width="400px"/>
+            <img th:src="${product.getPictureURL()}"  alt="Product Image" width="400px"/>
             <div class="flex-columns-spacebetween">
                 <p th:text="'Category: ' + ${product.getCategory()}"></p>
                 <p th:text="'Created: ' + ${#temporals.format(product.getCreatedAt(), 'yyyy-MM-dd', 'America/New_York')}"></p>
@@ -38,7 +38,6 @@
                 <p>Reviewed: 2025-10-29</p>
             </div>
             <textarea id="rating-text">
-
             </textarea>
             <div class="flex-columns-spacebetween">
                 <button>Review</button>
@@ -55,10 +54,10 @@
         <div th:each="review : ${reviews}" class="review border">
             <p th:text="${review.getAuthor().getDisplayName()}"></p>
             <div class="rating-block">
-                <div class="star-box" th:attr="data-stars=4.5"></div>
-                <p th:text="${#temporals.format(review.getCreatedAt(), 'yyyy-MM-dd', 'America/New_York')}">/p>
+                <div class="star-box" th:attr="data-stars=${review.getRating()}"></div>
+                <p th:text="${#temporals.format(review.getCreatedAt(), 'yyyy-MM-dd', 'America/New_York')}"></p>
             </div>
-            <p>It was a very cool crate.</p>
+            <p th:text="${review.getContent()}"></p>
         </div>
         <div class="page-controls">
             <button th:disabled="${pageNo le 1}">First</button>
