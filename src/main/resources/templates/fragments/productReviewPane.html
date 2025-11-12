@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PRODUCT REVIEW PANE</title>
+</head>
+<body>
+    <div th:fragment="productReview">
+        <h3>Your Review</h3>
+        <p th:text="${currentUser.getDisplayName()}"></p>
+        <div class="rating-block flex-columns-spacebetween">
+            <div class="rating-controls">
+                <button>-</button>
+                <div class="star-box" th:attr="data-stars=2.5"></div>
+                <button>+</button>
+            </div>
+            <p>Reviewed: 2025-10-29</p>
+        </div>
+        <textarea id="rating-text">
+            </textarea>
+        <div class="flex-columns-spacebetween">
+            <button>Review</button>
+            <button>Delete</button>
+        </div>
+    </div>
+</body>
+</html>

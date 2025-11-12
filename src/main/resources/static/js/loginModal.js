@@ -51,6 +51,7 @@ function getCookie() {
 
 function setCookie(json) {
     Cookies.set("loggedin", JSON.stringify(json))
+    Cookies.set("loggedin-uuid", json.id)
 }
 
 function handleError(jqXHR, textStatus, errorThrown) {
@@ -84,6 +85,7 @@ function login() {
 function logout() {
     // Wipe the cookie
     Cookies.remove("loggedin")
+    Cookies.remove("loggedin-uuid")
     // Swap the visibility of logged-in/logged-out elements
     $(".logged-in").hide()
     $(".logged-out").show()

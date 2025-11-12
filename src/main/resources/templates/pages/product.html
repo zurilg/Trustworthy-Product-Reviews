@@ -26,23 +26,10 @@
                 <p th:text="'Created: ' + ${#temporals.format(product.getCreatedAt(), 'yyyy-MM-dd', 'America/New_York')}"></p>
             </div>
         </div>
-        <div class="your-review border">
-            <h3>Your Review</h3>
-            <p th:text="${currentUser.getDisplayName()}"></p>
-            <div class="rating-block flex-columns-spacebetween">
-                <div class="rating-controls">
-                    <button>-</button>
-                    <div class="star-box" th:attr="data-stars=2.5"></div>
-                    <button>+</button>
-                </div>
-                <p>Reviewed: 2025-10-29</p>
-            </div>
-            <textarea id="rating-text">
-            </textarea>
-            <div class="flex-columns-spacebetween">
-                <button>Review</button>
-                <button>Delete</button>
-            </div>
+        <div th:if="${currentUser}" th:insert="fragments/productReviewPane:: productReview" class="your-review border">
+        </div>
+        <div th:unless="${currentUser}" class="your-review border">
+            <p>Login to post a review</p>
         </div>
     </div>
     <div class="all-reviews border">

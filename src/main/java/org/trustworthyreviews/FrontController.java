@@ -2,10 +2,12 @@ package org.trustworthyreviews;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.trustworthyreviews.repository.ProductRepository;
 import org.trustworthyreviews.repository.ReviewRepository;
+import org.trustworthyreviews.repository.UserRepository;
 
 import java.util.List;
 import java.util.UUID;
@@ -21,6 +23,7 @@ public class FrontController {
     // Changed to constructor injection
     private final ReviewRepository reviewRepository;
     private final ProductRepository productRepository;
+    private final UserRepository userRepository;
 
     /**
      * Constructor for FrontController.
@@ -28,9 +31,10 @@ public class FrontController {
      * @param reviewRepository The review repository
      * @param productRepository The product repository
      */
-    public FrontController(ReviewRepository reviewRepository, ProductRepository productRepository) {
+    public FrontController(ReviewRepository reviewRepository, ProductRepository productRepository, UserRepository userRepository) {
         this.reviewRepository = reviewRepository;
         this.productRepository = productRepository;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -56,7 +60,10 @@ public class FrontController {
      * @return The name of the view to be rendered
      */
     @GetMapping("/product/{productId}")
-    public String product(@PathVariable("productId") UUID productId, Model model) {
+    public String product(
+            @PathVariable("productId") UUID productId,
+            @CookieValue(name = "loggedin-uuid", required = false) UUID loggedInUser,
+            Model model) {
 
         Product p = productRepository.findById(productId).orElse(null);
         if (p == null) {
@@ -69,7 +76,10 @@ public class FrontController {
         model.addAttribute("pageNo", 1);
         model.addAttribute("pageMax", 1);
 
-        User currentUser = new User("you", "YOU!!", "you@email.com");
+        User currentUser =  null;
+        if (loggedInUser != null) {
+            currentUser = userRepository.findById(loggedInUser).orElse(null);
+        }
         model.addAttribute("currentUser", currentUser);
 
         // Return the thymeleaf template
