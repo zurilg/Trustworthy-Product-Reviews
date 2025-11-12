@@ -3,7 +3,7 @@ function attemptLogin() {
     inputUsername = $("#login-user").val();
     // Send API Request to get the UUID of the user
     $.ajax({
-        url: "api/user/login",
+        url: window.location.protocol + "//" + window.location.host + "/api/user/login",
         type: "GET",
         data: {username: inputUsername},
         dataType: "json",
@@ -27,7 +27,7 @@ function checkCookies() {
 
     // Send request to see if the cookies stored are good
     $.ajax({
-        url: "api/user/login",
+        url: window.location.protocol + "//" + window.location.host + "/api/user/login",
         type: "GET",
         data: {username: getCookie().userName},
         dataType: "json",
@@ -105,7 +105,9 @@ $(() => {
     // Add the callback for the user pressing "login"
     $(".login-button").click(attemptLogin)
     // Add the callback for the user pressing enter on the login username
-
+    $("#login-user").keypress((event) => {
+        if(event.which === 13) attemptLogin()
+    })
     // Add the callback for the user pressing "logout"
     $(".logout-button").click(logout)
 
