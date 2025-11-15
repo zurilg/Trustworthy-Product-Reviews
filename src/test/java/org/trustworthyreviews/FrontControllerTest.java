@@ -6,10 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.trustworthyreviews.repository.CategoryRepository;
 import org.trustworthyreviews.repository.ProductRepository;
 import org.trustworthyreviews.repository.ReviewRepository;
 import org.trustworthyreviews.repository.UserRepository;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -40,6 +42,9 @@ public class FrontControllerTest {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private CategoryRepository categoryRepository;
+
     @Test
     public void contextLoads() throws Exception {
         assertThat(controller).isNotNull();
@@ -68,7 +73,13 @@ public class FrontControllerTest {
         // Populate product repo with product sample data
         int numberOfProductsToCreate = 5;
         String[] products = {"Crate", "Shoes", "Casio Watch", "iPhone 12", "Lenovo Laptop"};
-        String[] categories = {"Storage", "Footwear", "Electronics", "Electronics", "Electronics"};
+        String[] categoryNames = {"Storage", "Footwear", "Electronics", "Electronics", "Electronics"};
+        ArrayList<Category> categories = new ArrayList<>();
+        for(String categoryName : categoryNames) {
+            Category category = new Category(categoryName);
+            categoryRepository.save(category);
+            categories.add(category);
+        }
         String[] productPhotos = {
                 "https://m.media-amazon.com/images/I/81NKzEV0+2L.jpg",
                 "https://m.media-amazon.com/images/I/713tl8NjiaL._AC_SY575_.jpg",
@@ -80,7 +91,7 @@ public class FrontControllerTest {
         for(int i = 0; i < numberOfProductsToCreate; i++) {
             Product product = new Product();
             product.setName(products[i]);
-            product.setCategory(categories[i]);
+            product.setCategory(categories.get(i));
             product.setCanonicalURL(productPhotos[i]);
             product.setPictureURL(productPhotos[i]);
             product.setCreatedAt(java.time.Instant.now());

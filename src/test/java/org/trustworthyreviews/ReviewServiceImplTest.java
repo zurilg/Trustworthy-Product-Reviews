@@ -6,6 +6,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
 import org.trustworthyreviews.model.ReviewModel;
+import org.trustworthyreviews.repository.CategoryRepository;
 import org.trustworthyreviews.repository.ProductRepository;
 import org.trustworthyreviews.repository.UserRepository;
 import org.trustworthyreviews.service.ReviewService;
@@ -32,6 +33,8 @@ class ReviewServiceImplTest {
     private ProductRepository products;
     @Autowired
     private UserRepository users;
+    @Autowired
+    private CategoryRepository categories;
 
     /**
      * Test method for create() and listForProduct().
@@ -39,9 +42,11 @@ class ReviewServiceImplTest {
     @Test
     void createAndList_modelsNotEntities() {
         // Arrange: seed a product + user quickly
+        var c = new Category("Cat");
+        c = categories.save(c);
         var p = new Product();
         p.setName("P1");
-        p.setCategory("Cat");
+        p.setCategory(c);
         p.setCanonicalURL("https://x");
         p.setCreatedAt(Instant.now());
         p = products.save(p);

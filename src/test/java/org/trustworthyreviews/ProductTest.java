@@ -18,12 +18,12 @@ public class ProductTest {
     @org.junit.Test
     public void testProductCreation() {
         Instant createdAt = Instant.now();
-        Product p = new Product("Product", "http://example.com/product", "http://example.com/pic.jpg", "Category", createdAt);
+        Product p = new Product("Product", "http://example.com/product", "http://example.com/pic.jpg", new Category("Category"), createdAt);
 
         assertEquals("Product", p.getName());
         assertEquals("http://example.com/product", p.getCanonicalURL());
         assertEquals("http://example.com/pic.jpg", p.getPictureURL());
-        assertEquals("Category", p.getCategory());
+        assertEquals("Category", p.getCategory().getName());
         assertEquals(createdAt, p.getCreatedAt());
     }
 
@@ -33,14 +33,14 @@ public class ProductTest {
     @org.junit.Test
     public void testProductSetters() {
         Instant createdAt = Instant.now();
-        Product p = new Product("Product", "http://example.com/product", "http://example.com/pic.jpg", "Category", createdAt);
+        Product p = new Product("Product", "http://example.com/product", "http://example.com/pic.jpg", new Category("Category"), createdAt);
 
         UUID id = UUID.randomUUID();
         p.setId(id);
         p.setName("NewProduct");
         p.setCanonicalURL("http://example.com/newproduct");
         p.setPictureURL("http://example.com/newpic.jpg");
-        p.setCategory("NewCategory");
+        p.setCategory(new Category("NewCategory"));
 
         // Create users and reviews to set
         User user1 = new User("UserName1", "DisplayName1", "email1@email.com");
@@ -55,7 +55,7 @@ public class ProductTest {
         assertEquals("NewProduct", p.getName());
         assertEquals("http://example.com/newproduct", p.getCanonicalURL());
         assertEquals("http://example.com/newpic.jpg", p.getPictureURL());
-        assertEquals("NewCategory", p.getCategory());
+        assertEquals("NewCategory", p.getCategory().getName());
 
         for(int i = 0; i < reviews.size(); i++) {
             assert p.getReviews().get(i).getProduct().equals(p);
@@ -72,7 +72,7 @@ public class ProductTest {
     @org.junit.Test
     public void testProductRatings(){
         // Create product
-        Product p = new Product(UUID.randomUUID(),"Product", "http://example.com/product", "http://example.com/pic.jpg", "Category", Instant.now());
+        Product p = new Product(UUID.randomUUID(),"Product", "http://example.com/product", "http://example.com/pic.jpg", new Category("Category"), Instant.now());
 
         // Create user and reviews
         int[] ratings = {5, 1, 3, 4, 2};
