@@ -13,7 +13,7 @@
 </head>
 <body>
     <div class="page">
-        <header th:replace="fragments/header :: header(searchParams=${searchParams}, currentCategory=${currentCategory}, categories=${categories})"></header>
+        <header th:replace="fragments/header :: header(searchParams=${searchParams}, currentCategory=${currentCategory}, categories=${categories}, errorMessage=${errorMessage})"></header>
         <div class="content">
             <article layout:fragment="content"></article>
         </div>
