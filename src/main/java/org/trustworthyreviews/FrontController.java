@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.trustworthyreviews.repository.ProductRepository;
 import org.trustworthyreviews.repository.ReviewRepository;
 
@@ -40,10 +41,20 @@ public class FrontController {
      * @return The name of the view to be rendered.
      */
     @GetMapping("/")
-    public String home(Model model) {
-        // Get a list of products and add to the model
-        List<Product> products = productRepository.findAll();
-        model.addAttribute("products", products);
+    public String home(@RequestParam(required = false) String product_search, Model model) {
+        List<Product> products;
+        // Check if there is a valid product search query
+        if (product_search != null && !product_search.isBlank()) {
+            products = productRepository.findAllByNameContainingIgnoreCase(product_search)
+                    .orElse(List.of());
+            model.addAttribute("products", products);
+            model.addAttribute("product_search", product_search);
+        }
+        // If no search query, show all products
+        else{
+            products = productRepository.findAll();
+            model.addAttribute("products", products);
+        }
 
         return "pages/home";
     }

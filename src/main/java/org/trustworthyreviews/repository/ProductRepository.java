@@ -27,6 +27,14 @@ public interface ProductRepository extends JpaRepository<Product, UUID>, JpaSpec
     Optional<Product> findByName(String name);
 
     /**
+     * Find all products with names containing the specified part, ignoring case.
+     *
+     * @param namePart Part of the name of the product
+     * @return An Optional containing the product if found, or empty if not found
+     */
+    Optional<List<Product>> findAllByNameContainingIgnoreCase(String namePart);
+
+    /**
      * Find products by their category.
      *
      * @param category The category of the products
