@@ -70,7 +70,7 @@ public class FrontController {
         }
         // If there is a category selected, but no search query
         else if (!hasSearch && hasCategory) {
-            products = productRepository.findAllByCategoryNameContainingIgnoreCase(currentCategory.getName())
+            products = productRepository.findAllByCategoryNameIgnoreCase(currentCategory.getName())
                     .orElse(List.of());
             model.addAttribute("products", products);
             model.addAttribute("category_name", currentCategory.getName());

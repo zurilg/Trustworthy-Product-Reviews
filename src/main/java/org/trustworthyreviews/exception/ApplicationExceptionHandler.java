@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
+import org.trustworthyreviews.Category;
 import org.trustworthyreviews.repository.CategoryRepository;
 import org.trustworthyreviews.repository.ProductRepository;
 
@@ -24,6 +25,8 @@ public class ApplicationExceptionHandler {
         ModelAndView mav = new ModelAndView("pages/home");
         mav.addObject("errorMessage", ex.getMessage()); // add error message
         mav.addObject("searchParams", ""); // clear search
+
+        Category currentCategory = null;
         mav.addObject("categories", categoryRepository.findAll()); // load categories
         mav.addObject("currentCategory", null); // Reset to showing all products
         mav.addObject("products", productRepository.findAll()); // Reset to showing all products

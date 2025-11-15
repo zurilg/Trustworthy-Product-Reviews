@@ -43,7 +43,7 @@ public interface ProductRepository extends JpaRepository<Product, UUID>, JpaSpec
      * @param categoryName Part of the name of the category
      * @return An Optional containing the list of products if found, or empty if not found
      */
-    Optional<List<Product>> findAllByCategoryNameContainingIgnoreCase(String categoryName);
+    Optional<List<Product>> findAllByCategoryNameIgnoreCase(String categoryName);
 
     /**
      * @param namePart The part of the product name to search for
