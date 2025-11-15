@@ -4,10 +4,13 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.trustworthyreviews.repository.CategoryRepository;
 import org.trustworthyreviews.repository.ProductRepository;
 import org.trustworthyreviews.repository.ReviewRepository;
 import org.trustworthyreviews.repository.UserRepository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -36,7 +39,7 @@ public class TrustworthyProductReviewsApplication {
      * @return A CommandLineRunner to populate sample data
      */
     @Bean
-    public CommandLineRunner demo(ProductRepository productRepo, ReviewRepository reviewRepo, UserRepository userRepo) {
+    public CommandLineRunner demo(ProductRepository productRepo, ReviewRepository reviewRepo, UserRepository userRepo, CategoryRepository categoryRepo) {
         return (args) -> {
             // Populate user repo with user sample data
             int numberOfUsersToCreate = 10;
@@ -45,10 +48,20 @@ public class TrustworthyProductReviewsApplication {
                 userRepo.save(user);
             }
 
+            // Populate category repo with category sample data
+            String[] categoryNames = {"Automotive", "Clothing & Fashion", "Electronics & Appliances", "Food & Beverage",
+                    "Home & Garden", "Media & Entertainment", "Health & Beauty", "Sports & Outdoors", "Toys & Hobbies"};
+            ArrayList<Category> categories = new ArrayList<>();
+            for(String categoryName : categoryNames) {
+                Category category = new Category(categoryName);
+                categories.add(category);
+                categoryRepo.save(category);
+            }
+
             // Populate product repo with product sample data
             int numberOfProductsToCreate = 5;
             String[] products = {"Crate", "Shoes", "Casio Watch", "iPhone 12", "Lenovo Laptop"};
-            String[] categories = {"Storage", "Footwear", "Electronics", "Electronics", "Electronics"};
+            int[] category_indexes = {4, 1, 1, 2, 2};
             String[] productPhotos = {
                     "https://m.media-amazon.com/images/I/81NKzEV0+2L.jpg",
                     "https://m.media-amazon.com/images/I/713tl8NjiaL._AC_SY575_.jpg",
@@ -60,7 +73,7 @@ public class TrustworthyProductReviewsApplication {
             for(int i = 0; i < numberOfProductsToCreate; i++) {
                 Product product = new Product();
                 product.setName(products[i]);
-                product.setCategory(categories[i]);
+                product.setCategory(categories.get(category_indexes[i]));
                 product.setCanonicalURL(productPhotos[i]);
                 product.setPictureURL(productPhotos[i]);
                 product.setCreatedAt(java.time.Instant.now());

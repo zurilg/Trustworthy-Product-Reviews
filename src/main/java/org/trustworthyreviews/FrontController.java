@@ -4,10 +4,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.trustworthyreviews.repository.CategoryRepository;
 import org.trustworthyreviews.repository.ProductRepository;
 import org.trustworthyreviews.repository.ReviewRepository;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -17,10 +20,10 @@ import java.util.UUID;
  */
 @Controller
 public class FrontController {
-
     // Changed to constructor injection
     private final ReviewRepository reviewRepository;
     private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
 
     /**
      * Constructor for FrontController.
@@ -28,9 +31,10 @@ public class FrontController {
      * @param reviewRepository The review repository
      * @param productRepository The product repository
      */
-    public FrontController(ReviewRepository reviewRepository, ProductRepository productRepository) {
+    public FrontController(ReviewRepository reviewRepository, ProductRepository productRepository, CategoryRepository categoryRepository) {
         this.reviewRepository = reviewRepository;
         this.productRepository = productRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     /**
@@ -40,11 +44,52 @@ public class FrontController {
      * @return The name of the view to be rendered.
      */
     @GetMapping("/")
-    public String home(Model model) {
-        // Get a list of products and add to the model
-        List<Product> products = productRepository.findAll();
-        model.addAttribute("products", products);
+    public String home(@RequestParam(required = false) String product_search,
+                       @RequestParam(required = false) String category_name, Model model) {
+        List<Product> products;
 
+        Category currentCategory = null;
+        if(category_name != null) {
+            currentCategory = categoryRepository.findByName(category_name).orElse(null);
+        }
+
+        // Add necessary attributes to the model
+        model.addAttribute("searchParams", product_search);
+        model.addAttribute("currentCategory", currentCategory);
+        model.addAttribute("categories", categoryRepository.findAll());
+
+        // Determine which products to show based on search and category filters
+        boolean hasSearch = product_search != null && !product_search.isBlank();
+        boolean hasCategory = category_name != null && !category_name.isBlank();
+        // If there is a search query, but no category selected
+        if (hasSearch && !hasCategory) {
+            products = productRepository.findAllByNameContainingIgnoreCase(product_search)
+                    .orElse(List.of());
+            model.addAttribute("products", products);
+            model.addAttribute("product_search", product_search);
+        }
+        // If there is a category selected, but no search query
+        else if (!hasSearch && hasCategory) {
+            products = productRepository.findAllByCategoryNameIgnoreCase(currentCategory.getName())
+                    .orElse(List.of());
+            model.addAttribute("products", products);
+            model.addAttribute("category_name", currentCategory.getName());
+        }
+        // If there is both a search query and a category selected
+        else if(hasSearch && hasCategory) {
+            products = productRepository.findAllByNameContainingIgnoreCaseAndCategoryNameIgnoreCase(product_search, currentCategory.getName())
+                    .orElse(List.of());
+            model.addAttribute("products", products);
+            model.addAttribute("product_search", product_search);
+            model.addAttribute("category_name", currentCategory.getName());
+        }
+        // If no search query and no category selected, show all products
+        else{
+            products = productRepository.findAll();
+            model.addAttribute("products", products);
+        }
+
+        // Return the thymeleaf template
         return "pages/home";
     }
 
@@ -62,6 +107,11 @@ public class FrontController {
         if (p == null) {
             return "redirect:/";
         }
+
+        model.addAttribute("searchParams", "");
+        model.addAttribute("currentCategory", p.getCategory().getName());
+        model.addAttribute("categories", categoryRepository.findAll());
+
         model.addAttribute("product", p);
 
         model.addAttribute("reviews", p.getReviews());

@@ -14,13 +14,16 @@ public class Product {
     @GeneratedValue
     private UUID id;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product") // One product can have many reviews
     private List<Review> reviews = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 
     private String name;
     private String canonicalURL;
     private String pictureURL;
-    private String category;
     private Instant createdAt;
 
     /**
@@ -38,7 +41,7 @@ public class Product {
      * @param category The category of the product
      * @param createdAt The creation timestamp of the product
      */
-    public Product(UUID id, String name, String canonicalURL, String pictureURL, String category, Instant createdAt) {
+    public Product(UUID id, String name, String canonicalURL, String pictureURL, Category category, Instant createdAt) {
         this.id = id;
         this.name = name;
         this.canonicalURL = canonicalURL;
@@ -56,7 +59,7 @@ public class Product {
      * @param category The category of the product
      * @param createdAt The creation timestamp of the product
      */
-    public Product(String name, String canonicalURL, String pictureURL, String category, Instant createdAt) {
+    public Product(String name, String canonicalURL, String pictureURL, Category category, Instant createdAt) {
         this.name = name;
         this.canonicalURL = canonicalURL;
         this.pictureURL = pictureURL;
@@ -141,7 +144,7 @@ public class Product {
      *
      * @return The category of the product
      */
-    public String getCategory() {
+    public Category getCategory() {
         return category;
     }
 
@@ -150,7 +153,7 @@ public class Product {
      *
      * @param category The category of the product
      */
-    public void setCategory(String category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 
