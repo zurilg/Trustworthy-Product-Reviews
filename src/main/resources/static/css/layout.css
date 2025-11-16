@@ -16,3 +16,14 @@ body {
     flex-direction: column;
     align-items: center;
 }
+
+.error-message {
+    color: red;
+    border: 1px
+    solid #ffcccc;
+    background-color: #ffeaea;
+    padding: 10px;
+    margin: 0 auto;
+    max-width: 800px;
+    text-align: center
+}

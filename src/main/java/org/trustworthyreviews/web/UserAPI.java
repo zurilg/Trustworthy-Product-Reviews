@@ -1,8 +1,10 @@
 package org.trustworthyreviews.web;
 
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 import org.trustworthyreviews.User;
 import org.trustworthyreviews.repository.UserRepository;
+import org.trustworthyreviews.web.validation.LoginDTO;
 
 /**
  * UserApi = REST controller for the website's users
@@ -21,11 +23,13 @@ public class UserAPI {
 
     /**
      * "Login" a user, actually just retrieves the user object for the provided the username
-     * @param username The username of the user wanting to log in
+     * @param loginDTO The DTO containing a username
      * @return The User object of the logged-in user
      */
     @GetMapping("/login")
-    public User login(@RequestParam("username") String username) {
+    public User login(@Valid LoginDTO loginDTO) {
+        // Get the data from the DTO
+        String username = loginDTO.getUsername();
         // Check if the user is not in the database
         if(userRepository.findByUserName(username).isEmpty()) {
             // Return an error

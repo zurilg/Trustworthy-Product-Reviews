@@ -70,8 +70,20 @@ function deleteCookie() {
 }
 
 function handleError(jqXHR, textStatus, errorThrown) {
-    // Put the error message into the error text box
-    $(".error-text").text(textStatus)
+    console.log(jqXHR)
+    console.log(textStatus)
+    console.log(errorThrown)
+    let response = jqXHR.responseJSON
+    // Check if we are receiving an error from the DTO
+    if(response.errors) {
+        // Put the error message into the error text box
+        $(".error-text").text(response.errors[0].defaultMessage)
+    } else {
+        // Put the error message into the error text box
+        $(".error-text").text(response.message)
+    }
+    // Show the error
+    $(".error-text").addClass("error-message")
 }
 
 function showModal() {
