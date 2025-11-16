@@ -11,6 +11,7 @@ import org.trustworthyreviews.repository.ProductRepository;
 import org.trustworthyreviews.repository.ReviewRepository;
 import org.trustworthyreviews.repository.UserRepository;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -126,11 +127,30 @@ public class FrontController {
         model.addAttribute("pageNo", 1);
         model.addAttribute("pageMax", 1);
 
+        // If we have a logged-in user add them to the model
         User currentUser =  null;
         if (loggedInUser != null) {
             currentUser = userRepository.findById(loggedInUser).orElse(null);
         }
         model.addAttribute("currentUser", currentUser);
+
+        // If the user has a review add it to the model
+        Review currentReview = null;
+        if(loggedInUser != null) {
+            List<Review> reviews = reviewRepository.findByAuthorId(loggedInUser);
+            for(Review review : reviews) {
+                if(review.getProduct().getId().equals(productId)) {
+                    currentReview = review;
+                }
+            }
+        }
+        if(currentReview == null && loggedInUser != null) {
+            // If there is no current review by the user then provide a blank one
+            currentReview = new Review(p, currentUser, Instant.now());
+            currentReview.setRating(2);
+            currentReview.setContent("");
+        }
+        model.addAttribute("currentReview", currentReview);
 
         // Return the thymeleaf template
         return "pages/product";

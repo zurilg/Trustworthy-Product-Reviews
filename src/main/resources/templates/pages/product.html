@@ -5,6 +5,7 @@
     <title>TrustworthyProductReviews - Product</title>
 
     <script src="/js/stars.js"></script>
+    <script src="/js/productPage.js"></script>
 
     <link rel="stylesheet" href="/css/product.css" />
     <link rel="stylesheet" href="/css/stars.css" />
@@ -26,9 +27,25 @@
                 <p th:text="'Created: ' + ${#temporals.format(product.getCreatedAt(), 'yyyy-MM-dd', 'America/New_York')}"></p>
             </div>
         </div>
-        <div th:if="${currentUser}" th:insert="fragments/productReviewPane:: productReview" class="your-review border">
+        <div th:if="${currentReview}" class="your-review border">
+            <h3>Add Your Own Review of the Product Below</h3>
+            <p th:text="${currentReview.getAuthor().getDisplayName()}"></p>
+            <div class="rating-block flex-columns-spacebetween">
+                <div class="rating-controls">
+                    <button class="star-down">-</button>
+                    <div class="star-box" th:attr="data-stars=${currentReview.getRating()}"></div>
+                    <button class="star-up">+</button>
+                </div>
+                <p th:text="'Reviewed: ' + ${#temporals.format(currentReview.getCreatedAt(), 'yyyy-MM-dd', 'America/New_York')}"></p>
+            </div>
+            <label for="rating-text">Write your review below:</label>
+            <textarea id="rating-text" th:text="${currentReview.getContent()}"></textarea>
+            <div class="flex-columns-spacebetween">
+                <button class="post-review">Review</button>
+                <button class="delete-review">Delete</button>
+            </div>
         </div>
-        <div th:unless="${currentUser}" class="your-review border">
+        <div th:unless="${currentReview}" class="login-to-review border">
             <p>Login to post a review</p>
         </div>
     </div>

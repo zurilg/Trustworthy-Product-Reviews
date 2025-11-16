@@ -5,6 +5,7 @@ body {
 
 .page {
     display: flex;
+    gap: 1em;
     flex-direction: column;
     justify-content: space-between;
     height: 100vh;

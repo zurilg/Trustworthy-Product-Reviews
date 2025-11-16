@@ -11,8 +11,8 @@ function attemptLogin() {
             // Successfully got the user
             // Save the user as a cookie
             setCookie(data)
-            // trigger a "Login"
-            login()
+            // Refresh the page
+            location.reload()
         },
         error: handleError
     });
@@ -21,7 +21,10 @@ function attemptLogin() {
 function checkCookies() {
     // If we have no cookies no need to check
     if (getCookie() === undefined) {
-        logout()
+        // Wipe the cookies
+        deleteCookie()
+        // Show logged out elements
+        showLoggedOut()
         return
     }
 
@@ -35,10 +38,16 @@ function checkCookies() {
             // Successfully got the user
             // Save the user as a cookie
             setCookie(data)
-            // trigger a "Login"
-            login()
+            // Show logged in elements
+            showLoggedIn()
         },
-        error: logout
+        error: () => {
+            // Failed to get the user
+            // Wipe the cookies
+            deleteCookie()
+            // Show logged out elements
+            showLoggedOut()
+        }
     });
 }
 
@@ -52,6 +61,12 @@ function getCookie() {
 function setCookie(json) {
     Cookies.set("loggedin", JSON.stringify(json))
     Cookies.set("loggedin-uuid", json.id)
+}
+
+function deleteCookie() {
+    // Wipe the cookie
+    Cookies.remove("loggedin")
+    Cookies.remove("loggedin-uuid")
 }
 
 function handleError(jqXHR, textStatus, errorThrown) {
@@ -71,7 +86,7 @@ function hideModal() {
     $(".login-modal").hide()
 }
 
-function login() {
+function showLoggedIn() {
     // Hide the modal
     hideModal()
     // Swap the visibility of logged-in/logged-out elements
@@ -82,13 +97,10 @@ function login() {
     $(".logged-in-username").text(getCookie().displayName)
 }
 
-function logout() {
-    // Wipe the cookie
-    Cookies.remove("loggedin")
-    Cookies.remove("loggedin-uuid")
+function showLoggedOut() {
     // Swap the visibility of logged-in/logged-out elements
-    $(".logged-in").hide()
     $(".logged-out").show()
+    $(".logged-in").hide()
 }
 
 // On page load
@@ -111,6 +123,11 @@ $(() => {
         if(event.which === 13) attemptLogin()
     })
     // Add the callback for the user pressing "logout"
-    $(".logout-button").click(logout)
+    $(".logout-button").click(() => {
+        // Wipe the cookies
+        deleteCookie()
+        // Refresh the page
+        location.reload()
+    })
 
 })
