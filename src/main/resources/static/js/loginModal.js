@@ -1,3 +1,6 @@
+/**
+ * Attempts to log in to a user account using the username from the #login-user input field
+ */
 function attemptLogin() {
     // Get the input
     inputUsername = $("#login-user").val();
@@ -18,6 +21,9 @@ function attemptLogin() {
     });
 }
 
+/**
+ * Attempts to log in to a user account using a username stored in the cookies
+ */
 function checkCookies() {
     // If we have no cookies no need to check
     if (getCookie() === undefined) {
@@ -51,6 +57,10 @@ function checkCookies() {
     });
 }
 
+/**
+ * Gets the User object from the cookies
+ * @returns The logged-in user
+ */
 function getCookie() {
     if(Cookies.get("loggedin") === undefined) {
         return undefined
@@ -58,34 +68,48 @@ function getCookie() {
     return JSON.parse(Cookies.get("loggedin"))
 }
 
+/**
+ * Sets the logged-in user cookies saving the full object for front-end display and the
+ * UUID to be passed to the backend in future requests.
+ *
+ * @param json the JSON representation of the logged-in User object
+ */
 function setCookie(json) {
     Cookies.set("loggedin", JSON.stringify(json))
     Cookies.set("loggedin-uuid", json.id)
 }
 
+/**
+ * Deletes any cookies relating to the login functionality
+ */
 function deleteCookie() {
     // Wipe the cookie
     Cookies.remove("loggedin")
     Cookies.remove("loggedin-uuid")
 }
 
-function handleError(jqXHR, textStatus, errorThrown) {
-    console.log(jqXHR)
-    console.log(textStatus)
-    console.log(errorThrown)
+/**
+ * Handles an error from the backend by displaying it to the .error-text element
+ * @param jqXHR the error response object
+ */
+function handleError(jqXHR) {
     let response = jqXHR.responseJSON
     // Check if we are receiving an error from the DTO
+    let errorText = $(".error-text")
     if(response.errors) {
         // Put the error message into the error text box
-        $(".error-text").text(response.errors[0].defaultMessage)
+        errorText.text(response.errors[0].defaultMessage)
     } else {
         // Put the error message into the error text box
-        $(".error-text").text(response.message)
+        errorText.text(response.message)
     }
     // Show the error
-    $(".error-text").addClass("error-message")
+    errorText.addClass("error-message")
 }
 
+/**
+ * Shows the login modal
+ */
 function showModal() {
     // Show the modal
     $(".login-modal").show()
@@ -93,11 +117,17 @@ function showModal() {
     $(".login-user").val("")
 }
 
+/**
+ * Hides the login modal
+ */
 function hideModal() {
     // Hide the modal
     $(".login-modal").hide()
 }
 
+/**
+ * Shows logged-in elements and displays the user's display name
+ */
 function showLoggedIn() {
     // Hide the modal
     hideModal()
@@ -109,13 +139,18 @@ function showLoggedIn() {
     $(".logged-in-username").text(getCookie().displayName)
 }
 
+/**
+ * Hides the logged-in elements
+ */
 function showLoggedOut() {
     // Swap the visibility of logged-in/logged-out elements
     $(".logged-out").show()
     $(".logged-in").hide()
 }
 
-// On page load
+/**
+ * On page load
+ */
 $(() => {
     // Hide the modal
     hideModal()

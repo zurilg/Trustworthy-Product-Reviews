@@ -1,3 +1,8 @@
+/**
+ * Updates a starbox's stars to a new value and changes the graphics
+ * @param starbox The starbox to update
+ * @param stars The new amount of stars to display
+ */
 function starboxRecalculate(starbox, stars) {
     starbox.children().each((i, star) => {
         star = $(star)
@@ -10,6 +15,9 @@ function starboxRecalculate(starbox, stars) {
     })
 }
 
+/**
+ * Send the request to post the review from the editor
+ */
 function postReview() {
     // Get the info for the post request
     let productId = $(".review-data").data("productid")
@@ -32,6 +40,9 @@ function postReview() {
     })
 }
 
+/**
+ * On page load
+ */
 $(() => {
     // Add a callback to the star buttons
     $(".star-up").click(() => {

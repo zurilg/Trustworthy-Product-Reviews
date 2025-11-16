@@ -1,3 +1,6 @@
+/**
+ * On page load
+ */
 $(() => {
     $(".star-box").each((i, box) => {
         box = $(box)
