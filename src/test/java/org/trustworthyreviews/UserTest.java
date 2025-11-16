@@ -39,8 +39,8 @@ public class UserTest {
         user.setEmail("newEmail@email.com");
 
         // Create some products and reviews to set
-        Product p1 = new Product(UUID.randomUUID(), "Product1", "http://example.com/product1", "http://example.com/pic1.jpg", "Category1", Instant.now());
-        Product p2 = new Product(UUID.randomUUID(), "Product2", "http://example.com/product2", "http://example.com/pic2.jpg", "Category2", Instant.now());
+        Product p1 = new Product(UUID.randomUUID(), "Product1", "http://example.com/product1", "http://example.com/pic1.jpg", new Category("Category1"), Instant.now());
+        Product p2 = new Product(UUID.randomUUID(), "Product2", "http://example.com/product2", "http://example.com/pic2.jpg", new Category("Category2"), Instant.now());
         List<Review> reviews = List.of(new Review(p1, user, Instant.now(), 5, "Nice product."),
                 new Review(p2, user, Instant.now(), 1, "This product stinks!"));
 
@@ -59,7 +59,7 @@ public class UserTest {
             assertEquals("Product" + (i + 1), user.getReviews().get(i).getProduct().getName());
             assertEquals("http://example.com/product" + (i + 1), user.getReviews().get(i).getProduct().getCanonicalURL());
             assertEquals("http://example.com/pic" + (i + 1) + ".jpg", user.getReviews().get(i).getProduct().getPictureURL());
-            assertEquals("Category" + (i + 1), user.getReviews().get(i).getProduct().getCategory());
+            assertEquals("Category" + (i + 1), user.getReviews().get(i).getProduct().getCategory().getName());
             assertEquals(reviews.get(i).getRating(), user.getReviews().get(i).getRating());
             assertEquals(reviews.get(i).getContent(), user.getReviews().get(i).getContent());
             assertEquals(reviews.get(i).getCreatedAt(), user.getReviews().get(i).getCreatedAt());

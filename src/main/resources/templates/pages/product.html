@@ -22,7 +22,7 @@
             </div>
             <img th:src="${product.getPictureURL()}"  alt="Product Image" width="400px"/>
             <div class="flex-columns-spacebetween">
-                <p th:text="'Category: ' + ${product.getCategory()}"></p>
+                <p th:text="'Category: ' + ${product.getCategory().getName()}"></p>
                 <p th:text="'Created: ' + ${#temporals.format(product.getCreatedAt(), 'yyyy-MM-dd', 'America/New_York')}"></p>
             </div>
         </div>

@@ -5,16 +5,33 @@
     <title>HEADER</title>
 </head>
 <body>
-    <header th:fragment="header">
+    <header th:fragment="header(searchParams, currentCategory, categories)">
         <div class="flex-header">
             <a href="/">
                 <h1>Trustworthy Product Reviews</h1>
             </a>
             <div class="header-right">
-                <div class="search-bar">
-                    <input type="text"/>
-                    <button>Search</button>
-                </div>
+                <form action="/" method="GET" class="search-bar">
+                    <!-- Category drop down -->
+                    <label>
+                        <select name="category_name" class="category-select">
+                            <option value="" th:selected="${currentCategory == null or currentCategory == ''}">All Products</option>
+
+                            <option th:each="cat : ${categories}"
+                                    th:value="${cat.name}"
+                                    th:text="${cat.name}"
+                                    th:selected="${cat == currentCategory}">
+                                Category Name
+                            </option>
+                        </select>
+                    </label>
+
+                    <!-- Search bar -->
+                    <label>
+                        <input type="text" name="product_search" placeholder="Product Name" th:value="${searchParams}"/>
+                    </label>
+                    <button type="submit">Find Products!</button>
+                </form>
                 <div class="logged-out">
                     <button class="login-open">Login</button>
                 </div>
