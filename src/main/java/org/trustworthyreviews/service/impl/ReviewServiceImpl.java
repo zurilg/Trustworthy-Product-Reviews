@@ -122,4 +122,41 @@ public class ReviewServiceImpl implements ReviewService {
                 r.getCreatedAt()
         );
     }
+
+    @Override
+    @Transactional
+    public ReviewModel updateOrCreate(UUID productId, UUID authorId, int rating, String content) {
+        if (rating < 1 || rating > 5) {
+            throw new IllegalArgumentException("rating must be between 1 and 5");
+        }
+
+        // Exists?
+        Review existing = reviews.findByProductIdOrderByCreatedAtDesc(productId).stream()
+                .filter(r -> r.getAuthor().getId().equals(authorId))
+                .findFirst()
+                .orElse(null);
+
+        Product product = products.findById(productId)
+                .orElseThrow(() -> new NoSuchElementException("product not found"));
+        User author = users.findById(authorId)
+                .orElseThrow(() -> new NoSuchElementException("author not found"));
+
+        if (existing == null) {
+            // Create
+            Review r = new Review(product, author, Instant.now(), rating, content);
+            return toModel(reviews.save(r));
+        } else {
+            // Update
+            existing.setRating(rating);
+            existing.setContent(content);
+            return toModel(reviews.save(existing));
+        }
+    }
+
+    @Override
+    @Transactional
+    public void delete(UUID reviewId) {
+        reviews.deleteById(reviewId);
+    }
+
 }
