@@ -30,4 +30,9 @@ public interface ReviewService {
      * @return The count of reviews for the given product ID
      */
     long countForProduct(UUID productId);
+
+    ReviewModel updateOrCreate(UUID productId, UUID authorId, int rating, String content);
+
+    void delete(UUID reviewId);
+
 }
