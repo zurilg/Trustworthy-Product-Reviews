@@ -137,11 +137,13 @@ public class FrontController {
 
         // If the user has a review add it to the model
         Review currentReview = null;
+        boolean hasReview = false;
         if(loggedInUser != null) {
             List<Review> reviews = reviewRepository.findByAuthorId(loggedInUser);
             for(Review review : reviews) {
                 if(review.getProduct().getId().equals(productId)) {
                     currentReview = review;
+                    hasReview = true;
                 }
             }
         }
@@ -152,6 +154,7 @@ public class FrontController {
             currentReview.setContent("");
         }
         model.addAttribute("currentReview", currentReview);
+        model.addAttribute("hasReview", hasReview);
 
         // Return the thymeleaf template
         return "pages/product";

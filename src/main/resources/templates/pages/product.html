@@ -44,7 +44,7 @@
                 <button class="post-review">Review</button>
                 <button class="delete-review">Delete</button>
             </div>
-            <div class="review-data" th:attr="data-productId=${currentReview.getProduct().getId()}"></div>
+            <div class="review-data" th:attr="data-productId=${currentReview.getProduct().getId()}, data-hasReview=${hasReview}, data-reviewId=${currentReview.getId()}"></div>
         </div>
         <div th:unless="${currentReview}" class="login-to-review border">
             <p>Login to post a review</p>

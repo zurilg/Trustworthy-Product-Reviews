@@ -25,7 +25,7 @@ function postReview() {
     let rating = $(".rating-controls > .star-box").attr("data-stars")
     let content = $("#rating-text").val()
     $.ajax({
-        type: "POST",
+        type: "PUT",
         url: window.location.protocol + "//" + window.location.host + "/api/reviews",
         data: {
             productId: productId,
@@ -36,7 +36,37 @@ function postReview() {
         success: () => {
             location.reload()
         },
-        error: location.reload
+        error: () => {
+            location.reload()
+        }
+    })
+}
+
+/**
+ * Send the request to delete a review from the editor
+ */
+function deleteReview() {
+    let reviewData = $(".review-data")
+    // Get the info of if we have a review posted
+    if(reviewData.data("hasreview") === false) {
+        // Do nothing
+        return
+    }
+    // Get the info for the post request
+    let reviewId = reviewData.data("reviewid")
+
+    $.ajax({
+        type: "DELETE",
+        url: window.location.protocol + "//" + window.location.host + "/api/reviews",
+        data: {
+            reviewId: reviewId,
+        },
+        success: () => {
+            location.reload()
+        },
+        error: () => {
+            location.reload()
+        }
     })
 }
 
@@ -59,4 +89,6 @@ $(() => {
 
     // Add a callback to the review button
     $(".post-review").click(postReview)
+    // Add a callback to the delete button
+    $(".delete-review").click(deleteReview)
 })
