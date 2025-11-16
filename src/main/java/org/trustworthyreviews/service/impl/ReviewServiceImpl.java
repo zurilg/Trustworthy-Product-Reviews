@@ -75,6 +75,7 @@ public class ReviewServiceImpl implements ReviewService {
         r.setProduct(product);
         r.setAuthor(author);
         r.setRating(rating);
+        r.setContent(content);
         r.setCreatedAt(Instant.now());
         Review saved = reviews.save(r);
 

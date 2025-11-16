@@ -11,12 +11,25 @@ function starboxRecalculate(starbox, stars) {
 }
 
 function postReview() {
-    $.post(
-        "api/reviews",
-        {
-            
-        }
-    )
+    // Get the info for the post request
+    let productId = $(".review-data").data("productid")
+    let authorId = Cookies.get("loggedin-uuid")
+    let rating = $(".rating-controls > .star-box").attr("data-stars")
+    let content = $("#rating-text").val()
+    $.ajax({
+        type: "POST",
+        url: window.location.protocol + "//" + window.location.host + "/api/reviews",
+        data: {
+            productId: productId,
+            authorId: authorId,
+            rating: rating,
+            content: content
+        },
+        success: () => {
+            location.reload()
+        },
+        error: location.reload
+    })
 }
 
 $(() => {
@@ -34,5 +47,5 @@ $(() => {
     })
 
     // Add a callback to the review button
-    $(".post-review").click(postReview())
+    $(".post-review").click(postReview)
 })
