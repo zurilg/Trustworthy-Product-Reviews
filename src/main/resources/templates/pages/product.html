@@ -5,6 +5,7 @@
     <title>TrustworthyProductReviews - Product</title>
 
     <script src="/js/stars.js"></script>
+    <script src="/js/productPage.js"></script>
 
     <link rel="stylesheet" href="/css/product.css" />
     <link rel="stylesheet" href="/css/stars.css" />
@@ -26,23 +27,27 @@
                 <p th:text="'Created: ' + ${#temporals.format(product.getCreatedAt(), 'yyyy-MM-dd', 'America/New_York')}"></p>
             </div>
         </div>
-        <div class="your-review border">
-            <h3>Your Review</h3>
-            <p th:text="${currentUser.getDisplayName()}"></p>
+        <div th:if="${currentReview}" class="your-review border">
+            <h3>Add Your Own Review of the Product Below</h3>
+            <p th:text="${currentReview.getAuthor().getDisplayName()}"></p>
             <div class="rating-block flex-columns-spacebetween">
                 <div class="rating-controls">
-                    <button>-</button>
-                    <div class="star-box" th:attr="data-stars=2.5"></div>
-                    <button>+</button>
+                    <button class="star-down">-</button>
+                    <div class="star-box" th:attr="data-stars=${currentReview.getRating()}"></div>
+                    <button class="star-up">+</button>
                 </div>
-                <p>Reviewed: 2025-10-29</p>
+                <p th:text="'Reviewed: ' + ${#temporals.format(currentReview.getCreatedAt(), 'yyyy-MM-dd', 'America/New_York')}"></p>
             </div>
-            <textarea id="rating-text">
-            </textarea>
+            <label for="rating-text">Write your review below:</label>
+            <textarea id="rating-text" th:text="${currentReview.getContent()}"></textarea>
             <div class="flex-columns-spacebetween">
-                <button>Review</button>
-                <button>Delete</button>
+                <button class="post-review">Review</button>
+                <button class="delete-review">Delete</button>
             </div>
+            <div class="review-data" th:attr="data-productId=${currentReview.getProduct().getId()}, data-hasReview=${hasReview}, data-reviewId=${currentReview.getId()}"></div>
+        </div>
+        <div th:unless="${currentReview}" class="login-to-review border">
+            <p>Login to post a review</p>
         </div>
     </div>
     <div class="all-reviews border">

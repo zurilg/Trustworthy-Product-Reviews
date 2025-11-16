@@ -1,6 +1,7 @@
 .product-columns {
     display: flex;
     flex-direction: row;
+    align-items: stretch;
     gap: 2em;
 }
 
@@ -63,7 +64,6 @@
     resize: none;
     width: auto;
     flex-grow: 1;
-    margin: 1em 0;
 }
 
 .all-reviews .all-reviews-header {
@@ -83,4 +83,12 @@
 .border {
     border: 1px solid black;
     padding: 0.5em;
+}
+
+.login-to-review {
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }

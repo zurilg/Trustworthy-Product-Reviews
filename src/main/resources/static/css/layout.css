@@ -5,6 +5,7 @@ body {
 
 .page {
     display: flex;
+    gap: 1em;
     flex-direction: column;
     justify-content: space-between;
     height: 100vh;
@@ -14,4 +15,15 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.error-message {
+    color: red;
+    border: 1px
+    solid #ffcccc;
+    background-color: #ffeaea;
+    padding: 10px;
+    margin: 0 auto;
+    max-width: 800px;
+    text-align: center
 }
