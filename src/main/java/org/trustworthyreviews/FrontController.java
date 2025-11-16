@@ -102,6 +102,7 @@ public class FrontController {
      * The product page handler.
      *
      * @param productId The ID of the product
+     * @param loggedInUser The ID of the logged-in user
      * @param model The model to be used by the view
      * @return The name of the view to be rendered
      */

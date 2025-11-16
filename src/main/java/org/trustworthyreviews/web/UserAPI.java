@@ -4,6 +4,12 @@ import org.springframework.web.bind.annotation.*;
 import org.trustworthyreviews.User;
 import org.trustworthyreviews.repository.UserRepository;
 
+/**
+ * UserApi = REST controller for the website's users
+ * GET /api/user/login: attempt to log in to a user's account and get their info
+ *
+ * @version 11-03-2025
+ */
 @RestController
 @RequestMapping ("/api/user")
 public class UserAPI {
@@ -13,6 +19,11 @@ public class UserAPI {
         this.userRepository = userRepository;
     }
 
+    /**
+     * "Login" a user, actually just retrieves the user object for the provided the username
+     * @param username The username of the user wanting to log in
+     * @return The User object of the logged-in user
+     */
     @GetMapping("/login")
     public User login(@RequestParam("username") String username) {
         // Check if the user is not in the database
