@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 /**
  * The User entity represents a user in the Trustworthy Reviews system.
  *
- * @version 11-03-2025
+ * @version 11-17-2025
  */
 @Entity
 @Table(name = "APP_USER") // Added to ensure test class passes

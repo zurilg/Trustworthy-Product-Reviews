@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 /**
  * The Review entity represents a review made by a user for a product in the Trustworthy Reviews system.
  *
- * @version 11-03-2025
+ * @version 11-17-2025
  */
 @Entity
 public class Review {

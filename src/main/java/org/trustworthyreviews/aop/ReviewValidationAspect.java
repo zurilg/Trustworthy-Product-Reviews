@@ -7,6 +7,12 @@ import org.springframework.stereotype.Component;
 import java.util.UUID;
 
 
+/**
+ * AOP Aspect for validating review inputs before creation or update.
+ * This ensures that all reviews meet the required criteria before being processed.
+ *
+ * @version 11-17-2025
+ */
 @Aspect
 @Component
 public class ReviewValidationAspect {

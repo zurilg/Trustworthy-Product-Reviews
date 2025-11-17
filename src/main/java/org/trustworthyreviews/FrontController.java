@@ -11,13 +11,12 @@ import org.trustworthyreviews.service.ReviewSortingService;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 /**
  * Front controller for handling web requests.
  *
- * @version 11-03-2025
+ * @version 11-17-2025
  */
 @Controller
 public class FrontController {

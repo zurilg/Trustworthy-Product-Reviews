@@ -12,7 +12,7 @@ import java.util.UUID;
  * Returns ReviewModel (DTO), not entities.
  * Implemented in ReviewServiceImpl. Controllers depend on this interface.
  *
- * @version 11-03-2025
+ * @version 11-17-2025
  */
 public interface ReviewService {
     ReviewModel create(UUID productId, UUID authorId, int rating, String content);
