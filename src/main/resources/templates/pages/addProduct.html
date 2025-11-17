@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout.html}">
+<head>
+  <meta charset="UTF-8">
+  <title>TrustworthyProductReviews - Add Product</title>
+</head>
+<body>
+<article layout:fragment="content">
+  <div th:if="${errorMessage}" style="color: red; border: 1px solid #ffcccc; background-color: #ffeaea;
+    padding: 10px; margin: 0 auto; max-width: 800px; text-align: center">
+    <span th:text="${errorMessage}">Validation Error Message</span>
+  </div>
+  <h3>Add a Product</h3>
+  <form action="" method="post" th:object="${product}">
+    <input th:field="*{name}" type="text" placeholder="Name" required>
+    <input th:field="*{canonicalURL}" type="text" placeholder="URL" required>
+    <input th:field="*{pictureURL}" type="text" placeholder="Picture" required>
+    <select name="categoryId" required>
+      <option value="" disabled selected>Select a category</option>
+      <option th:each="c : ${categories}"
+              th:value="${c.id}"
+              th:text="${c.name}">
+      </option>
+    </select>
+    <button type="submit">Add Product</button>
+  </form>
+  <a href="/">Back to home</a>
+</article>
+</body>
+</html>

@@ -1,5 +1,7 @@
 package org.trustworthyreviews.service.impl;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,6 +59,7 @@ public class ReviewServiceImpl implements ReviewService {
      * Returns a DTO (ReviewModel) instead of the JPA entity.
      */
     @Override
+    @CacheEvict(cacheNames = {"reviewsForProduct", "productReviewCount"}, allEntries = true)
     @Transactional
     public ReviewModel create(UUID productId, UUID authorId, int rating, String content) {
         // Basic invariant: rating must be 1..5
@@ -88,6 +91,7 @@ public class ReviewServiceImpl implements ReviewService {
      * If pageable is null, we apply a sensible default (page 0, size 10, newest first).
      */
     @Override
+    @Cacheable(cacheNames = "reviewsForProduct", key = "#productId.toString() + '_' + #pageable.getPageNumber() + '_' + #pageable.getPageSize()")
     @Transactional(readOnly = true)
     public Page<ReviewModel> listForProduct(UUID productId, Pageable pageable) {
         // Null-safe pagination
@@ -105,6 +109,7 @@ public class ReviewServiceImpl implements ReviewService {
      * Count reviews for a product.
      */
     @Override
+    @Cacheable(cacheNames = "productReviewCount", key = "#productId")
     @Transactional(readOnly = true)
     public long countForProduct(UUID productId) {
         return reviews.countByProductId(productId);
@@ -125,6 +130,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
+    @CacheEvict(cacheNames = {"reviewsForProduct", "productReviewCount"}, allEntries = true)
     @Transactional
     public ReviewModel updateOrCreate(UUID productId, UUID authorId, int rating, String content) {
         if (rating < 1 || rating > 5) {
@@ -155,6 +161,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
+    @CacheEvict(cacheNames = {"reviewsForProduct", "productReviewCount"}, allEntries = true)
     @Transactional
     public void delete(UUID reviewId) {
         reviews.deleteById(reviewId);

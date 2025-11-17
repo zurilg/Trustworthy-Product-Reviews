@@ -2,10 +2,7 @@ package org.trustworthyreviews;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.trustworthyreviews.repository.CategoryRepository;
 import org.trustworthyreviews.repository.ProductRepository;
 import org.trustworthyreviews.repository.ReviewRepository;
@@ -158,5 +155,39 @@ public class FrontController {
 
         // Return the thymeleaf template
         return "pages/product";
+    }
+
+    /**
+     * The add product page
+     *
+     * @param product The product to be added to the cite
+     * @param model The model to be used by the view
+     * @return The name of the view to be rendered
+     */
+    @GetMapping("/addProduct")
+    public String addProductPage(@ModelAttribute("product") Product product, Model model) {
+        model.addAttribute("product", product);
+        model.addAttribute("categories", categoryRepository.findAll());
+        return "pages/addProduct";
+    }
+
+    /**
+     * The request to add a product
+     *
+     * @param product The product to be added to the cite
+     * @param categoryId The category of the product being added
+     * @return Redirection to home page
+     */
+    @PostMapping("/addProduct")
+    public String addProducts(@ModelAttribute("product") Product product, @RequestParam UUID categoryId) {
+        Category category = categoryRepository.findById(categoryId)
+                .orElse(null);
+
+        product.setCategory(category);
+        product.setCreatedAt(Instant.now());
+
+        productRepository.save(product);
+
+        return "redirect:/";
     }
 }

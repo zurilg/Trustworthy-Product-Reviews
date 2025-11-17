@@ -3,6 +3,7 @@ package org.trustworthyreviews;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
 import org.trustworthyreviews.repository.CategoryRepository;
@@ -21,6 +22,7 @@ import java.util.*;
  * @version 11-03-2025
  */
 @SpringBootApplication
+@EnableCaching
 public class TrustworthyProductReviewsApplication {
 
     /**
