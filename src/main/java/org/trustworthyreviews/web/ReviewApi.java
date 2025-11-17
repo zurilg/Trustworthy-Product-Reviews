@@ -1,10 +1,13 @@
 package org.trustworthyreviews.web;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
+import org.trustworthyreviews.User;
 import org.trustworthyreviews.model.ReviewModel;
+import org.trustworthyreviews.service.CurrentUserService;
 import org.trustworthyreviews.service.ReviewService;
 
 import java.util.UUID;
@@ -14,25 +17,28 @@ import java.util.UUID;
  * Implements the update-or-create pattern and delete functionality
  * requested in the milestone issue.
  *
- * @version 2025-03-11
+ * @version 11-17-2025
  */
 @RestController
 @RequestMapping("/api/reviews")
 public class ReviewApi {
 
     private final ReviewService reviews;
+    private final CurrentUserService currentUserService;
 
-    public ReviewApi(ReviewService reviews) {
+    public ReviewApi(ReviewService reviews, CurrentUserService currentUserService) {
         this.reviews = reviews;
+        this.currentUserService = currentUserService;
     }
 
     /** CREATE review */
     @PostMapping
     public ReviewModel create(@RequestParam UUID productId,
-                              @RequestParam UUID authorId,
                               @RequestParam int rating,
-                              @RequestParam String content) {
-        return reviews.create(productId, authorId, rating, content);
+                              @RequestParam String content,
+                              HttpSession session) {
+        User current = currentUserService.requireCurrentUser(session);
+        return reviews.create(productId, current.getId(), rating, content);
     }
 
     /**
@@ -42,15 +48,17 @@ public class ReviewApi {
      */
     @PutMapping
     public ReviewModel updateOrCreate(@RequestParam UUID productId,
-                                      @RequestParam UUID authorId,
                                       @RequestParam int rating,
-                                      @RequestParam String content) {
-        return reviews.updateOrCreate(productId, authorId, rating, content);
+                                      @RequestParam String content,
+                                      HttpSession session) {
+        User current = currentUserService.requireCurrentUser(session);
+        return reviews.updateOrCreate(productId, current.getId(), rating, content);
     }
 
     /** DELETE review by reviewId */
     @DeleteMapping
-    public void delete(@RequestParam UUID reviewId) {
+    public void delete(@RequestParam UUID reviewId, HttpSession session) {
+        currentUserService.requireCurrentUser(session);
         reviews.delete(reviewId);
     }
 

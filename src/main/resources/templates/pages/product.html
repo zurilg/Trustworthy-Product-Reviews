@@ -6,6 +6,7 @@
 
     <script src="/js/stars.js"></script>
     <script src="/js/productPage.js"></script>
+    <script th:src="@{/js/follow.js}"></script>
 
     <link rel="stylesheet" href="/css/product.css" />
     <link rel="stylesheet" href="/css/stars.css" />
@@ -29,7 +30,11 @@
         </div>
         <div th:if="${currentReview}" class="your-review border">
             <h3>Add Your Own Review of the Product Below</h3>
-            <p th:text="${currentReview.getAuthor().getDisplayName()}"></p>
+            <div class="user-heading">
+                <span class="user-name" th:text="${currentReview.getAuthor().getDisplayName()}"></span>
+                <span class="user-badge" th:if="${currentReview.getAuthor().isTrustedReviewer()}" title="Trusted Reviewer">&#9733;</span>
+                <span class="user-tag">You</span>
+            </div>
             <div class="rating-block flex-columns-spacebetween">
                 <div class="rating-controls">
                     <button class="star-down">-</button>
@@ -56,13 +61,41 @@
             <div class="star-box" th:attr="data-stars=${product.avgRating()}"></div>
             <p th:text="'(' + ${reviews.size()} + ' Reviews)'"></p>
         </div>
+        <p th:if="${currentUser == null}" class="follow-login-hint">Login to follow reviewers and stay updated.</p>
         <div th:each="review : ${reviews}" class="review border">
-            <p th:text="${review.getAuthor().getDisplayName()}"></p>
+            <div class="review-header">
+                <div class="user-name-block">
+                    <span class="user-name" th:text="${review.getAuthor().getDisplayName()}"></span>
+                    <span class="user-badge" th:if="${review.getAuthor().isTrustedReviewer()}" title="Trusted Reviewer">&#9733;</span>
+                </div>
+                <div class="degrees-info" th:if="${currentUser != null}">
+                    <span th:if="${degreesOfSeparation[review.getAuthor().getId()] != null and degreesOfSeparation[review.getAuthor().getId()] >= 0}"
+                          th:text="'Degrees: ' + ${degreesOfSeparation[review.getAuthor().getId()]}"></span>
+                    <span th:unless="${degreesOfSeparation[review.getAuthor().getId()] != null and degreesOfSeparation[review.getAuthor().getId()] >= 0}">
+                        No connection
+                    </span>
+                </div>
+            </div>
             <div class="rating-block">
                 <div class="star-box" th:attr="data-stars=${review.getRating()}"></div>
                 <p th:text="${#temporals.format(review.getCreatedAt(), 'yyyy-MM-dd', 'America/New_York')}"></p>
             </div>
             <p th:text="${review.getContent()}"></p>
+            <div class="follow-actions"
+                 th:if="${currentUser != null and !currentUser.getId().equals(review.getAuthor().getId())}">
+                <button type="button"
+                        class="follow-btn"
+                        th:attr="data-follower-id=${currentUser.getId()}, data-followee-id=${review.getAuthor().getId()}"
+                        th:style="${followedUserIds.contains(review.getAuthor().getId())} ? 'display:none' : ''">
+                    Follow
+                </button>
+                <button type="button"
+                        class="unfollow-btn"
+                        th:attr="data-follower-id=${currentUser.getId()}, data-followee-id=${review.getAuthor().getId()}"
+                        th:style="${followedUserIds.contains(review.getAuthor().getId())} ? '' : 'display:none'">
+                    Unfollow
+                </button>
+            </div>
         </div>
         <div class="page-controls">
             <button th:disabled="${pageNo le 1}">First</button>

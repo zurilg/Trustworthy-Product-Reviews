@@ -30,7 +30,7 @@ import java.util.UUID;
  * @Transactional on write; readOnly on read paths.
  * Handles null Pageable by applying a default (page 0, size 10, newest first).
  *
- * @version 11-03-2025
+ * @version 11-17-2025
  */
 @Service
 public class ReviewServiceImpl implements ReviewService {
@@ -57,6 +57,11 @@ public class ReviewServiceImpl implements ReviewService {
     /**
      * Create a review for a given product + author with a rating.
      * Returns a DTO (ReviewModel) instead of the JPA entity.
+     *
+     * @param productId The product ID
+     * @param authorId  The author (user) ID
+     * @param rating    The rating (1..5)
+     * @param content   The review content
      */
     @Override
     @CacheEvict(cacheNames = {"reviewsForProduct", "productReviewCount"}, allEntries = true)
@@ -89,6 +94,9 @@ public class ReviewServiceImpl implements ReviewService {
     /**
      * List reviews for a product with optional pagination.
      * If pageable is null, we apply a sensible default (page 0, size 10, newest first).
+     *
+     * @param productId The product ID
+     * @param pageable  The pagination information (may be null)
      */
     @Override
     @Cacheable(cacheNames = "reviewsForProduct", key = "#productId.toString() + '_' + #pageable.getPageNumber() + '_' + #pageable.getPageSize()")
@@ -107,6 +115,8 @@ public class ReviewServiceImpl implements ReviewService {
 
     /**
      * Count reviews for a product.
+     *
+     * @param productId The product ID
      */
     @Override
     @Cacheable(cacheNames = "productReviewCount", key = "#productId")
@@ -117,6 +127,8 @@ public class ReviewServiceImpl implements ReviewService {
 
     /**
      * Local mapper from entity -> DTO.
+     *
+     * @param r The Review entity
      */
     private ReviewModel toModel(Review r) {
         return new ReviewModel(
@@ -129,6 +141,15 @@ public class ReviewServiceImpl implements ReviewService {
         );
     }
 
+    /**
+     * Update an existing review or create a new one if it doesn't exist.
+     *
+     * @param productId The ID of the product to review
+     * @param authorId The ID of the author creating the review
+     * @param rating The rating given in the review
+     * @param content The content of the review
+     * @return The created or updated ReviewModel object
+     */
     @Override
     @CacheEvict(cacheNames = {"reviewsForProduct", "productReviewCount"}, allEntries = true)
     @Transactional
@@ -160,6 +181,11 @@ public class ReviewServiceImpl implements ReviewService {
         }
     }
 
+    /**
+     * Method to delete a review by its ID.
+     *
+     * @param reviewId The review ID to delete
+     */
     @Override
     @CacheEvict(cacheNames = {"reviewsForProduct", "productReviewCount"}, allEntries = true)
     @Transactional

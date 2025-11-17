@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 /**
  * The User entity represents a user in the Trustworthy Reviews system.
  *
- * @version 11-03-2025
+ * @version 11-17-2025
  */
 @Entity
 @Table(name = "APP_USER") // Added to ensure test class passes
@@ -21,6 +21,7 @@ public class User {
     private String userName;
     private String displayName;
     private String email;
+    private boolean trustedReviewer = true;
 
     /**
      * Empty constructor for JPA
@@ -38,6 +39,7 @@ public class User {
         this.userName = userName;
         this.displayName = displayName;
         this.email = email;
+        this.trustedReviewer = true;
     }
 
     /**
@@ -128,5 +130,13 @@ public class User {
      */
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public boolean isTrustedReviewer() {
+        return trustedReviewer;
+    }
+
+    public void setTrustedReviewer(boolean trustedReviewer) {
+        this.trustedReviewer = trustedReviewer;
     }
 }
