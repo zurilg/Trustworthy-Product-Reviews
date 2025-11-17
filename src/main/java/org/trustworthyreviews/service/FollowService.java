@@ -7,6 +7,8 @@ import java.util.UUID;
 
 public interface FollowService extends ReviewSortingService.FollowingProvider {
 
+    void follow(UUID followerId, UUID followeeId);
+
     void follow(User follower, User followee);
 
     void unfollow(User follower, User followee);
