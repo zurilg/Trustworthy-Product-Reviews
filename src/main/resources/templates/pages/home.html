@@ -20,6 +20,7 @@
         <div th:each="product: ${products}">
             <a th:text="${product.getName()}" th:href="${'/product/' + product.getId().toString()}"></a>
         </div>
+        <a th:href="@{/addProduct}" style="display:block; margin-top:20px;">Add a Product</a>
     </div>
 
 </article>
