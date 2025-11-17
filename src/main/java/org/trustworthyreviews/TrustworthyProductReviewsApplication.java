@@ -4,14 +4,16 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.io.ClassPathResource;
 import org.trustworthyreviews.repository.CategoryRepository;
 import org.trustworthyreviews.repository.ProductRepository;
 import org.trustworthyreviews.repository.ReviewRepository;
 import org.trustworthyreviews.repository.UserRepository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.io.IOException;
+import java.io.InputStream;
+import java.time.Instant;
+import java.util.*;
 
 /**
  * The main application class for Trustworthy Product Reviews.
@@ -42,55 +44,55 @@ public class TrustworthyProductReviewsApplication {
     public CommandLineRunner demo(ProductRepository productRepo, ReviewRepository reviewRepo, UserRepository userRepo, CategoryRepository categoryRepo) {
         return (args) -> {
             // Populate user repo with user sample data
-            int numberOfUsersToCreate = 10;
-            for(int i = 0; i < numberOfUsersToCreate; i++) {
-                User user = new User("user" + i, "User " + i, "email" + i + "@email.com");
+            for(String[] userInfo: loadCsvData("users.csv")) {
+                User user = new User(userInfo[0], userInfo[1], userInfo[2]);
                 userRepo.save(user);
             }
 
             // Populate category repo with category sample data
-            String[] categoryNames = {"Automotive", "Clothing & Fashion", "Electronics & Appliances", "Food & Beverage",
-                    "Home & Garden", "Media & Entertainment", "Health & Beauty", "Sports & Outdoors", "Toys & Hobbies"};
             ArrayList<Category> categories = new ArrayList<>();
-            for(String categoryName : categoryNames) {
-                Category category = new Category(categoryName);
+            for(String[] categoryName : loadCsvData("categories.csv")) {
+                Category category = new Category(categoryName[0]);
                 categories.add(category);
                 categoryRepo.save(category);
             }
 
             // Populate product repo with product sample data
-            int numberOfProductsToCreate = 5;
-            String[] products = {"Crate", "Shoes", "Casio Watch", "iPhone 12", "Lenovo Laptop"};
-            int[] category_indexes = {4, 1, 1, 2, 2};
-            String[] productPhotos = {
-                    "https://m.media-amazon.com/images/I/81NKzEV0+2L.jpg",
-                    "https://m.media-amazon.com/images/I/713tl8NjiaL._AC_SY575_.jpg",
-                    "https://m.media-amazon.com/images/I/61Xm9WEMuEL._AC_SX679_.jpg",
-                    "https://m.media-amazon.com/images/I/41WsaMyJAqL._AC_SY300_SX300_QL70_ML2_.jpg",
-                    "https://m.media-amazon.com/images/I/61v6QV8AQPL._AC_SX425_.jpg"
-            };
-
-            for(int i = 0; i < numberOfProductsToCreate; i++) {
-                Product product = new Product();
-                product.setName(products[i]);
-                product.setCategory(categories.get(category_indexes[i]));
-                product.setCanonicalURL(productPhotos[i]);
-                product.setPictureURL(productPhotos[i]);
-                product.setCreatedAt(java.time.Instant.now());
+            for(String[] productInfo: loadCsvData("products.csv")) {
+                Product product = new Product(productInfo[0], productInfo[1], productInfo[2],
+                        categories.get(Integer.parseInt(productInfo[3])), Instant.now());
                 productRepo.save(product);
             }
 
             // Populate review repo with review sample data
-            int numberOfReviewsToCreate = 30;
-            Random rand = new Random();
-            for(int i = 0; i < numberOfReviewsToCreate; i++) {
-                User user = userRepo.findById(userRepo.findAll().get(i % numberOfUsersToCreate).getId()).get();
-                Product product = productRepo.findById(productRepo.findAll().get(i % numberOfProductsToCreate).getId()).get();
-                Review review = new Review(product, user, java.time.Instant.now());
-                review.setRating(rand.nextInt(5) + 1); // Ratings between 1 and 5
-                review.setContent("This is review " + i + " for " + product.getName());
+            for(String[] reviewInfo: loadCsvData("reviews.csv")) {
+                Optional<Product> product = productRepo.findByName(reviewInfo[0]);
+                Optional<User> author = userRepo.findByUserName(reviewInfo[1]);
+                if(product.isEmpty() || author.isEmpty()) {
+                    continue; // Skip invalid entries
+                }
+                Review review = new Review(product.get(), author.get(), Instant.now(), Integer.parseInt(reviewInfo[3]), reviewInfo[2]);
                 reviewRepo.save(review);
             }
         };
+    }
+
+    private List<String[]> loadCsvData(String fileName) throws IOException {
+        List<String[]> data = new ArrayList<>();
+        ClassPathResource resource = new ClassPathResource("data/" + fileName);
+
+        try (InputStream is = resource.getInputStream();
+             Scanner scanner = new Scanner(is)) {
+
+            // Skip the header row
+            if (scanner.hasNextLine()) scanner.nextLine();
+
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                String[] fields = line.split("~");
+                data.add(fields);
+            }
+        }
+        return data;
     }
 }
