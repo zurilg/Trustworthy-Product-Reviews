@@ -60,6 +60,14 @@
                 <a th:href="@{/addProduct}" class="add-product-link">Add a Product</a>
             </div>
         </div>
+
+        <div class="discover-more" th:if="${currentUser != null}" style="margin-top: 2rem;">
+            <p>Discover other reviewers:</p>
+            <ul>
+                <li><a th:href="@{/users/similar}">Find similar users (Jaccard distance)</a></li>
+                <li><a th:href="@{/users/most-followed}">See most-followed reviewers</a></li>
+            </ul>
+        </div>
     </div>
 
 </article>

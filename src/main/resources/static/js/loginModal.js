@@ -94,14 +94,12 @@ function hideModal() {
  * Shows logged-in elements and displays the user's display name
  */
 function showLoggedIn() {
-    // Hide the modal
     hideModal()
-    // Swap the visibility of logged-in/logged-out elements
     $(".logged-in").show()
     $(".logged-out").hide()
-
-    // Update the display name
-    $(".logged-in-username").text(getCookie().displayName)
+    if (currentUser) {
+        $(".logged-in-username").text(currentUser.displayName)
+    }
 }
 
 /**
@@ -111,6 +109,7 @@ function showLoggedOut() {
     // Swap the visibility of logged-in/logged-out elements
     $(".logged-out").show()
     $(".logged-in").hide()
+    $(".logged-in-username").text("")
 }
 
 /**
@@ -136,5 +135,7 @@ $(() => {
     })
     // Add the callback for the user pressing "logout"
     $(".logout-button").click(logout)
+
+    $(".add-product-link-logged-out").click(showModal)
 
 })
