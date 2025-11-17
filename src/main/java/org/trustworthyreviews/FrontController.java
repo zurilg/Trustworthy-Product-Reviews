@@ -7,6 +7,7 @@ import org.trustworthyreviews.repository.CategoryRepository;
 import org.trustworthyreviews.repository.ProductRepository;
 import org.trustworthyreviews.repository.ReviewRepository;
 import org.trustworthyreviews.repository.UserRepository;
+import org.trustworthyreviews.service.ReviewSortingService;
 
 import java.time.Instant;
 import java.util.List;
@@ -26,6 +27,8 @@ public class FrontController {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
+    private final ReviewSortingService sortingService;
+
 
     /**
      * Constructor for FrontController.
@@ -33,11 +36,12 @@ public class FrontController {
      * @param reviewRepository The review repository
      * @param productRepository The product repository
      */
-    public FrontController(ReviewRepository reviewRepository, ProductRepository productRepository, UserRepository userRepository, CategoryRepository categoryRepository) {
+    public FrontController(ReviewRepository reviewRepository, ProductRepository productRepository, UserRepository userRepository, CategoryRepository categoryRepository, ReviewSortingService sortingService) {
         this.reviewRepository = reviewRepository;
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
         this.userRepository = userRepository;
+        this.sortingService = sortingService;
     }
 
     /**
@@ -48,7 +52,15 @@ public class FrontController {
      */
     @GetMapping("/")
     public String home(@RequestParam(required = false) String product_search,
-                       @RequestParam(required = false) String category_name, Model model) {
+                       @RequestParam(required = false) String category_name,
+                       @CookieValue(name= "loggedin-uuid", required = false) UUID loggedInUser,
+                       Model model) {
+
+        User currentUser = null;
+        if (loggedInUser != null) {
+            currentUser = userRepository.findById(loggedInUser).orElse(null);
+        }
+
         List<Product> products;
 
         Category currentCategory = null;
@@ -73,9 +85,15 @@ public class FrontController {
         }
         // If there is a category selected, but no search query
         else if (!hasSearch && hasCategory) {
-            products = productRepository.findAllByCategoryNameIgnoreCase(currentCategory.getName())
-                    .orElse(List.of());
-            model.addAttribute("products", products);
+            products = productRepository.findByCategory(currentCategory);
+            model.addAttribute("products", products); // was commented out now restored
+            for (Product prod : products) {
+                List<Review> sorted = sortingService.sortReviews(prod.getReviews(), currentUser);
+                if (!sorted.isEmpty()) {
+                    prod.setReviews(List.of(sorted.get(0))); // show best review
+                }
+            }
+
             model.addAttribute("category_name", currentCategory.getName());
         }
         // If there is both a search query and a category selected
@@ -120,17 +138,21 @@ public class FrontController {
 
         model.addAttribute("product", p);
 
-        model.addAttribute("reviews", p.getReviews());
-
-        model.addAttribute("pageNo", 1);
-        model.addAttribute("pageMax", 1);
-
         // If we have a logged-in user add them to the model
         User currentUser =  null;
         if (loggedInUser != null) {
             currentUser = userRepository.findById(loggedInUser).orElse(null);
         }
         model.addAttribute("currentUser", currentUser);
+
+        //model.addAttribute("reviews", p.getReviews());
+
+        List<Review> sorted = sortingService.sortReviews(p.getReviews(), currentUser);
+        model.addAttribute("reviews", sorted);
+
+
+        model.addAttribute("pageNo", 1);
+        model.addAttribute("pageMax", 1);
 
         // If the user has a review add it to the model
         Review currentReview = null;
