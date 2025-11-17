@@ -27,3 +27,89 @@ body {
     max-width: 800px;
     text-align: center
 }
+
+.logged-in {
+    display: inline-block;
+    margin-top: 30px;
+    padding: 10px 15px;
+    background-color: #28a745;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.add-product-link:hover {
+    background-color: #1e7e34;
+}
+
+.logged-out {
+    display: inline-block;
+    margin-top: 30px;
+    padding: 10px 15px;
+    background-color: #6c757d;
+    color: #e9ecef;
+    text-decoration: none;
+    border-radius: 4px;
+    cursor: default;
+}
+
+.product-card {
+    display: flex;
+    gap: 15px;
+    padding: 15px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    background-color: white;
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.product-image {
+    width: 180px;
+    height: 180px;
+    object-fit: contain;
+    border-radius: 4px;
+    border: 1px solid #e9ecef;
+}
+
+.product-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.add-product-link {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #28a745;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.add-product-link:hover {
+    background-color: #1e7e34;
+}
+
+.header-right .logged-out,
+.header-right .logged-in {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+}
+
+.login-button,
+.logout-button,
+.header-right .login-link {
+    height: 38px;
+    padding: 8px 12px;
+}
+
+.page-title {
+    font-size: 2.2em;
+    font-weight: bold;
+    border-bottom: none;
+    margin: 0;
+}

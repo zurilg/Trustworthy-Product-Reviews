@@ -15,7 +15,7 @@ import org.trustworthyreviews.web.validation.LoginDTO;
  * UserApi = REST controller for the website's users
  * GET /api/user/login: attempt to log in to a user's account and get their info
  *
- * @version 11-03-2025
+ * @version 11-17-2025
  */
 @RestController
 @RequestMapping ("/api/user")

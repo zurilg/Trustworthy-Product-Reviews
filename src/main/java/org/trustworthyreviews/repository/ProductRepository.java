@@ -15,7 +15,7 @@ import java.util.UUID;
 /**
  * The ProductRepository interface for managing Product entities.
  *
- * @version 11-03-2025
+ * @version 11-17-2025
  */
 @Repository
 public interface ProductRepository extends JpaRepository<Product, UUID>, JpaSpecificationExecutor<Product> {

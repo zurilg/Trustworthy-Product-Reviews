@@ -10,14 +10,24 @@ import java.util.List;
 import java.util.UUID;
 
 
+/**
+ * Service for sorting reviews based on relevance to a specific user.
+ *
+ * @version 11-17-2025
+ */
 @Service
 public class ReviewSortingService {
-
     // Can @Autowired a JaccardService or FollowingService here
     // For now, I'm keeping them nullable.
     private final JaccardDistanceProvider jaccardProvider;
     private final FollowingProvider followingProvider;
 
+    /**
+     * The constructor for ReviewSortingService.
+     *
+     * @param jaccardProvider The Jaccard distance provider
+     * @param followingProvider The following relationship provider
+     */
     public ReviewSortingService(
             JaccardDistanceProvider jaccardProvider,
             FollowingProvider followingProvider
@@ -28,6 +38,9 @@ public class ReviewSortingService {
 
     /**
      * Sorts reviews to be tailored to a specific logged-in user.
+     *
+     * @param reviews The list of reviews to sort
+     * @param currentUser The current logged-in user
      */
     public List<Review> sortReviews(List<Review> reviews, User currentUser) {
 
@@ -50,6 +63,9 @@ public class ReviewSortingService {
 
     /**
      * Computes a relevance score per review.
+     *
+     * @param r The review to score
+     * @param currentUser The current logged-in user
      */
     private double score(Review r, User currentUser) {
         double score = 0.0;

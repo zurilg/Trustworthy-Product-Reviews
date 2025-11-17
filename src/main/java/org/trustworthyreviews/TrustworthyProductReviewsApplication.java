@@ -79,6 +79,13 @@ public class TrustworthyProductReviewsApplication {
         };
     }
 
+    /**
+     * Loads CSV data from a file in the classpath.
+     *
+     * @param fileName The CSV file name to load data from
+     * @return A list of string arrays representing the CSV data
+     * @throws IOException If an I/O error occurs
+     */
     private List<String[]> loadCsvData(String fileName) throws IOException {
         List<String[]> data = new ArrayList<>();
         ClassPathResource resource = new ClassPathResource("data/" + fileName);

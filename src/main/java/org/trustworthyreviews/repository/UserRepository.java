@@ -11,7 +11,7 @@ import java.util.UUID;
 /**
  * The UserRepository interface for managing User entities.
  *
- * @version 11-03-2025
+ * @version 11-17-2025
  */
 @Repository
 public interface UserRepository extends JpaRepository<User, UUID>, JpaSpecificationExecutor<User> {

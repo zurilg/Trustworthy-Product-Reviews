@@ -13,7 +13,7 @@ import java.util.UUID;
 /**
  * The ReviewRepository interface for managing Review entities.
  *
- * @version 11-03-2025
+ * @version 11-17-2025
  */
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, UUID>, JpaSpecificationExecutor<Review> {

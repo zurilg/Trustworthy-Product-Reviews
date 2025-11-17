@@ -13,12 +13,13 @@ import org.trustworthyreviews.service.ReviewSortingService;
 import org.trustworthyreviews.service.UserRelationshipService;
 
 import java.time.Instant;
-import java.util.*;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Front controller for handling web requests.
  *
- * @version 11-03-2025
+ * @version 11-17-2025
  */
 @Controller
 public class FrontController {
@@ -27,6 +28,7 @@ public class FrontController {
     private final ReviewRepository reviewRepository;
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final UserRepository userRepository;
     private final ReviewSortingService sortingService;
     private final FollowService followService;
     private final UserRelationshipService userRelationshipService;
@@ -42,18 +44,22 @@ public class FrontController {
     public FrontController(ReviewRepository reviewRepository,
                            ProductRepository productRepository,
                            CategoryRepository categoryRepository,
+                           UserRepository userRepository,
                            ReviewSortingService sortingService,
                            FollowService followService,
                            UserRelationshipService userRelationshipService,
                            CurrentUserService currentUserService) {
+
         this.reviewRepository = reviewRepository;
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
+        this.userRepository = userRepository;
         this.sortingService = sortingService;
         this.followService = followService;
         this.userRelationshipService = userRelationshipService;
         this.currentUserService = currentUserService;
     }
+
 
     /**
      * The home page handler.
@@ -62,12 +68,16 @@ public class FrontController {
      * @return The name of the view to be rendered.
      */
     @GetMapping("/")
-    public String home(@RequestParam(required = false) String product_search,
-                       @RequestParam(required = false) String category_name,
-                       HttpSession session,
+    public String home(@RequestParam(required = false) String category_name,
+                       @RequestParam(required = false) String sort,
+                       @CookieValue(name = "loggedInUser", required = false) UUID loggedInUser,
                        Model model) {
 
-        User currentUser = currentUserService.getCurrentUser(session);
+
+        User currentUser = null;
+        if (loggedInUser != null) {
+            currentUser = userRepository.findById(loggedInUser).orElse(null);
+        }
 
         List<Product> products;
 
@@ -133,7 +143,7 @@ public class FrontController {
     @GetMapping("/product/{productId}")
     public String product(
             @PathVariable("productId") UUID productId,
-            HttpSession session,
+            @CookieValue(name = "loggedin-uuid", required = false) UUID loggedInUser,
             Model model) {
 
         Product p = productRepository.findById(productId).orElse(null);
@@ -141,16 +151,21 @@ public class FrontController {
             return "redirect:/";
         }
 
-        User currentUser = currentUserService.getCurrentUser(session);
-
         model.addAttribute("searchParams", "");
         model.addAttribute("currentCategory", p.getCategory().getName());
         model.addAttribute("categories", categoryRepository.findAll());
 
         model.addAttribute("product", p);
-        model.addAttribute("currentUser", currentUser);
 
         // If we have a logged-in user add them to the model
+        User currentUser =  null;
+        if (loggedInUser != null) {
+            currentUser = userRepository.findById(loggedInUser).orElse(null);
+        }
+        model.addAttribute("currentUser", currentUser);
+
+        //model.addAttribute("reviews", p.getReviews());
+
         List<Review> sorted = sortingService.sortReviews(p.getReviews(), currentUser);
         model.addAttribute("reviews", sorted);
 
@@ -176,8 +191,8 @@ public class FrontController {
         // If the user has a review add it to the model
         Review currentReview = null;
         boolean hasReview = false;
-        if(currentUser != null) {
-            List<Review> reviews = reviewRepository.findByAuthorId(currentUser.getId());
+        if(loggedInUser != null) {
+            List<Review> reviews = reviewRepository.findByAuthorId(loggedInUser);
             for(Review review : reviews) {
                 if(review.getProduct().getId().equals(productId)) {
                     currentReview = review;
@@ -185,7 +200,7 @@ public class FrontController {
                 }
             }
         }
-        if(currentReview == null && currentUser != null) {
+        if(currentReview == null && loggedInUser != null) {
             // If there is no current review by the user then provide a blank one
             currentReview = new Review(p, currentUser, Instant.now());
             currentReview.setRating(2);

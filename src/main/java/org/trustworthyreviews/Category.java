@@ -6,6 +6,11 @@ import jakarta.persistence.Id;
 
 import java.util.UUID;
 
+/**
+ * The Category entity represents a product category in the Trustworthy Reviews system.
+ *
+ * @version 11-17-2025
+ */
 @Entity
 public class Category {
     @Id

@@ -9,7 +9,7 @@ import java.util.UUID;
  * Only IDs of related entities (productId, authorId), not the entities themselves.
  * Constructed in the service by mapping from a Review entity (see toModel()).
  *
- * @version 11-03-2025
+ * @version 11-17-2025
  */
 public class ReviewModel {
     private final UUID id;

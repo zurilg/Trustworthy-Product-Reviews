@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 /**
  * The Product entity represents a product in the Trustworthy Reviews system.
  *
- * @version 11-03-2025
+ * @version 11-17-2025
  */
 @Entity
 public class Product {

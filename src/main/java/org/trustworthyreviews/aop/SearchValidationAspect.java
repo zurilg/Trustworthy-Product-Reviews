@@ -5,10 +5,20 @@ import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
 import org.trustworthyreviews.exception.IllegalSearchException;
 
+/**
+ * AOP Aspect for validating search parameters before executing the home method.
+ * This ensures that search queries meet the required criteria.
+ *
+ * @version 11-17-2025
+ */
 @Component
 @Aspect
 public class SearchValidationAspect {
-    // Validate search parameter before executing home method when search parameter is present
+    /**
+     * Validate search parameter before executing home method when search parameter is present.
+     *
+     * @param search The search string to be validated.
+     */
     @Before("execution(* org.trustworthyreviews.FrontController.home(..)) && args(search, ..)")
     public void validateSearch(String search) {
         /* Our search validation logic will validate the following:
@@ -25,6 +35,5 @@ public class SearchValidationAspect {
                 throw new IllegalSearchException("Search cannot contain more than 15 words.");
             }
         }
-
     }
 }
