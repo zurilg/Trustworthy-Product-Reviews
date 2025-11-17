@@ -21,53 +21,67 @@ A web application developed for SYSC4806 that allows users to share their review
 
 ---
 
-### State of the Project: 
-The project is currently in the early prototype stage, with several key use cases implemented. The current state of the project attempts to best adhere to the expectations of *Milestone 1: Early prototype*:
+### State of the Project:
+The project is currently in the alpha release stage. It is somewhat use-able, providing users with multiple functionalities. Although, it is not yet feature-complete. The current state of the project attempts to best adhere to the expectations of *Milestone 2: Alpha Release*.
+The previous milestone has been successfully completed.
+
+**Work products delivered for *Milestone 1*:**
 - **GitHub Repository Setup:** [Link to Repository](https://github.com/zurilg/Trustworthy-Product-Reviews)
 - **Continuous Integration/Deployment (CI/CD):** Workflow is automated via GiHub Actions. Running Java CI with Maven. CD to Azure with each push to the main branch.
 - **Ready to Run:** `pom.xml` configured to package and run the Spring Boot application.
 - **Kanban Board:** Created using GitHub Projects to track tasks and progress.
 - **Scrum Meetings**: Weekly meetings held to discuss progress and next steps. Issues on GitHub used to communicate scrums.
-- **UML Class Diagram:** Created to represent core entities and relationships.
+- **UML Class Diagram:** Created to represent core entities and relationships. [Milestone_1-UML_Class_Diagram.png](https://github.com/zurilg/Trustworthy-Product-Reviews/tree/main/documentation/UML/Milestone_1-UML_Class_Diagram.png)
+- **Key Relationships:**
 
-Key use cases for *Milestone 1*:
-- Users can view a list of all products from the home page (root path `/`).
-- Users can select a product to view its details, category, and associated reviews on its dedicated product page (`/product/{UUID}`).
-- The product page successfully displays the product's average rating and number of reviews.
+  | Entity | Relationship | Type        | Multiplicity                           |
+     |:-------|:-------------|:------------|:---------------------------------------|
+  | Review | Product      | Many-to-One | 0..* reviews associated with 1 product |
+  | Review | User         | Many-to-One | 0..* reviews written by 1 user          |
+- **Key use cases for *Milestone 1*:**
+    - Users can view a list of all products from the home page (root path `/`).
+    - Users can select a product to view its details, category, and associated reviews on its dedicated product page (`/product/{UUID}`).
+    - The product page successfully displays the product's average rating and number of reviews.
 
+**Work products delivered for *Milestone 2*:**
+- **UML Class Diagram:** Updated to reflect any changes in core entities and relationships. [Milestone_2-UML_Class_Diagram.png](https://github.com/zurilg/Trustworthy-Product-Reviews/tree/main/documentation/UML/Milestone_2-UML_Class_Diagram.png)
+- **Key Relationships:**
+
+  | Entity  | Relationship | Type        | Multiplicity                                   |
+     |:--------|:-------------|:------------|:-----------------------------------------------|
+  | Review  | Product      | Many-to-One | 0..* reviews associated with 1 product         |
+  | Review  | User         | Many-to-One | 0..* reviews written by 1 user                 |
+  | Product | Category     | Many-to-One | 0..* products associated with 1 category       |
+    | User    | Follow       | One-to-Many | 1 user can have 0..* followers or 0..* follows |
+- **Features Implemented for *Milestone 2*:**
+    - User login functionality allowing users to log in using their username.
+    - Following system enabling users to follow other users.
+    - Posting reviews functionality for logged-in users.
+    - Product addition feature allowing logged-in users to add new products.
+    - Category browsing feature enabling users to view products within specific categories.
+    - Jaccard distance calculation between users.
+    - Degree of separation calculation between users.
+    - User searching features based on Jaccard distance and most-followed users.
+    - Advanced sorting of reviews tailored to logged-in users on both product browsing and product pages.
+    - Product search functionality.
+    - AOP logging, caching, exception handling, and validation have been integrated throughout the application to enhance performance and reliability.
 ---
 
 ### UML Class Diagram:
-This diagram represents the core entities (`Product`, `Review`, `User`) and their relationships.
+This diagram represents the core entities (`Product`, `Review`, `User`, `Category`) and their relationships.
 
-![alt text](https://github.com/zurilg/Trustworthy-Product-Reviews/blob/main/documentation/UML/Milestone_1-UML_Class_Diagram.png?raw=true "Class Diagram")
+![alt text](https://github.com/zurilg/Trustworthy-Product-Reviews/blob/main/documentation/UML/Milestone_2-UML_Class_Diagram.png?raw=true "Class Diagram")
 
-**Key Relationships:**
 
-| Entity | Relationship | Type        | Multiplicity                           |
-|:-------|:-------------|:------------|:---------------------------------------|
-| Review | Product      | Many-to-One | 0..* reviews associated with 1 product |
-| Review | User         | Many-to-One | 0..* reviews written by 1 user          |
-
-**View Full Diagram (PNG):** [Milestone_1-UML_Class_Diagram.png](https://github.com/zurilg/Trustworthy-Product-Reviews/tree/main/documentation/UML/Milestone_1-UML_Class_Diagram.png)
-
-**Download Source (Draw.io):** [Milestone_1-UML_Class_Diagram.drawio](https://github.com/zurilg/Trustworthy-Product-Reviews/tree/main/documentation/UML/Milestone_1-UML_Class_Diagram.drawio)
 
 ---
 
-### Brainstorming Goals for Next Sprint (*Milestone 2*)
-- User login: allow users to login to their account and edit their account details.
-- Following: allow logged in user to follow other users.
-- Posting reviews: allow logged-in user to post product reviews.
-- Product Addition: allow a logged-in user to add a new product to the website.
-- Categories: allow a logged-in user to view all products within a specific category.
-- Jaccard Distance: a logged-in user should be able to view the Jaccard distance between themselves and other users.
-- Degree of Separation: a logged-in user should be able to view the degree of separation between themselves and other users.
-- User Searching 1: allows a logged-in user to find friends (other users) by viewing a list of users sorted by the Jaccard distance between themselves and the user.
-- User Searching 2: allows a logged-in user to find friends (other users) by viewing a list of most-followed users.
-- Advanced Sorting 1: have reviews on the product browsing page be sorted and tailored to the logged-in user.
-- Advanced Sorting 2: have the reviews on a product's page be sorted and tailored to the logged-in user.
-- Add Searching: allow a user to search for a product.
+### Brainstorming Goals for Next Sprint (*Milestone 3*)
+- Allow users to register a new account.
+- Have jaccard distance show next to usernames.
+- Have user's jaccard distance and dos display reactively after following.
+- Improve the look of the home page.
+- Improve the look of the similar users + most followed users pages.
 
 ---
 
