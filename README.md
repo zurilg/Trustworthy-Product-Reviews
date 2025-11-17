@@ -40,7 +40,7 @@ Key use cases for *Milestone 1*:
 ### UML Class Diagram:
 This diagram represents the core entities (`Product`, `Review`, `User`) and their relationships.
 
-![alt text](https://github.com/zurilg/Trustworthy-Product-Reviews/blob/testing-documentation/documentation/UML/Milestone_1-UML_Class_Diagram.png "Class Diagram")
+![alt text](https://github.com/zurilg/Trustworthy-Product-Reviews/blob/main/documentation/UML/Milestone_1-UML_Class_Diagram.png?raw=true "Class Diagram")
 
 **Key Relationships:**
 
@@ -49,9 +49,9 @@ This diagram represents the core entities (`Product`, `Review`, `User`) and thei
 | Review | Product      | Many-to-One | 0..* reviews associated with 1 product |
 | Review | User         | Many-to-One | 0..* reviews written by 1 user          |
 
-**View Full Diagram (PNG):** [Milestone_1-UML_Class_Diagram.png](https://github.com/zurilg/Trustworthy-Product-Reviews/blob/testing-documentation/documentation/UML/Milestone_1-UML_Class_Diagram.png)
+**View Full Diagram (PNG):** [Milestone_1-UML_Class_Diagram.png](https://github.com/zurilg/Trustworthy-Product-Reviews/tree/main/documentation/UML/Milestone_1-UML_Class_Diagram.png)
 
-**Download Source (Draw.io):** [Milestone_1-UML_Class_Diagram.drawio](https://github.com/zurilg/Trustworthy-Product-Reviews/blob/testing-documentation/documentation/UML/Milestone_1-UML_Class_Diagram.drawio)
+**Download Source (Draw.io):** [Milestone_1-UML_Class_Diagram.drawio](https://github.com/zurilg/Trustworthy-Product-Reviews/tree/main/documentation/UML/Milestone_1-UML_Class_Diagram.drawio)
 
 ---
 
