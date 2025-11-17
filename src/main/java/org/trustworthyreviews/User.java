@@ -21,6 +21,7 @@ public class User {
     private String userName;
     private String displayName;
     private String email;
+    private boolean trustedReviewer = true;
 
     /**
      * Empty constructor for JPA
@@ -38,6 +39,7 @@ public class User {
         this.userName = userName;
         this.displayName = displayName;
         this.email = email;
+        this.trustedReviewer = true;
     }
 
     /**
@@ -128,5 +130,13 @@ public class User {
      */
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public boolean isTrustedReviewer() {
+        return trustedReviewer;
+    }
+
+    public void setTrustedReviewer(boolean trustedReviewer) {
+        this.trustedReviewer = trustedReviewer;
     }
 }

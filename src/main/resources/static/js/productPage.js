@@ -21,7 +21,6 @@ function starboxRecalculate(starbox, stars) {
 function postReview() {
     // Get the info for the post request
     let productId = $(".review-data").data("productid")
-    let authorId = Cookies.get("loggedin-uuid")
     let rating = $(".rating-controls > .star-box").attr("data-stars")
     let content = $("#rating-text").val()
     $.ajax({
@@ -29,7 +28,6 @@ function postReview() {
         url: window.location.protocol + "//" + window.location.host + "/api/reviews",
         data: {
             productId: productId,
-            authorId: authorId,
             rating: rating,
             content: content
         },

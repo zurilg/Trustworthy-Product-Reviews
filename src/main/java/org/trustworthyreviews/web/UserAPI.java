@@ -1,9 +1,14 @@
 package org.trustworthyreviews.web;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import org.trustworthyreviews.User;
 import org.trustworthyreviews.repository.UserRepository;
+import org.trustworthyreviews.service.CurrentUserService;
 import org.trustworthyreviews.web.validation.LoginDTO;
 
 /**
@@ -15,10 +20,12 @@ import org.trustworthyreviews.web.validation.LoginDTO;
 @RestController
 @RequestMapping ("/api/user")
 public class UserAPI {
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final CurrentUserService currentUserService;
 
-    public UserAPI(UserRepository userRepository) {
+    public UserAPI(UserRepository userRepository, CurrentUserService currentUserService) {
         this.userRepository = userRepository;
+        this.currentUserService = currentUserService;
     }
 
     /**
@@ -26,19 +33,29 @@ public class UserAPI {
      * @param loginDTO The DTO containing a username
      * @return The User object of the logged-in user
      */
-    @GetMapping("/login")
-    public User login(@Valid LoginDTO loginDTO) {
-        // Get the data from the DTO
+    @PostMapping("/login")
+    public User login(@Valid @RequestBody LoginDTO loginDTO, HttpSession session) {
         String username = loginDTO.getUsername();
-        // Check if the user is not in the database
-        if(userRepository.findByUserName(username).isEmpty()) {
-            // Return an error
-            throw new IllegalArgumentException("User not found");
-        }
-        // Return the object
-        User u = userRepository.findByUserName(username).get();
-        u.setReviews(null);
-        return u;
+        User user = userRepository.findByUserName(username)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+        currentUserService.loginUser(session, user);
+        user.setReviews(null);
+        return user;
     }
 
+    @GetMapping("/current")
+    public ResponseEntity<User> current(HttpSession session) {
+        User user = currentUserService.getCurrentUser(session);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        user.setReviews(null);
+        return ResponseEntity.ok(user);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(HttpSession session) {
+        currentUserService.logout(session);
+        return ResponseEntity.ok().build();
+    }
 }

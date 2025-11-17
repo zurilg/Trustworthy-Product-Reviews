@@ -21,6 +21,13 @@
             <a th:text="${product.getName()}" th:href="${'/product/' + product.getId().toString()}"></a>
         </div>
         <a th:href="@{/addProduct}" style="display:block; margin-top:20px;">Add a Product</a>
+        <div th:if="${currentUser}" style="margin-top: 20px;">
+            <p>Discover other reviewers:</p>
+            <ul>
+                <li><a th:href="@{/users/similar}">Find similar users (Jaccard distance)</a></li>
+                <li><a th:href="@{/users/most-followed}">See most-followed reviewers</a></li>
+            </ul>
+        </div>
     </div>
 
 </article>
