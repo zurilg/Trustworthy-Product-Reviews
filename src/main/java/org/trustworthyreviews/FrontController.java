@@ -86,7 +86,7 @@ public class FrontController {
         // If there is a category selected, but no search query
         else if (!hasSearch && hasCategory) {
             products = productRepository.findByCategory(currentCategory);
-            //model.addAttribute("products", products);
+            model.addAttribute("products", products); // was commented out now restored
             for (Product prod : products) {
                 List<Review> sorted = sortingService.sortReviews(prod.getReviews(), currentUser);
                 if (!sorted.isEmpty()) {
