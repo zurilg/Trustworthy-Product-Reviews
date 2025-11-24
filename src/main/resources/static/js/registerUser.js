@@ -27,8 +27,13 @@ $(() => {
                 welcome.children().eq(0).text("Welcome, " + data.displayName + "!")
             },
             error: (jqXHR) => {
+                if(jqXHR.responseJSON.errors === undefined) {
+                let e = $(".register-form #email-error")
+                    e.text(jqXHR.responseJSON.message)
+                    e.show()
+                    return
+                }
                 jqXHR.responseJSON.errors.forEach((error) => {
-                    console.log(error)
                     let e = null;
                     if (error.field === "displayName") e = $(".register-form #displayname-error")
                     else if (error.field === "username") e = $(".register-form #username-error")

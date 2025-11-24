@@ -50,6 +50,10 @@ public class UserAPI {
         if(userRepository.findByUserName(username).isPresent()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username is already taken");
         }
+        String email = registerDTO.getEmail();
+        if(userRepository.findByEmail(email).isPresent()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email is already taken");
+        }
 
         User user = new User(registerDTO.getUsername(), registerDTO.getDisplayName(), registerDTO.getEmail());
         userRepository.save(user);
