@@ -11,30 +11,22 @@
 
     <h2>Register a New User</h2>
     <form class="register-form" action="#">
-        <table>
-            <tr>
-                <td>Display Name:</td>
-                <td><input type="text" name="displayname" id="displayname"/></td>
-                <td id="displayname-error">Name Error</td>
-            </tr>
-            <tr>
-                <td>Username:</td>
-                <td><input type="text" name="username" id="username"/></td>
-                <td id="username-error">Name Error</td>
-            </tr>
-            <tr>
-                <td>Email:</td>
-                <td><input type="text" name="email" id="email"/></td>
-                <td id="email-error">Name Error</td>
-            </tr>
-            <tr>
-                <td>
-                    <button type="submit" value="Submit">Register</button>
-                    <div></div>
-                    <button type="reset">Reset</button>
-                </td>
-            </tr>
-        </table>
+        <label for="displayname">Display Name:</label>
+        <input type="text" name="displayname" id="displayname"/>
+        <p class="error-message" id="displayname-error">Name Error</p>
+        <label for="username">Username:</label>
+        <input type="text" name="username" id="username"/>
+        <p class="error-message" id="username-error">Name Error</p>
+        <label for="email">Email:</label>
+        <input type="text" name="username" id="email"/>
+        <p class="error-message" id="email-error">Email Error</p>
+        <button type="submit" value="Submit">Register</button>
+        <button type="reset">Reset</button>
+
+        <div class="welcome-message" style="display: none">
+            <p>Welcome, Name!</p>
+            <p>Please log in using the button on the right of the header.</p>
+        </div>
     </form>
 </article>
 </body>

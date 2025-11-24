@@ -1,6 +1,11 @@
 $(() => {
+    // Hide the error messages
+    $(".error-message").hide();
+
     // Add a listener to the form submission
     $(".register-form").submit((event) => {
+        // Hide the error messages
+        $(".error-message").hide();
         // Prevent default
         event.preventDefault()
 
@@ -17,10 +22,24 @@ $(() => {
             data: JSON.stringify({displayName: displayName, username: username, email: email}),
             dataType: "json",
             success: (data) => {
-                console.log("registered")
+                let welcome = $(".register-form .welcome-message")
+                welcome.show()
+                welcome.children().eq(0).text("Welcome, " + data.displayName + "!")
             },
-            error: () => {
-                console.log("error")
+            error: (jqXHR) => {
+                jqXHR.responseJSON.errors.forEach((error) => {
+                    console.log(error)
+                    let e = null;
+                    if (error.field === "displayName") e = $(".register-form #displayname-error")
+                    else if (error.field === "username") e = $(".register-form #username-error")
+                    else if (error.field === "email") e = $(".register-form #email-error")
+
+                    if (e !== null) {
+                        e.text(error.defaultMessage)
+                        e.show()
+                    }
+
+                })
             }
         })
     })
