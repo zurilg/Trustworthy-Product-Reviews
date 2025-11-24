@@ -75,7 +75,7 @@ public class ReviewSortingService {
         score += Math.max(0, (1_000_000.0 / (ageSeconds + 1)));
 
         // 2. Rating bonus
-        score += r.getRating() * 10;
+        score += r.getRating() * 500000;
 
         // 3. Similarity
         if (jaccardProvider != null) {
