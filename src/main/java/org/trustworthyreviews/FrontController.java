@@ -12,6 +12,7 @@ import org.trustworthyreviews.service.CurrentUserService;
 import org.trustworthyreviews.service.FollowService;
 import org.trustworthyreviews.service.ReviewSortingService;
 import org.trustworthyreviews.service.UserRelationshipService;
+import org.trustworthyreviews.web.validation.RegisterDTO;
 
 import java.time.Instant;
 import java.util.Collections;
@@ -211,6 +212,13 @@ public class FrontController {
         // Return the thymeleaf template
         return "pages/product";
     }
+
+    @GetMapping("registerUser")
+    public String userRegistration() {
+        return "pages/registerUser";
+    }
+
+
 
     /**
      * The add product page

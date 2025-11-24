@@ -10,6 +10,7 @@ import org.trustworthyreviews.User;
 import org.trustworthyreviews.repository.UserRepository;
 import org.trustworthyreviews.service.CurrentUserService;
 import org.trustworthyreviews.web.validation.LoginDTO;
+import org.trustworthyreviews.web.validation.RegisterDTO;
 
 /**
  * UserApi = REST controller for the website's users
@@ -41,6 +42,18 @@ public class UserAPI {
         currentUserService.loginUser(session, user);
         user.setReviews(null);
         return user;
+    }
+
+    @PostMapping("register")
+    public ResponseEntity<User> register(@Valid @RequestBody RegisterDTO registerDTO) {
+        String username = registerDTO.getUsername();
+        if(userRepository.findByUserName(username).isPresent()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username is already taken");
+        }
+
+        User user = new User(registerDTO.getUsername(), registerDTO.getDisplayName(), registerDTO.getEmail());
+        userRepository.save(user);
+        return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
     @GetMapping("/current")
