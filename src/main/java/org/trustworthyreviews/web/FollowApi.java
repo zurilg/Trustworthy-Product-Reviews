@@ -43,7 +43,7 @@ public class FollowApi {
         if (followee == null || followee.getId().equals(follower.getId())) {
             return errorResponse("User not found");
         }
-        followService.follow(follower, followee);
+        followService.follow(follower.getId(), followee.getId());
         return okResponse(true);
     }
 

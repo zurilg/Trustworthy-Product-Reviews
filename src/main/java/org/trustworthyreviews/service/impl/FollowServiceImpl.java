@@ -24,6 +24,16 @@ public class FollowServiceImpl implements FollowService {
     }
 
     @Override
+    public void follow(UUID followerId, UUID followeeId) {
+        if (followerId == null || followeeId == null) {
+            return;
+        }
+        User follower = userRepository.findById(followerId).orElse(null);
+        User followee = userRepository.findById(followeeId).orElse(null);
+        follow(follower, followee);
+    }
+
+    @Override
     public void follow(User follower, User followee) {
         if (!isValidUsers(follower, followee) || isFollowing(follower, followee)) {
             return;
