@@ -116,6 +116,34 @@
 
     <hr class="separator"/>
 
+    <section th:if="${isCurrentUser}" class="recommended-friends-section">
+        <h3 class="section-heading">Users You May Want to Follow</h3>
+        <p class="text-muted">Suggestions are ordered by how closely connected you are in the follow graph.</p>
+
+        <div th:if="${#lists.isEmpty(recommendedUsers)}" class="no-relationships">
+            <p>No recommendations yet.</p>
+        </div>
+
+        <div th:unless="${#lists.isEmpty(recommendedUsers)}" class="recommendation-list">
+            <div th:each="suggestedUser : ${recommendedUsers}" class="user-card">
+                <a th:href="@{/profile/{userId}(userId=${suggestedUser.id})}" class="username-link">
+                    <span th:text="${suggestedUser.displayName}">Display Name</span>
+                </a>
+                <p class="text-muted" th:text="'@' + ${suggestedUser.userName}">@username</p>
+                <p class="text-muted">
+                    <span th:if="${recommendedDistances[suggestedUser.id] != null}"
+                          th:text="${recommendedDistances[suggestedUser.id]} + ' connection(s) away via follows'">1 connection away</span>
+                </p>
+                <form th:action="@{/api/follow}" method="post">
+                    <input type="hidden" name="followeeId" th:value="${suggestedUser.id}" />
+                    <button type="submit" class="follow-button btn-small">Follow</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <hr class="separator"/>
+
     <section class="user-reviews">
         <h3 class="section-heading">Reviews Posted (<span th:text="${reviews.size()}">0</span>)</h3>
 
@@ -147,33 +175,6 @@
     </section>
 
     <hr class="separator"/>
-
-    <section th:if="${!#lists.isEmpty(userSimilarities) && isCurrentUser}" class="recommended-friends-section">
-        <h3 class="section-heading">Suggested Profiles</h3>
-        <p class="text-muted">Unfollowed users are ranked based on their similarity in product reviews.</p>
-        <p class="text-muted">Assuming that set A is the set of products that the logged-in user has reviewed and set B is
-        the set of products that the suggested unfollowed profile has reviewed:</p>
-        <p class="text-muted">Review Similarity = (|A ∩ B| / |A ∪ B|) × 100%</p>
-
-        <div class="recommendation-list">
-            <div th:each="view : ${userSimilarities}" class="user-card">
-
-                <a th:href="@{/profile/{userId}(userId=${view.user().id})}" class="username-link">
-                    <span th:text="${view.user().displayName}">@displayName</span>
-                </a>
-
-                <p>Review Similarity:
-                    <span class="similarity-score" th:text="${#numbers.formatDecimal((1.0 - view.distance()) * 100, 1, 2)}">0.00</span>
-                %</p>
-
-                <form th:action="@{/api/follow}" method="post">
-                    <input type="hidden" name="followeeId" th:value="${view.user().id}" />
-                    <button type="submit" class="follow-button">Follow</button>
-                </form>
-
-            </div>
-        </div>
-    </section>
 
 </main>
 </body>

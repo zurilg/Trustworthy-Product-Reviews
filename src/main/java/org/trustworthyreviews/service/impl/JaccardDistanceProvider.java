@@ -2,7 +2,6 @@ package org.trustworthyreviews.service.impl;
 
 import org.springframework.stereotype.Service;
 import org.trustworthyreviews.Follow;
-import org.trustworthyreviews.Review;
 import org.trustworthyreviews.User;
 import org.trustworthyreviews.repository.FollowRepository;
 import org.trustworthyreviews.repository.ReviewRepository;
@@ -38,6 +37,11 @@ public class JaccardDistanceProvider implements ReviewSortingService.JaccardDist
     }
 
     @Override
+    public double distance(Set<UUID> a, Set<UUID> b) {
+        return jaccardDistance(a, b);
+    }
+
+    @Override
     public double getJaccardDistance(User a, User b) {
         if (a == null || b == null) {
             return 1.0;
@@ -49,18 +53,7 @@ public class JaccardDistanceProvider implements ReviewSortingService.JaccardDist
         Set<UUID> aProducts = reviewedProducts(a);
         Set<UUID> bProducts = reviewedProducts(b);
 
-        if (aProducts.isEmpty() && bProducts.isEmpty()) {
-            return 0.0;
-        }
-
-        Set<UUID> intersection = new HashSet<>(aProducts);
-        intersection.retainAll(bProducts);
-
-        Set<UUID> union = new HashSet<>(aProducts);
-        union.addAll(bProducts);
-
-        double similarity = union.isEmpty() ? 0.0 : (double) intersection.size() / union.size();
-        return 1.0 - similarity;
+        return jaccardDistance(aProducts, bProducts);
     }
 
     @Override
@@ -101,14 +94,31 @@ public class JaccardDistanceProvider implements ReviewSortingService.JaccardDist
         if (user == null || user.getId() == null) {
             return Collections.emptySet();
         }
-        List<Review> reviews = reviewRepository.findByAuthorId(user.getId());
-        Set<UUID> productIds = new HashSet<>();
-        for (Review review : reviews) {
-            if (review.getProduct() != null && review.getProduct().getId() != null) {
-                productIds.add(review.getProduct().getId());
-            }
+        return reviewRepository.findDistinctProductIdsReviewedByUser(user);
+    }
+
+    public double jaccardDistance(Set<UUID> a, Set<UUID> b) {
+        Set<UUID> first = a != null ? a : Collections.emptySet();
+        Set<UUID> second = b != null ? b : Collections.emptySet();
+
+        if (first.isEmpty() && second.isEmpty()) {
+            return 1.0;
         }
-        return productIds;
+        if (first.isEmpty() || second.isEmpty()) {
+            return 1.0;
+        }
+
+        Set<UUID> intersection = new HashSet<>(first);
+        intersection.retainAll(second);
+
+        Set<UUID> union = new HashSet<>(first);
+        union.addAll(second);
+
+        if (union.isEmpty()) {
+            return 1.0;
+        }
+        double similarity = (double) intersection.size() / union.size();
+        return 1.0 - similarity;
     }
 
     private Map<UUID, Set<UUID>> buildAdjacency() {
