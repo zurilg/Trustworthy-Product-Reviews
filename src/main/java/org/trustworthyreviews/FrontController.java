@@ -3,6 +3,7 @@ package org.trustworthyreviews;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.trustworthyreviews.model.UserSimilarityModel;
 import org.trustworthyreviews.repository.CategoryRepository;
 import jakarta.servlet.http.HttpSession;
 import org.trustworthyreviews.repository.ProductRepository;
@@ -14,12 +15,8 @@ import org.trustworthyreviews.service.ReviewSortingService;
 import org.trustworthyreviews.service.UserRelationshipService;
 
 import java.time.Instant;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Front controller for handling web requests.
@@ -132,6 +129,56 @@ public class FrontController {
         }
 
         return "pages/home";
+    }
+
+    @GetMapping("/profile/{userId}")
+    public String profile(@PathVariable UUID userId, HttpSession session, Model model) {
+        User user = userRepository.findById(userId).orElse(null);
+        User currentUser = currentUserService.getCurrentUser(session);
+        boolean isCurrentUser = currentUser != null && currentUser.getId().equals(userId);
+
+        if (user == null) {
+            return "redirect:/";
+        }
+
+        boolean isCurrentUserFollowingProfileOwner = false;
+        if (currentUser != null && !isCurrentUser) {
+            // Assuming followService.isFollowing(follower, followee) exists
+            isCurrentUserFollowingProfileOwner = followService.isFollowing(currentUser, user);
+        }
+
+        model.addAttribute("user", user);
+        model.addAttribute("currentUser", currentUser);
+        model.addAttribute("reviews", reviewRepository.findByAuthorId(userId));
+        model.addAttribute("isCurrentUser", isCurrentUser);
+        model.addAttribute("isFollowingProfileOwner", isCurrentUserFollowingProfileOwner);
+
+        List<User> followers = followService.getFollowers(user);
+        List<User> following = followService.getFollowing(user);
+
+        model.addAttribute("followers", followers);
+        model.addAttribute("following", following);
+
+        if(isCurrentUser){
+            // To show similar users for recommended follows
+            List<UserSimilarityModel> similarities = userRepository.findAll().stream().filter(u -> !u.getId().equals(userId))
+                .map(u -> new UserSimilarityModel(u, userRelationshipService.getJaccardDistance(user, u)))
+                .sorted(Comparator.comparingDouble(UserSimilarityModel::distance))
+                .toList();
+            Set<UUID> alreadyFollowingIds = followService.getFollowing(currentUser)
+                    .stream().map(User::getId).collect(Collectors.toSet());
+            List<UserSimilarityModel> filtered = similarities.stream()
+                    .filter(sim -> !alreadyFollowingIds.contains(sim.user().getId()))
+                    .limit(20)
+                    .toList();
+
+            model.addAttribute("userSimilarities", filtered);
+            model.addAttribute("categories", List.of());
+            model.addAttribute("searchParams", "");
+            model.addAttribute("currentCategory", null);
+        }
+
+        return "pages/profile";
     }
 
     /**

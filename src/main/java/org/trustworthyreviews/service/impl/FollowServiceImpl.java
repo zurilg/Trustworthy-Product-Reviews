@@ -8,6 +8,7 @@ import org.trustworthyreviews.repository.UserRepository;
 import org.trustworthyreviews.service.FollowService;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -95,5 +96,19 @@ public class FollowServiceImpl implements FollowService {
                 && follower.getId() != null
                 && followee.getId() != null
                 && !follower.getId().equals(followee.getId());
+    }
+
+    @Override
+    public List<User> getFollowers(User user) {
+        return followRepository.findByFollowee(user).stream()
+                .map(Follow::getFollower)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<User> getFollowing(User user) {
+        return followRepository.findByFollower(user).stream()
+                .map(Follow::getFollowee)
+                .collect(Collectors.toList());
     }
 }
