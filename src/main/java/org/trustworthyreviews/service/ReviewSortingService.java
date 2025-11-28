@@ -3,11 +3,10 @@ package org.trustworthyreviews.service;
 import org.springframework.stereotype.Service;
 import org.trustworthyreviews.Review;
 import org.trustworthyreviews.User;
+import org.trustworthyreviews.repository.ReviewRepository;
 
 import java.time.Instant;
-import java.util.Comparator;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 
 /**
@@ -21,6 +20,8 @@ public class ReviewSortingService {
     // For now, I'm keeping them nullable.
     private final JaccardDistanceProvider jaccardProvider;
     private final FollowingProvider followingProvider;
+    private final ReviewRepository reviewRepository;
+    private static final Comparator<Instant> CREATED_DESC = Comparator.nullsLast(Comparator.<Instant>naturalOrder()).reversed();
 
     /**
      * The constructor for ReviewSortingService.
@@ -30,10 +31,12 @@ public class ReviewSortingService {
      */
     public ReviewSortingService(
             JaccardDistanceProvider jaccardProvider,
-            FollowingProvider followingProvider
+            FollowingProvider followingProvider,
+            ReviewRepository reviewRepository
     ) {
         this.jaccardProvider = jaccardProvider;
         this.followingProvider = followingProvider;
+        this.reviewRepository = reviewRepository;
     }
 
     /**
@@ -43,22 +46,85 @@ public class ReviewSortingService {
      * @param currentUser The current logged-in user
      */
     public List<Review> sortReviews(List<Review> reviews, User currentUser) {
+        return sortReviews(reviews, currentUser, ReviewSortType.DEFAULT);
+    }
 
-        if (currentUser == null) {
-            // If not logged in, default to newest-first.
-            reviews.sort(Comparator.comparing(Review::getCreatedAt).reversed());
-            return reviews;
+    public List<Review> sortReviews(List<Review> reviews, User currentUser, ReviewSortType sortType) {
+        if (reviews == null) {
+            return Collections.emptyList();
         }
+        ReviewSortType type = sortType != null ? sortType : ReviewSortType.DEFAULT;
 
+        switch (type) {
+            case NEWEST -> sortByNewest(reviews);
+            case HIGHEST_RATED -> sortByHighestRated(reviews);
+            case RELEVANT -> sortByRelevance(reviews, currentUser);
+            case DEFAULT -> sortByHybridScore(reviews, currentUser);
+            default -> sortByHybridScore(reviews, currentUser);
+        }
+        return reviews;
+    }
+
+    private void sortByNewest(List<Review> reviews) {
+        reviews.sort(Comparator.comparing(Review::getCreatedAt, CREATED_DESC));
+    }
+
+    private void sortByHighestRated(List<Review> reviews) {
+        reviews.sort(
+                Comparator.comparingInt(Review::getRating)
+                        .reversed()
+                        .thenComparing(Review::getCreatedAt, CREATED_DESC)
+        );
+    }
+
+    private void sortByHybridScore(List<Review> reviews, User currentUser) {
+        if (currentUser == null) {
+            sortByNewest(reviews);
+            return;
+        }
         reviews.sort((a, b) -> {
-
             double scoreA = score(a, currentUser);
             double scoreB = score(b, currentUser);
-
             return Double.compare(scoreB, scoreA); // descending
         });
+    }
 
-        return reviews;
+    private void sortByRelevance(List<Review> reviews, User currentUser) {
+        if (currentUser == null || currentUser.getId() == null) {
+            sortByNewest(reviews);
+            return;
+        }
+        Set<UUID> currentUserProducts = reviewedProductIds(currentUser);
+        if (currentUserProducts.isEmpty()) {
+            sortByNewest(reviews);
+            return;
+        }
+        if (jaccardProvider == null) {
+            sortByNewest(reviews);
+            return;
+        }
+
+        Map<UUID, Double> authorDistances = new HashMap<>();
+        for (Review review : reviews) {
+            User author = review.getAuthor();
+            UUID authorId = author != null ? author.getId() : null;
+            if (authorId == null) {
+                continue;
+            }
+            authorDistances.computeIfAbsent(authorId, ignored -> {
+                Set<UUID> authorProducts = reviewedProductIds(author);
+                return jaccardProvider.distance(currentUserProducts, authorProducts);
+            });
+        }
+
+        reviews.sort(
+                Comparator.comparing((Review review) -> {
+                            User author = review.getAuthor();
+                            UUID authorId = author != null ? author.getId() : null;
+                            return authorDistances.getOrDefault(authorId, 1.0);
+                        })
+                        .thenComparing(Review::getCreatedAt, CREATED_DESC)
+        );
     }
 
     /**
@@ -90,8 +156,22 @@ public class ReviewSortingService {
 
         return score;
     }
+
+    public double jaccardDistance(Set<UUID> a, Set<UUID> b) {
+        return jaccardProvider != null ? jaccardProvider.distance(a, b) : 1.0;
+    }
+
+    private Set<UUID> reviewedProductIds(User user) {
+        if (user == null) {
+            return Collections.emptySet();
+        }
+        Set<UUID> ids = reviewRepository.findDistinctProductIdsReviewedByUser(user);
+        return ids != null ? ids : Collections.emptySet();
+    }
+
     public interface JaccardDistanceProvider {
         double similarity(UUID userA, UUID userB);
+        double distance(Set<UUID> a, Set<UUID> b);
     }
 
     public interface FollowingProvider {

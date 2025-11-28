@@ -4,10 +4,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.trustworthyreviews.Review;
+import org.trustworthyreviews.User;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -49,4 +53,13 @@ public interface ReviewRepository extends JpaRepository<Review, UUID>, JpaSpecif
      * @return A list of reviews written by the specified author
      */
     List<Review> findByAuthorId(UUID authorId);
+
+    /**
+     * Distinct product IDs a user has reviewed.
+     *
+     * @param user The author
+     * @return Set of product IDs reviewed by the user
+     */
+    @Query("select distinct r.product.id from Review r where r.author = :user")
+    Set<UUID> findDistinctProductIdsReviewedByUser(@Param("user") User user);
 }

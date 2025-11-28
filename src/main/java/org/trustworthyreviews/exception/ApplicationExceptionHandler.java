@@ -1,12 +1,15 @@
 package org.trustworthyreviews.exception;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 import org.trustworthyreviews.Category;
+import org.trustworthyreviews.User;
 import org.trustworthyreviews.repository.CategoryRepository;
 import org.trustworthyreviews.repository.ProductRepository;
+import org.trustworthyreviews.service.CurrentUserService;
 
 /**
  * Centralized exception handler for the application. Handles specific exceptions and returns appropriate
@@ -19,6 +22,7 @@ import org.trustworthyreviews.repository.ProductRepository;
 public class ApplicationExceptionHandler {
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
+    private final CurrentUserService currentUserService;
 
     /**
      * The constructor for ApplicationExceptionHandler.
@@ -27,9 +31,11 @@ public class ApplicationExceptionHandler {
      * @param productRepository The product repository
      */
     @Autowired
-    public ApplicationExceptionHandler(CategoryRepository categoryRepository, ProductRepository productRepository) {
+    public ApplicationExceptionHandler(CategoryRepository categoryRepository, ProductRepository productRepository,
+                                       CurrentUserService currentUserService) {
         this.categoryRepository = categoryRepository;
         this.productRepository = productRepository;
+        this.currentUserService = currentUserService;
     }
 
     /**
@@ -39,7 +45,7 @@ public class ApplicationExceptionHandler {
      * @return The model and view for the home page with error message
      */
     @ExceptionHandler(IllegalSearchException.class)
-    public ModelAndView handleIllegalSearchException(IllegalSearchException ex) {
+    public ModelAndView handleIllegalSearchException(IllegalSearchException ex, HttpServletRequest request) {
         ModelAndView mav = new ModelAndView("pages/home");
         mav.addObject("errorMessage", ex.getMessage()); // add error message
         mav.addObject("searchParams", ""); // clear search
@@ -49,6 +55,12 @@ public class ApplicationExceptionHandler {
         mav.addObject("currentCategory", null); // Reset to showing all products
         mav.addObject("products", productRepository.findAll()); // Reset to showing all products
 
+
+        User currentUser = currentUserService.getCurrentUser(request.getSession());
+        mav.addObject("currentUser", currentUser);
+
         return mav;
     }
 }
+
+
