@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${user.displayName} + '\'s Profile'"></title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/layout.css}"/>
+    <link rel="stylesheet" th:href="@{/css/loginModal.css}"/>
+    <link rel="stylesheet" th:href="@{/css/profile.css}"/>
+
+    <script th:src="@{/js/profile-interactions.js}"></script>
+</head>
+<body>
+<main class="container profile-content">
+
+    <div class="profile-header-container">
+
+        <div class="back-button">
+            <ul>
+                <li th:if="${currentUser != null && isCurrentUser}">
+                    <a th:href="@{/}">Home Page</a>
+                </li>
+
+                <li th:if="${currentUser != null && !isCurrentUser}">
+                    <a th:href="@{/profile/{id}(id=${currentUser.id})}">← Back to My Profile</a>
+                </li>
+            </ul>
+        </div>
+
+        <h2 th:text="${user.displayName} + '\'s Profile'" class="main-header">User Profile</h2>
+
+        <span th:if="${currentUser != null && !isCurrentUser}"
+              id="profile-owner-follow-toggle"
+              th:attr="data-followee-id=${user.id}">
+
+            <span th:if="${isFollowingProfileOwner}">
+                <form th:action="@{/api/follow/unfollow}" method="post" class="top-toggle-form">
+                    <input type="hidden" name="followeeId" th:value="${user.id}" />
+                    <button type="submit" class="unfollow-button btn-large">Unfollow</button>
+                </form>
+            </span>
+
+            <span th:unless="${isFollowingProfileOwner}">
+                <form th:action="@{/api/follow}" method="post" class="top-toggle-form">
+                    <input type="hidden" name="followeeId" th:value="${user.id}" />
+                    <button type="submit" class="follow-button btn-large">Follow</button>
+                </form>
+            </span>
+        </span>
+        <div th:unless="${currentUser != null && !isCurrentUser}" class="header-placeholder"></div>
+
+    </div>
+    <hr class="separator"/>
+
+    <section class="user-details user-info-card">
+        <h3 class="section-heading">Account Details</h3>
+
+        <div class="detail-item">
+            <strong>Display Name:</strong>
+            <span th:text="${user.displayName}">user123</span>
+        </div>
+
+        <div th:if="${isCurrentUser}" class="private-details">
+            <div class="detail-item">
+                <strong>Username:</strong>
+                <span th:text="${user.userName}">user123</span>
+            </div>
+            <div class="detail-item">
+                <strong>Email:</strong>
+                <span th:text="${user.email}">user@example.com</span>
+            </div>
+        </div>
+    </section>
+
+    <hr class="separator"/>
+
+    <section class="user-relationships">
+        <div class="relationship-container">
+
+            <div class="followers-list relationship-column">
+                <h3 class="section-heading">Followers (<span th:id="followers-count" th:text="${followers.size()}">0</span>)</h3>
+                <div th:if="${followers.isEmpty()}" class="no-relationships">
+                    <p th:text="${user.displayName} + ' has no followers.'"></p>
+                </div>
+                <ul class="user-list">
+                    <li th:each="follower : ${followers}" class="list-item" th:attr="data-user-id=${follower.id}">
+                        <a th:href="@{/profile/{id}(id=${follower.id})}" th:text="${follower.displayName}">User Name</a>
+
+                    </li>
+                </ul>
+            </div>
+
+            <div class="following-list relationship-column">
+                <h3 class="section-heading">Following (<span th:id="following-count" th:text="${following.size()}">0</span>)</h3>
+
+                <div th:if="${following.isEmpty()}" id="following-no-relationships" class="no-relationships">
+                    <p th:text="${user.displayName} + ' is not following anyone.'"></p>
+                </div>
+
+                <ul class="user-list">
+                    <li th:each="followedUser : ${following}" class="list-item" th:attr="data-user-id=${followedUser.id}">
+                        <a th:href="@{/profile/{id}(id=${followedUser.id})}" th:text="${followedUser.displayName}">User Name</a>
+
+                        <span th:if="${isCurrentUser}" class="follow-action-container">
+                            <form th:action="@{/api/follow/unfollow}" method="post" class="follow-action-form">
+                                <input type="hidden" name="followeeId" th:value="${followedUser.id}" />
+                                <button type="submit" class="unfollow-button btn-small">Unfollow</button>
+                            </form>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <hr class="separator"/>
+
+    <section th:if="${isCurrentUser}" class="recommended-friends-section">
+        <h3 class="section-heading">Users You May Want to Follow</h3>
+        <p class="text-muted">Suggestions are ordered by how closely connected you are in the follow graph.</p>
+
+        <div th:if="${#lists.isEmpty(recommendedUsers)}" class="no-relationships">
+            <p>No recommendations yet.</p>
+        </div>
+
+        <div th:unless="${#lists.isEmpty(recommendedUsers)}" class="recommendation-list">
+            <div th:each="suggestedUser : ${recommendedUsers}" class="user-card">
+                <a th:href="@{/profile/{userId}(userId=${suggestedUser.id})}" class="username-link">
+                    <span th:text="${suggestedUser.displayName}">Display Name</span>
+                </a>
+                <p class="text-muted" th:text="'@' + ${suggestedUser.userName}">@username</p>
+                <p class="text-muted">
+                    <span th:if="${recommendedDistances[suggestedUser.id] != null}"
+                          th:text="${recommendedDistances[suggestedUser.id]} + ' connection(s) away via follows'">1 connection away</span>
+                </p>
+                <form th:action="@{/api/follow}" method="post">
+                    <input type="hidden" name="followeeId" th:value="${suggestedUser.id}" />
+                    <button type="submit" class="follow-button btn-small">Follow</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <hr class="separator"/>
+
+    <section class="user-reviews">
+        <h3 class="section-heading">Reviews Posted (<span th:text="${reviews.size()}">0</span>)</h3>
+
+        <div th:if="${reviews.isEmpty()}" class="no-reviews">
+            <p th:text="${user.displayName} + ' has not posted any reviews yet.'">
+                This user has not posted any reviews yet.
+            </p>
+        </div>
+
+        <div th:unless="${reviews.isEmpty()}" class="review-card-container">
+            <div th:each="review : ${reviews}" class="review-item review-card">
+                <h4>
+                    <a th:href="@{/product/{productId}(productId=${review.product.id})}"
+                       th:text="${review.product.name}"
+                       class="product-link">Product Name</a>
+                </h4>
+                <p class="review-rating-line">
+                    <strong>Rating:</strong>
+                    <span th:text="${review.rating} + '/5'">5/5</span>
+                </p>
+                <p class="review-body" th:text="${review.content}">Review Body</p>
+                <p class="review-date">
+                    Posted on:
+                    <span th:text="${#temporals.format(review.createdAt, 'MMM dd, yyyy')}">MMM dd, yyyy</span>
+                </p>
+                <hr class="card-separator"/>
+            </div>
+        </div>
+    </section>
+
+    <hr class="separator"/>
+
+</main>
+</body>
+</html>

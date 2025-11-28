@@ -18,7 +18,8 @@ import java.util.UUID;
 public class ReviewValidationAspect {
 
     /**
-     * AOP2 — Centralized input validation for review creation & updates.
+     * AOP2 — Centralized input validation for review creation &
+     * updates.
      * Applies to:
      *  - ReviewService.create(...)
      *  - ReviewService.updateOrCreate(...)
