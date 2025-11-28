@@ -1,0 +1,11 @@
+.register-form label {
+    display: block;
+    margin-top: 1em;
+}
+.register-form .error-message {
+    margin-top: 1em;
+}
+
+.register-form .flex-columns-spacebetween {
+    margin-top: 1em;
+}

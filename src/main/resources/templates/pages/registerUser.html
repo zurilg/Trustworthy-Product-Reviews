@@ -5,6 +5,7 @@
     <title>TrustworthyProductReviews - User Registration</title>
 
     <script src="/js/registerUser.js"></script>
+    <link rel="stylesheet" href="/css/registerUser.css" />
 </head>
 <body>
 <article layout:fragment="content">
@@ -20,9 +21,10 @@
         <label for="email">Email:</label>
         <input type="text" name="username" id="email"/>
         <p class="error-message" id="email-error">Email Error</p>
-        <button type="submit" value="Submit">Register</button>
-        <button type="reset">Reset</button>
-
+        <div class="flex-columns-spacebetween">
+            <button type="submit" value="Submit">Register</button>
+            <button type="reset">Reset</button>
+        </div>
         <div class="welcome-message" style="display: none">
             <p>Welcome, Name!</p>
             <p>Please log in using the button on the right of the header.</p>
