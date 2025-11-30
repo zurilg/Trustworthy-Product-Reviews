@@ -14,6 +14,7 @@ import org.trustworthyreviews.service.RecommendationService;
 import org.trustworthyreviews.service.ReviewSortingService;
 import org.trustworthyreviews.service.ReviewSortType;
 import org.trustworthyreviews.service.UserRelationshipService;
+import org.trustworthyreviews.web.validation.RegisterDTO;
 
 import java.time.Instant;
 import java.util.*;
@@ -187,7 +188,6 @@ public class FrontController {
      * The product page handler
      *
      * @param productId The ID of the product
-     * @param loggedInUser The ID of the logged-in user
      * @param model The model to be used by the view
      * @return The name of the view to be rendered
      */
@@ -300,6 +300,13 @@ public class FrontController {
         }
         return scores;
     }
+
+    @GetMapping("registerUser")
+    public String userRegistration() {
+        return "pages/registerUser";
+    }
+
+
 
     /**
      * The add product page
