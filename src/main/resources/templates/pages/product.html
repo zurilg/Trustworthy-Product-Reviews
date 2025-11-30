@@ -16,15 +16,23 @@
     <div class="product-columns">
         <div class="product-info border">
             <div class="title-block flex-columns-spacebetween">
-                <h2 th:text="${product.getName()}"></h2>
+                <a th:href="${product.getCanonicalURL()}">
+                    <h2 th:text="${product.getName()}"></h2>
+                </a>
                 <div class="rating-block">
                     <div class="star-box" th:attr="data-stars=${product.avgRating()}"></div>
                     <p th:text="'(' + ${reviews.size()} + ' Reviews)'"></p>
                 </div>
             </div>
-            <img th:src="${product.getPictureURL()}"  alt="Product Image" width="400px"/>
+            <a th:href="${product.getCanonicalURL()}">
+                <img th:src="${product.getPictureURL()}"  alt="Product Image" width="400px"/>
+            </a>
             <div class="flex-columns-spacebetween">
-                <p th:text="'Category: ' + ${product.getCategory().getName()}"></p>
+                <p>Category:
+                    <a th:href="'/?category_name=' + ${product.getCategory().getName().replace(' & ', '+%26+')}">
+                        <span th:text="${product.getCategory().getName()}"></span>
+                    </a>
+                </p>
                 <p th:text="'Created: ' + ${#temporals.format(product.getCreatedAt(), 'yyyy-MM-dd', 'America/New_York')}"></p>
             </div>
         </div>

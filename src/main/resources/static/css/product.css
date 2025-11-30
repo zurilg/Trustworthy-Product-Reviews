@@ -36,6 +36,11 @@
     gap: 0.25em;
 }
 
+.title-block a {
+    text-decoration: none;
+    color: black;
+}
+
 .product-info h2 {
     margin: 0;
 }
