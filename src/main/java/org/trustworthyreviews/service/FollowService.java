@@ -2,6 +2,7 @@ package org.trustworthyreviews.service;
 
 import org.trustworthyreviews.User;
 
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -18,4 +19,9 @@ public interface FollowService extends ReviewSortingService.FollowingProvider {
     Set<UUID> getFolloweeIds(User follower);
 
     long countFollowers(User user);
+
+    List<User> getFollowers(User user);
+
+    List<User> getFollowing(User user);
+
 }

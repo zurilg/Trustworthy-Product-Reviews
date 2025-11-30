@@ -1,6 +1,8 @@
 package org.trustworthyreviews;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -18,10 +20,12 @@ public class Follow {
     private UUID id;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "follower_id")
     private User follower;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "followee_id")
     private User followee;
 

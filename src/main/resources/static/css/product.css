@@ -73,6 +73,43 @@
     gap: 1em;
 }
 
+.review-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75em;
+}
+
+.review-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+}
+
+.similarity-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35em;
+    background-color: #eef5ff;
+    border: 1px solid #c6ddff;
+    color: #174c8c;
+    padding: 4px 8px;
+    border-radius: 999px;
+    font-size: 0.9em;
+}
+
+.connection-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35em;
+    background-color: #eaf7ee;
+    border: 1px solid #b6e3c0;
+    color: #2f7a3d;
+    padding: 4px 8px;
+    border-radius: 999px;
+    font-size: 0.9em;
+}
+
 .flex-columns-spacebetween {
     display: flex;
     flex-direction: row;

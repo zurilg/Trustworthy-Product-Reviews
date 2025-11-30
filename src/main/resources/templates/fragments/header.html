@@ -5,7 +5,7 @@
     <title>HEADER</title>
 </head>
 <body>
-    <header th:fragment="header(searchParams, currentCategory, categories)">
+    <header th:fragment="header(searchParams, currentCategory, categories, currentUser)">
         <div class="flex-header">
             <a href="/">
                 <h1>Trustworthy Product Reviews</h1>
@@ -36,7 +36,10 @@
                     <button class="login-open">Login</button>
                 </div>
                 <div class="logged-in">
-                    <span class="logged-in-username"></span>
+                    <a th:if="${currentUser != null}" th:href="@{/profile/{userId}(userId=${currentUser.id})}">
+                        <span class="logged-in-username"></span>
+                    </a>
+                    <span th:unless="${currentUser != null}" class="logged-in-username"></span>
                     <button class="logout-button">Logout</button>
                 </div>
             </div>

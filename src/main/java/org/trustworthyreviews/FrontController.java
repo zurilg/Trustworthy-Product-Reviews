@@ -10,16 +10,13 @@ import org.trustworthyreviews.repository.ReviewRepository;
 import org.trustworthyreviews.repository.UserRepository;
 import org.trustworthyreviews.service.CurrentUserService;
 import org.trustworthyreviews.service.FollowService;
+import org.trustworthyreviews.service.RecommendationService;
 import org.trustworthyreviews.service.ReviewSortingService;
+import org.trustworthyreviews.service.ReviewSortType;
 import org.trustworthyreviews.service.UserRelationshipService;
 
 import java.time.Instant;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Front controller for handling web requests.
@@ -38,6 +35,7 @@ public class FrontController {
     private final FollowService followService;
     private final UserRelationshipService userRelationshipService;
     private final CurrentUserService currentUserService;
+    private final RecommendationService recommendationService;
 
 
     /**
@@ -53,7 +51,8 @@ public class FrontController {
                            ReviewSortingService sortingService,
                            FollowService followService,
                            UserRelationshipService userRelationshipService,
-                           CurrentUserService currentUserService) {
+                           CurrentUserService currentUserService,
+                           RecommendationService recommendationService) {
 
         this.reviewRepository = reviewRepository;
         this.productRepository = productRepository;
@@ -63,6 +62,7 @@ public class FrontController {
         this.followService = followService;
         this.userRelationshipService = userRelationshipService;
         this.currentUserService = currentUserService;
+        this.recommendationService = recommendationService;
     }
 
 
@@ -134,8 +134,57 @@ public class FrontController {
         return "pages/home";
     }
 
+    @GetMapping("/profile/{userId}")
+    public String profile(@PathVariable UUID userId, HttpSession session, Model model) {
+        User user = userRepository.findById(userId).orElse(null);
+        User currentUser = currentUserService.getCurrentUser(session);
+        boolean isCurrentUser = currentUser != null && currentUser.getId().equals(userId);
+
+        if (user == null) {
+            return "redirect:/";
+        }
+
+        boolean isCurrentUserFollowingProfileOwner = false;
+        if (currentUser != null && !isCurrentUser) {
+            // Assuming followService.isFollowing(follower, followee) exists
+            isCurrentUserFollowingProfileOwner = followService.isFollowing(currentUser, user);
+        }
+
+        model.addAttribute("user", user);
+        model.addAttribute("currentUser", currentUser);
+        model.addAttribute("reviews", reviewRepository.findByAuthorId(userId));
+        model.addAttribute("isCurrentUser", isCurrentUser);
+        model.addAttribute("isFollowingProfileOwner", isCurrentUserFollowingProfileOwner);
+
+        List<User> followers = followService.getFollowers(user);
+        List<User> following = followService.getFollowing(user);
+
+        model.addAttribute("followers", followers);
+        model.addAttribute("following", following);
+
+        if(isCurrentUser){
+            List<User> recommended = recommendationService.getRecommendedUsersToFollow(currentUser, 8);
+            Map<UUID, Integer> recommendedDistances = new HashMap<>();
+            for (User u : recommended) {
+                if (u != null && u.getId() != null) {
+                    recommendedDistances.put(u.getId(), userRelationshipService.getDegreesOfSeparation(currentUser, u));
+                }
+            }
+            model.addAttribute("categories", List.of());
+            model.addAttribute("searchParams", "");
+            model.addAttribute("currentCategory", null);
+            model.addAttribute("recommendedUsers", recommended);
+            model.addAttribute("recommendedDistances", recommendedDistances);
+        } else {
+            model.addAttribute("recommendedUsers", List.of());
+            model.addAttribute("recommendedDistances", Map.of());
+        }
+
+        return "pages/profile";
+    }
+
     /**
-     * The product page handler.
+     * The product page handler
      *
      * @param productId The ID of the product
      * @param loggedInUser The ID of the logged-in user
@@ -145,6 +194,7 @@ public class FrontController {
     @GetMapping("/product/{productId}")
     public String product(
             @PathVariable("productId") UUID productId,
+            @RequestParam(value = "sort", required = false) String sort,
             HttpSession session,
             Model model) {
 
@@ -165,8 +215,11 @@ public class FrontController {
 
         //model.addAttribute("reviews", p.getReviews());
 
-        List<Review> sorted = sortingService.sortReviews(p.getReviews(), currentUser);
+        ReviewSortType sortType = resolveSortType(sort);
+        List<Review> sorted = sortingService.sortReviews(p.getReviews(), currentUser, sortType);
         model.addAttribute("reviews", sorted);
+        model.addAttribute("sortType", sortType);
+        model.addAttribute("reviewSimilarities", buildSimilarityScores(sorted, currentUser, sortType));
 
         Map<UUID, Integer> separation = new HashMap<>();
         Set<UUID> followedUserIds = Collections.emptySet();
@@ -210,6 +263,42 @@ public class FrontController {
 
         // Return the thymeleaf template
         return "pages/product";
+    }
+
+    //handles sort type
+    private ReviewSortType resolveSortType(String sortParam) {
+        if (sortParam == null || sortParam.isBlank()) {
+            return ReviewSortType.DEFAULT;
+        }
+        try {
+            return ReviewSortType.valueOf(sortParam.toUpperCase());
+        } catch (IllegalArgumentException ex) {
+            return ReviewSortType.DEFAULT;
+        }
+    }
+
+    private Map<UUID, Double> buildSimilarityScores(List<Review> reviews, User currentUser, ReviewSortType sortType) {
+        if (sortType != ReviewSortType.RELEVANT || currentUser == null || currentUser.getId() == null) {
+            return Collections.emptyMap();
+        }
+        Set<UUID> currentUserProducts = reviewRepository.findDistinctProductIdsReviewedByUser(currentUser);
+        if (currentUserProducts == null || currentUserProducts.isEmpty()) {
+            return Collections.emptyMap();
+        }
+        Map<UUID, Double> scores = new HashMap<>();
+        for (Review review : reviews) {
+            if (review.getId() == null) {
+                continue;
+            }
+            User author = review.getAuthor();
+            if (author == null || author.getId() == null) {
+                continue;
+            }
+            Set<UUID> authorProducts = reviewRepository.findDistinctProductIdsReviewedByUser(author);
+            double distance = sortingService.jaccardDistance(currentUserProducts, authorProducts);
+            scores.put(review.getId(), 1.0 - distance);
+        }
+        return scores;
     }
 
     /**
