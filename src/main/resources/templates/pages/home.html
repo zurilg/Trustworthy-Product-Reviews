@@ -11,10 +11,12 @@
         <span th:text="${errorMessage}">Validation Error Message</span>
     </div>
 
-    <div class="header-with-button">
+
+    <div class="header-row">
         <div>
-            <h3 th:if="${currentCategory != null}" th:text="${currentCategory.getName()}" class="page-title">Category Name</h3>
-            <h3 th:unless="${currentCategory != null}" class="page-title">All Products</h3>
+            <h1 th:if="${currentCategory != null}" th:text="${currentCategory.getName()}" class="page-title"></h1>
+
+            <h1 th:unless="${currentCategory != null}" class="page-title">All Products</h1>
         </div>
 
         <div class="header-action-button">
@@ -22,7 +24,7 @@
                 <a class="add-product-link-logged-out">Log in to add a Product</a>
             </div>
             <div class="logged-in">
-                <a th:href="@{/addProduct}" class="add-product-link">Add a Product</a>
+                <a th:href="@{/addProduct}" class="add-button">Add a Product</a>
             </div>
         </div>
     </div>
@@ -32,23 +34,28 @@
             <p>No products available.</p>
         </div>
 
-        <div th:each="product: ${products}" class="product-card">
-            <a th:href="${'/product/' + product.getId().toString()}" class="product-image-link">
-                <img th:src="${product.getPictureURL()}"
-                     th:alt="${product.getName()}"
-                     class="product-image"/>
-            </a>
+        <div class="product-grid">
+            <div th:each="product: ${products}" class="product-card">
+                <p th:href="${'/product/' + product.getId().toString()}" class="product-image-link">
+                    <img th:src="${product.getPictureURL()}"
+                         th:alt="${product.getName()}"
+                         class="product-image"/>
+                </p>
 
-            <div class="product-info">
-                <a th:text="${product.getName()}"
-                   th:href="${'/product/' + product.getId().toString()}"
-                   class="product-name-link"></a>
+                <div class="product-info">
+                    <p th:text="${product.getName()}" class="product-name"></p>
 
-                <div class="product-rating">
-                    <span th:text="${#numbers.formatDecimal(product.avgRating(), 1, 1, 'POINT')}">0</span>
-                    <span class="star-icon">★</span>
-                    <span class="review-count" th:text="${'(' + #lists.size(product.getReviews()) + ' reviews)'}"> (0 reviews)</span>
+                    <div class="product-rating">
+                        <span th:text="${#numbers.formatDecimal(product.avgRating(), 1, 1, 'POINT')}">0</span>
+                        <span class="star-icon">★</span>
+                        <span class="review-count" th:text="${'(' + #lists.size(product.getReviews()) + ' reviews)'}"> (0 reviews)</span>
+                    </div>
                 </div>
+
+                <a th:href="${'/product/' + product.getId()}"
+                   class="view-button">
+                    View Product
+                </a>
             </div>
         </div>
 
