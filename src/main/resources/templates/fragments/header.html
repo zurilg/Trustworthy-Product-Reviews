@@ -7,9 +7,12 @@
 <body>
     <header th:fragment="header(searchParams, currentCategory, categories, currentUser)">
         <div class="flex-header">
-            <a href="/">
-                <h1>Trustworthy Product Reviews</h1>
-            </a>
+            <div class = "header-left">
+                <a href="/" class="brand-link">
+                    <img src="/images/TPR-Logo.png" alt="Trustworthy Product Reviews Logo" class="logo-image"/>
+                    <h1>Trustworthy Product Reviews</h1>
+                </a>
+            </div>
             <div class="header-right">
                 <form action="/" method="GET" class="search-bar">
                     <!-- Category drop down -->
