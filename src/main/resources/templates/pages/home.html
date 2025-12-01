@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout.html}">
+<html lang="en" xmlns:layout="http://www.thymeleaf.org" layout:decorate="~{layout.html}">
 <head>
     <meta charset="UTF-8">
     <title>TrustworthyProductReviews - Home</title>
@@ -54,7 +54,7 @@
                         <span class="review-count" th:text="${'(' + #lists.size(product.getReviews()) + ' reviews)'}"> (0 reviews)</span>
                     </div>
 
-                    <a th:href="${'/category/' + product.getCategory().getId()}" class="product-category-link">
+                    <a th:href="'/?category_name=' + ${product.getCategory().getName().replace(' & ', '+%26+')}" class="product-category-link">
                         <p th:text="${product.getCategory().getName()}" class="product-category"></p>
                     </a>
                 </div>
@@ -68,14 +68,6 @@
             <div class="logged-in">
                 <a th:href="@{/addProduct}" class="add-product-link">Add a Product</a>
             </div>
-        </div>
-
-        <div class="discover-more" th:if="${currentUser != null}" style="margin-top: 2rem;">
-            <p>Discover other reviewers:</p>
-            <ul>
-                <li><a th:href="@{/users/similar}">Find similar users (Jaccard distance)</a></li>
-                <li><a th:href="@{/users/most-followed}">See most-followed reviewers</a></li>
-            </ul>
         </div>
     </div>
 

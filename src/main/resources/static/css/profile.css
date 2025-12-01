@@ -319,3 +319,60 @@ body {
 .unfollow-button:hover {
     background-color: #c82333;
 }
+
+.discover-reviewers-section {
+    border-bottom: none;
+    margin-bottom: 30px;
+    padding: 0 10px;
+}
+
+.discover-reviewers-section .section-heading {
+    font-size: 1.6em;
+    color: #34495e;
+    padding-bottom: 8px;
+    margin-bottom: 15px;
+}
+
+.discover-reviewers-section .text-muted {
+    color: #6c757d;
+    font-size: 0.95em;
+    margin-bottom: 20px;
+}
+
+.discover-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.discover-list li:last-child {
+    border-bottom: none;
+}
+
+.discover-list li a {
+    display: block;
+    padding: 10px 15px;
+    text-decoration: none;
+    color: #343a40;
+    transition: background-color 0.2s;
+}
+
+.discover-list li a:hover {
+    color: #0056b3;
+    background-color: #f0f8ff;
+    border-radius: 4px;
+}
+
+.discover-list .list-item-title {
+    font-weight: 600;
+    font-size: 1.1em;
+    display: block;
+    color: inherit;
+}
+
+.discover-list .list-item-description {
+    font-size: 0.9em;
+    color: #888;
+    display: block;
+    margin-top: 3px;
+}

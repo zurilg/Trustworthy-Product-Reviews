@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout.html}">
+<html lang="en" xmlns:layout="http://www.thymeleaf.org" layout:decorate="~{layout.html}">
 <head>
     <meta charset="UTF-8">
     <title>Similar Users</title>
@@ -22,7 +22,9 @@
                 <td colspan="3">No other users available.</td>
             </tr>
             <tr th:each="view : ${userSimilarities}">
-                <td th:text="${view.user.displayName}"></td>
+                <td>
+                    <a th:href="@{/profile/{id}(id=${view.user.getId()})}" th:text="${view.user.displayName}">Display Name</a>
+                </td>
                 <td th:text="${view.user.userName}"></td>
                 <td th:text="${#numbers.formatDecimal(view.distance, 1, 3)}"></td>
             </tr>

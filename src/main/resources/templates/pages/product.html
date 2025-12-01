@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout.html}">
+<html lang="en" xmlns:layout="http://www.thymeleaf.org" layout:decorate="~{layout.html}">
 <head>
     <meta charset="UTF-8">
     <title>TrustworthyProductReviews - Product</title>
@@ -14,14 +14,13 @@
 <body>
 <article layout:fragment="content">
     <div class="product-columns">
-        <div class="product-info border">
-            <div class="title-block flex-columns-spacebetween">
-                <a th:href="${product.getCanonicalURL()}">
-                    <h2 th:text="${product.getName()}"></h2>
-                </a>
+        <div class="product-info-border">
+            <div class="title-blocks-container">
+                <a th:text="${product.getName()}" th:href="${product.getCanonicalURL()}" class="product-name"></a>
+
                 <div class="rating-block">
                     <div class="star-box" th:attr="data-stars=${product.avgRating()}"></div>
-                    <p th:text="'(' + ${reviews.size()} + ' Reviews)'"></p>
+                    <p class="num-ratings" th:text="'(' + ${reviews.size()} + ' Reviews)'"></p>
                 </div>
             </div>
             <a th:href="${product.getCanonicalURL()}">
@@ -29,11 +28,11 @@
             </a>
             <div class="flex-columns-spacebetween">
                 <p>Category:
-                    <a th:href="'/?category_name=' + ${product.getCategory().getName().replace(' & ', '+%26+')}">
-                        <span th:text="${product.getCategory().getName()}"></span>
-                    </a>
+                    <a th:href="'/?category_name=' + ${product.getCategory().getName().replace(' & ', '+%26+')}"
+                       class="category-lnk"
+                       th:text="${product.getCategory().getName()}"></a>
                 </p>
-                <p th:text="'Created: ' + ${#temporals.format(product.getCreatedAt(), 'yyyy-MM-dd', 'America/New_York')}"></p>
+                <p class="product-date" th:text="'Created: ' + ${#temporals.format(product.getCreatedAt(), 'yyyy-MM-dd', 'America/New_York')}"></p>
             </div>
         </div>
         <div th:if="${currentReview}" class="your-review border">
@@ -59,87 +58,92 @@
             </div>
             <div class="review-data" th:attr="data-productId=${currentReview.getProduct().getId()}, data-hasReview=${hasReview}, data-reviewId=${currentReview.getId()}"></div>
         </div>
-        <div th:unless="${currentReview}" class="login-to-review border">
+        <div th:unless="${currentReview}" class="login-to-review">
             <p>Login to post a review</p>
+            <p>
+                New here?
+                <a th:href="@{/registerUser}">Register an account!</a>
+            </p>
         </div>
+    </div> <div class="all-reviews">
+    <div class="all-reviews-header">
+        <h3>All Reviews</h3>
+        <div class="review-summary-block">
+            <div class="star-box" th:attr="data-stars=${product.avgRating()}"></div>
+            <p th:text="'(' + ${reviews.size()} + ' Reviews)'"></p>
         </div>
-        <div class="all-reviews border">
-            <div class="all-reviews-header">
-                <h3>All Reviews</h3>
-                <div class="star-box" th:attr="data-stars=${product.avgRating()}"></div>
-                <p th:text="'(' + ${reviews.size()} + ' Reviews)'"></p>
-                <form class="sort-selector" th:action="@{/product/{productId}(productId=${product.getId()})}" method="get">
-                    <label for="sort">Sort:</label>
-                    <select id="sort" name="sort" onchange="this.form.submit()">
-                        <option th:value="${T(org.trustworthyreviews.service.ReviewSortType).DEFAULT}"
-                                th:selected="${sortType == T(org.trustworthyreviews.service.ReviewSortType).DEFAULT}">
-                            Recommended
-                        </option>
-                        <option th:value="${T(org.trustworthyreviews.service.ReviewSortType).NEWEST}"
-                                th:selected="${sortType == T(org.trustworthyreviews.service.ReviewSortType).NEWEST}">
-                            Newest
-                        </option>
-                        <option th:value="${T(org.trustworthyreviews.service.ReviewSortType).HIGHEST_RATED}"
-                                th:selected="${sortType == T(org.trustworthyreviews.service.ReviewSortType).HIGHEST_RATED}">
-                            Highest Rated
-                        </option>
-                        <option th:value="${T(org.trustworthyreviews.service.ReviewSortType).RELEVANT}"
-                                th:selected="${sortType == T(org.trustworthyreviews.service.ReviewSortType).RELEVANT}">
-                            Similar Reviewers
-                        </option>
-                    </select>
-                </form>
-            </div>
-            <p th:if="${currentUser == null}" class="follow-login-hint">Login to follow reviewers and stay updated.</p>
-            <div th:each="review : ${reviews}" class="review border">
-                <div class="review-header">
-                    <div class="user-name-block">
-                    <span class="user-name" th:text="${review.getAuthor().getDisplayName()}"></span>
-                    <span class="user-badge" th:if="${review.getAuthor().isTrustedReviewer()}" title="Trusted Reviewer">&#9733;</span>
-                </div>
-                <div class="review-meta">
-                    <div th:if="${currentUser != null}"
-                         th:with="deg=${degreesOfSeparation[review.getAuthor().getId()]}"
-                         class="connection-pill">
-                        <span>Connections</span>
-                        <strong th:text="${review.getAuthor() != null and currentUser != null and review.getAuthor().getId() == currentUser.getId() ? 'You' : (deg != null and deg >= 0 ? (deg == 1 ? '1 connection away' : deg + ' connections away') : 'No known connection')}"></strong>
-                    </div>
-                    <div th:if="${sortType == T(org.trustworthyreviews.service.ReviewSortType).RELEVANT and reviewSimilarities[review.getId()] != null}"
-                         class="similarity-pill">
-                        <span>Similarity</span>
-                        <strong th:text="${#numbers.formatDecimal(reviewSimilarities[review.getId()] * 100, 0, 1)} + '%'">0%</strong>
-                    </div>
-                </div>
-            </div>
-            <div class="rating-block">
-                <div class="star-box" th:attr="data-stars=${review.getRating()}"></div>
-                <p th:text="${#temporals.format(review.getCreatedAt(), 'yyyy-MM-dd', 'America/New_York')}"></p>
-            </div>
-            <p th:text="${review.getContent()}"></p>
-            <div class="follow-actions"
-                 th:if="${currentUser != null and !currentUser.getId().equals(review.getAuthor().getId())}">
-                <button type="button"
-                        class="follow-btn"
-                        th:attr="data-follower-id=${currentUser.getId()}, data-followee-id=${review.getAuthor().getId()}"
-                        th:style="${followedUserIds.contains(review.getAuthor().getId())} ? 'display:none' : ''">
-                    Follow
-                </button>
-                <button type="button"
-                        class="unfollow-btn"
-                        th:attr="data-follower-id=${currentUser.getId()}, data-followee-id=${review.getAuthor().getId()}"
-                        th:style="${followedUserIds.contains(review.getAuthor().getId())} ? '' : 'display:none'">
-                    Unfollow
-                </button>
-            </div>
-        </div>
-        <div class="page-controls">
-            <button th:disabled="${pageNo le 1}">First</button>
-            <button th:disabled="${pageNo le 1}">Prev</button>
-            <p th:text="${pageNo}"></p>
-            <button th:disabled="${pageNo ge pageMax}">Next</button>
-            <button th:disabled="${pageNo ge pageMax}">Last</button>
-        </div>
+        <form class="sort-selector" th:action="@{/product/{productId}(productId=${product.getId()})}" method="get">
+            <label for="sort">Sort:</label>
+            <select id="sort" name="sort" onchange="this.form.submit()">
+                <option th:value="${T(org.trustworthyreviews.service.ReviewSortType).DEFAULT}"
+                        th:selected="${sortType.name() == 'DEFAULT'}">
+                    Recommended
+                </option>
+                <option th:value="${T(org.trustworthyreviews.service.ReviewSortType).NEWEST}"
+                        th:selected="${sortType.name() == 'NEWEST'}">
+                    Newest
+                </option>
+                <option th:value="${T(org.trustworthyreviews.service.ReviewSortType).HIGHEST_RATED}"
+                        th:selected="${sortType.name() == 'HIGHEST_RATED'}">
+                    Highest Rated
+                </option>
+                <option th:value="${T(org.trustworthyreviews.service.ReviewSortType).RELEVANT}"
+                        th:selected="${sortType.name() == 'RELEVANT'}">
+                    Similar Reviewers
+                </option>
+            </select>
+        </form>
     </div>
+    <p th:if="${currentUser == null}" class="follow-login-hint">Login to follow reviewers and stay updated.</p>
+    <div th:each="review : ${reviews}" class="review border">
+        <div class="review-header">
+            <div class="user-name-block">
+                <a th:href="@{/profile/{id}(id=${review.getAuthor().getId()})}">
+                    <span class="user-name" th:text="${review.getAuthor().getDisplayName()}"></span>
+                </a>
+                <span class="user-badge" th:if="${review.getAuthor().isTrustedReviewer()}" title="Trusted Reviewer">&#9733;</span>
+                <div class="follow-actions"
+                     th:if="${currentUser != null and !currentUser.getId().equals(review.getAuthor().getId())}">
+                    <button type="button"
+                            class="follow-btn"
+                            th:attr="data-follower-id=${currentUser.getId()}, data-followee-id=${review.getAuthor().getId()}"
+                            th:style="${followedUserIds.contains(review.getAuthor().getId())} ? 'display:none' : ''">
+                        Follow
+                    </button>
+                    <button type="button"
+                            class="unfollow-btn"
+                            th:attr="data-follower-id=${currentUser.getId()}, data-followee-id=${review.getAuthor().getId()}"
+                            th:style="${followedUserIds.contains(review.getAuthor().getId())} ? '' : 'display:none'">
+                        Unfollow
+                    </button>
+                </div>
+            </div>
+            <div class="review-meta">
+                <div th:if="${currentUser != null}"
+                     th:with="deg=${degreesOfSeparation[review.getAuthor().getId()]}"
+                     class="connection-pill">
+                    <span>Connections</span>
+                    <strong th:text="${review.getAuthor() != null and currentUser != null and review.getAuthor().getId() == currentUser.getId() ? 'You' : (deg != null and deg >= 0 ? (deg == 1 ? '1 connection away' : deg + ' connections away') : 'No known connection')}"></strong>
+                </div>
+                <div th:if="${sortType.name() == 'RELEVANT' and reviewSimilarities[review.getId()] != null}"
+                     class="similarity-pill">
+                    <span>Similarity</span> <strong th:text="${#numbers.formatDecimal(reviewSimilarities[review.getId()] * 100, 0, 1)} + '%'">0%</strong>
+                </div> </div>
+        </div>
+        <div class="rating-block">
+            <div class="star-box" th:attr="data-stars=${review.getRating()}"></div>
+        </div>
+        <p th:text="${#temporals.format(review.getCreatedAt(), 'yyyy-MM-dd', 'America/New_York')}"></p>
+        <p th:text="${review.getContent()}"></p>
+    </div>
+    <div class="page-controls">
+        <button th:disabled="${pageNo le 1}">First</button>
+        <button th:disabled="${pageNo le 1}">Prev</button>
+        <p th:text="${pageNo}"></p>
+        <button th:disabled="${pageNo ge pageMax}">Next</button>
+        <button th:disabled="${pageNo ge pageMax}">Last</button>
+    </div>
+</div>
 </article>
 </body>
 </html>

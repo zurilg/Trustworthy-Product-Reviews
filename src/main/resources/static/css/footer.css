@@ -1,0 +1,26 @@
+@keyframes rainbow-text {
+    0% { color: red; }
+    14% { color: orange; }
+    28% { color: yellow; }
+    42% { color: green; }
+    57% { color: blue; }
+    71% { color: indigo; }
+    85% { color: violet; }
+    100% { color: red; }
+}
+
+.footer{
+    text-align: center;
+    padding: 1em;
+    margin-top: 2em;
+}
+
+.footer-text {
+    color: black;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.footer:hover .footer-text {
+    animation: rainbow-text 5s infinite;
+}
