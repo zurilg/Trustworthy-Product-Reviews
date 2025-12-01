@@ -65,6 +65,13 @@ The previous milestone has been successfully completed.
     - Advanced sorting of reviews tailored to logged-in users on both product browsing and product pages.
     - Product search functionality.
     - AOP logging, caching, exception handling, and validation have been integrated throughout the application to enhance performance and reliability.
+
+- **Features Implemented for *Milestone 3*:**
+    - Allow users to register a new account.
+    - Improve the look of the home page.
+    - Added canonical links to the product pages.
+    - Implemented the Degrees of separation calculation into the newly created profile page.
+    - Implemented sort by Jaccard Distance --> calling it "Similar Reviewers" to be less confusing to an average user.
 ---
 
 ### UML Class Diagram:
@@ -74,14 +81,6 @@ This diagram represents the core entities (`Product`, `Review`, `User`, `Categor
 
 
 
----
-
-### Brainstorming Goals for Next Sprint (*Milestone 3*)
-- Allow users to register a new account.
-- Have jaccard distance show next to usernames.
-- Have user's jaccard distance and dos display reactively after following.
-- Improve the look of the home page.
-- Improve the look of the similar users + most followed users pages.
 
 ---
 
