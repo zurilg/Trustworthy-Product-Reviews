@@ -141,6 +141,15 @@ header {
     margin-right: 12px;
 }
 
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+
+}
+.logo-image:hover {
+    animation: spin 1s linear infinite;
+}
+
 .header-left h1 {
     margin: 0;
     padding: 0;
