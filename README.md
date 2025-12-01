@@ -68,10 +68,11 @@ The previous milestone has been successfully completed.
 
 - **Features Implemented for *Milestone 3*:**
     - Allow users to register a new account.
-    - Improve the look of the home page.
     - Added canonical links to the product pages.
     - Implemented the Degrees of separation calculation into the newly created profile page.
     - Implemented sort by Jaccard Distance --> calling it "Similar Reviewers" to be less confusing to an average user.
+    - Improved the look of the entire application. Performed major renovations on the front-end, making it more interactive and more intuitively layed out. 
+    - Implemented profile pages. A logged-in user can view their profile page to see their account information, a list of their followers and who they're following, their posted reviews, and friend recomendations. A logged-in uer can view other user's profile pages, view their followers and who they're following, their pas reviews, and can follow/unfollow them. A user that's not logged in can view another user's account information, but can follow anybody.
 ---
 
 ### UML Class Diagram:
