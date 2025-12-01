@@ -311,6 +311,10 @@ public class FrontController {
         User currentUser = currentUserService.getCurrentUser(session);
         model.addAttribute("currentUser", currentUser);
 
+        if(currentUser != null) {
+            return "redirect:/";
+        }
+
         return "pages/registerUser";
     }
 
