@@ -1,7 +1,9 @@
 # Trustworthy Product Reviews
 ## *SYSC4806A - Project 20*
 
-<img src="https://github.com/zurilg/Trustworthy-Product-Reviews/blob/main/src/main/resources/static/images/TPR-Logo.png?raw=true" alt="alt text" width="25%"/>
+<p align="center">
+    <img src="https://github.com/zurilg/Trustworthy-Product-Reviews/blob/main/src/main/resources/static/images/TPR-Logo.png?raw=true" alt="alt text" width="25%"/>
+</p>
 
 ### Description
 A web application developed for SYSC4806 that allows users to share their reviews of various products with others.
@@ -67,24 +69,30 @@ The previous milestone has been successfully completed.
     - Product search functionality.
     - AOP logging, caching, exception handling, and validation have been integrated throughout the application to enhance performance and reliability.
 
+**Work products delivered for *Milestone 3*:**
+- **Database Schema:** Created a new database schema diagram to better meet project expectations.
+- **UML Class Diagram:** Remained unchanged from *Milestone 2*.
 - **Features Implemented for *Milestone 3*:**
     - Allow users to register a new account.
     - Added canonical links to the product pages.
     - Implemented the Degrees of separation calculation into the newly created profile page.
     - Implemented sort by Jaccard Distance --> calling it "Similar Reviewers" to be less confusing to an average user.
-    - Improved the look of the entire application. Performed major renovations on the front-end, making it more interactive and more intuitively layed out. 
+    - Improved the look of the entire application. Performed major renovations on the front-end, making it more interactive with a more intuitive layout. 
     - Implemented profile pages. A logged-in user can view their profile page to see their account information, a list of their followers and who they're following, their posted reviews, and friend recomendations. A logged-in uer can view other user's profile pages, view their followers and who they're following, their pas reviews, and can follow/unfollow them. A user that's not logged in can view another user's account information, but can follow anybody.
 ---
 
 ### UML Class Diagram:
 This diagram represents the core entities (`Product`, `Review`, `User`, `Category`) and their relationships.
 
-![alt text](https://github.com/zurilg/Trustworthy-Product-Reviews/blob/main/documentation/UML/Milestone_2-UML_Class_Diagram.png?raw=true "Class Diagram")
+<p align="center">
+  <img src="https://github.com/zurilg/Trustworthy-Product-Reviews/blob/main/documentation/UML/Milestone_2-UML_Class_Diagram.png?raw=true" alt="alt text" width="100%"/>
+</p>
 
 ### Database Schema
 
-<img src="https://github.com/zurilg/Trustworthy-Product-Reviews/blob/main/documentation/DB_Schema/TPR_DB-Schema.png?raw=true" alt="alt text" width="50%"/>
-
+<p align="center">
+  <img src="https://github.com/zurilg/Trustworthy-Product-Reviews/blob/main/documentation/DB_Schema/TPR_DB-Schema.png?raw=true" alt="alt text" width="50%"/>
+</p>
 
 
 ---
