@@ -303,7 +303,14 @@ public class FrontController {
     }
 
     @GetMapping("registerUser")
-    public String userRegistration() {
+    public String userRegistration(
+            HttpSession session,
+            Model model) {
+
+        // If we have a logged-in user add them to the model
+        User currentUser = currentUserService.getCurrentUser(session);
+        model.addAttribute("currentUser", currentUser);
+
         return "pages/registerUser";
     }
 
@@ -317,7 +324,15 @@ public class FrontController {
      * @return The name of the view to be rendered
      */
     @GetMapping("/addProduct")
-    public String addProductPage(@ModelAttribute("product") Product product, Model model) {
+    public String addProductPage(
+            @ModelAttribute("product") Product product,
+            HttpSession session,
+            Model model) {
+
+        // If we have a logged-in user add them to the model
+        User currentUser = currentUserService.getCurrentUser(session);
+        model.addAttribute("currentUser", currentUser);
+
         model.addAttribute("product", product);
         model.addAttribute("categories", categoryRepository.findAll());
         return "pages/addProduct";
