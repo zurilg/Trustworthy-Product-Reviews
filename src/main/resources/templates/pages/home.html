@@ -36,26 +36,27 @@
 
         <div class="product-grid">
             <div th:each="product: ${products}" class="product-card">
-                <p th:href="${'/product/' + product.getId().toString()}" class="product-image-link">
+                <a th:href="${'/product/' + product.getId().toString()}" class="product-image-link">
                     <img th:src="${product.getPictureURL()}"
                          th:alt="${product.getName()}"
                          class="product-image"/>
-                </p>
+                </a>
 
                 <div class="product-info">
-                    <p th:text="${product.getName()}" class="product-name"></p>
+                    <a th:href="${'/product/' + product.getId()}" class="product-name-link">
+                        <p th:text="${product.getName()}" class="product-name"></p>
+                    </a>
 
                     <div class="product-rating">
                         <span th:text="${#numbers.formatDecimal(product.avgRating(), 1, 1, 'POINT')}">0</span>
                         <span class="star-icon">★</span>
                         <span class="review-count" th:text="${'(' + #lists.size(product.getReviews()) + ' reviews)'}"> (0 reviews)</span>
                     </div>
-                </div>
 
-                <a th:href="${'/product/' + product.getId()}"
-                   class="view-button">
-                    View Product
-                </a>
+                    <a th:href="${'/category/' + product.getCategory().getId()}" class="product-category-link">
+                        <p th:text="${product.getCategory().getName()}" class="product-category"></p>
+                    </a>
+                </div>
             </div>
         </div>
 
