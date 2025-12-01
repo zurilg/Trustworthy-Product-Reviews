@@ -74,11 +74,11 @@ The previous milestone has been successfully completed.
 - **UML Class Diagram:** Remained unchanged from *Milestone 2*.
 - **Features Implemented for *Milestone 3*:**
     - Allow users to register a new account.
-    - Added canonical links to the product pages.
     - Implemented the Degrees of separation calculation into the newly created profile page.
     - Implemented sort by Jaccard Distance --> calling it "Similar Reviewers" to be less confusing to an average user.
-    - Improved the look of the entire application. Performed major renovations on the front-end, making it more interactive with a more intuitive layout. 
-    - Implemented profile pages. A logged-in user can view their profile page to see their account information, a list of their followers and who they're following, their posted reviews, and friend recomendations. A logged-in uer can view other user's profile pages, view their followers and who they're following, their pas reviews, and can follow/unfollow them. A user that's not logged in can view another user's account information, but can follow anybody.
+    - Improved the look of the entire application. Performed major renovations on the front-end, making it more interactive with a more intuitive layout.
+    - Added canonical links to the product pages. Users can now click on a product's image or its name and be directed to the product's site of origin/purchase point. 
+    - Implemented profile pages. A logged-in user can view their profile page to see their account information, a list of their followers and who they're following, their posted reviews, and friend recomendations. A logged-in user can view other user's profile pages, view their followers and who they're following, view their past reviews, and can follow/unfollow them. A user that's not logged in can view a user's account information, but can not follow anybody.
 ---
 
 ### UML Class Diagram:
@@ -88,7 +88,7 @@ This diagram represents the core entities (`Product`, `Review`, `User`, `Categor
   <img src="https://github.com/zurilg/Trustworthy-Product-Reviews/blob/main/documentation/UML/Milestone_2-UML_Class_Diagram.png?raw=true" alt="alt text" width="100%"/>
 </p>
 
-### Database Schema
+### Database Schema:
 
 <p align="center">
   <img src="https://github.com/zurilg/Trustworthy-Product-Reviews/blob/main/documentation/DB_Schema/TPR_DB-Schema.png?raw=true" alt="alt text" width="50%"/>
