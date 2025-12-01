@@ -1,7 +1,7 @@
 # Trustworthy Product Reviews
 ## *SYSC4806A - Project 20*
 
-![alt text](https://github.com/zurilg/Trustworthy-Product-Reviews/blob/main/src/main/resources/static/images/TPR-Logo.png?raw=true)
+<img src="https://github.com/zurilg/Trustworthy-Product-Reviews/blob/main/src/main/resources/static/images/TPR-Logo.png?raw=true" alt="alt text" width="50%"/>
 
 ### Description
 A web application developed for SYSC4806 that allows users to share their reviews of various products with others.
