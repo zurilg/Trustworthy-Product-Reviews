@@ -99,3 +99,49 @@ body {
     border-bottom: none;
     margin: 0;
 }
+
+.button-blue,
+.button-red {
+    padding: 8px 12px;
+    font-size: 1em;
+    height: 38px;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    box-sizing: border-box;
+}
+
+.button-blue {
+    background-color: #007bff;
+}
+
+.button-red {
+    background-color: #d9534f;
+}
+
+.button-blue:hover {
+    background-color: #0056b3;
+}
+
+.button-red:hover {
+    background-color: #c9302c;
+}
+
+.text-input {
+    padding: 8px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 1em;
+    height: 38px;
+    width: 200px;
+    box-sizing: border-box;
+}
+
+.flex-columns-spacebetween {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
