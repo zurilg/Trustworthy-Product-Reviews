@@ -1,7 +1,7 @@
 # Trustworthy Product Reviews
 ## *SYSC4806A - Project 20*
 
-<img src="https://github.com/zurilg/Trustworthy-Product-Reviews/blob/main/src/main/resources/static/images/TPR-Logo.png?raw=true" alt="alt text" width="50%"/>
+<img src="https://github.com/zurilg/Trustworthy-Product-Reviews/blob/main/src/main/resources/static/images/TPR-Logo.png?raw=true" alt="alt text" width="25%"/>
 
 ### Description
 A web application developed for SYSC4806 that allows users to share their reviews of various products with others.
@@ -81,6 +81,9 @@ This diagram represents the core entities (`Product`, `Review`, `User`, `Categor
 
 ![alt text](https://github.com/zurilg/Trustworthy-Product-Reviews/blob/main/documentation/UML/Milestone_2-UML_Class_Diagram.png?raw=true "Class Diagram")
 
+### Database Schema
+
+![alt text](https://github.com/zurilg/Trustworthy-Product-Reviews/blob/main/documentation/DB_Schema/TPR_DB-Schema.png?raw=true)
 
 
 
