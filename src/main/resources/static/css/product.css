@@ -6,22 +6,34 @@
     margin-top: 2em;
 }
 
-.product-info {
-    width: 400px;
-    background-color: white;
-    padding: 30px;
-    border-radius: 12px;
+.product-columns .product-info-border .title-blocks-container {
+    display: flex;
+    flex-direction: column;
 }
 
-.product-info .product-name {
-    font-size: 24px;
-    margin-top: 12px;
-    margin-bottom: 10px;
-    font-weight: 700;
+.product-columns .product-info-border .title-blocks-container .product-name {
+    text-decoration: none;
+    font-size: 30px;
+    font-weight: 600;
+    color: black;
+    margin: 0;
+}
+
+.product-columns .product-info-border .title-blocks-container .product-name:hover {
+    color: #343a40;
+}
+
+.product-columns .product-info-border .star-box {
+    font-size: 20px;
+}
+
+.product-columns .product-info-border .num-ratings{
+    font-size: 20px;
+    color: #6c757d;
 }
 
 .your-review {
-    width: 60%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     gap: 1em;
@@ -32,43 +44,58 @@
     box-sizing: border-box;
 }
 
-.all-reviews {
-    margin-top: 2.5em;
-}
-
-.page-controls {
+.your-review .user-heading {
     display: flex;
-    flex-direction: row;
-    gap: 0.5em;
     align-items: center;
-    width: min-content;
-    margin: 0 auto;
-}
-
-.rating-block {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 0.25em;
-}
-
-.title-block a {
-    text-decoration: none;
-    color: black;
-}
-
-.product-info h2 {
-    margin: 0;
-}
-
-.review p {
-    margin: 0;
-}
-.review .rating-block {
-    display: flex;
-    flex-direction: row;
     gap: 1em;
-    margin: 0.5em 0;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #cbd2da;
+}
+
+.your-review .user-name,
+.review-header .user-name {
+    font-size: 1.1em;
+    font-weight: 600;
+    margin: 0;
+}
+
+.your-review .user-tag {
+    background-color: #757575;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    font-weight: 500;
+}
+
+.your-review .rating-controls button {
+    padding: 6px 12px;
+    font-size: 1em;
+    background-color: #e2e6ea;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+@keyframes zoom-in-and-out {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.your-review .rating-controls button:hover:not(:disabled) {
+    background-color: #d6d9dd;
+    border-color: #adb5bd;
+}
+
+.your-review .rating-controls button:active:not(:disabled) {
+    animation: zoom-in-and-out 0.2s;
 }
 
 .your-review p {
@@ -87,19 +114,138 @@
     flex-grow: 1;
 }
 
-.all-reviews .all-reviews-header {
+.your-review label {
+    font-weight: 600;
+    margin-bottom: 0.5em;
+    color: #343a40;
+}
+
+.your-review textarea {
+    min-height: 100px;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 1em;
+    margin-bottom: 10px;
+}
+
+.your-review .flex-columns-spacebetween button {
+    padding: 10px 15px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.2s;
+}
+
+.your-review .post-review {
+    background-color: #28a745;
+    color: white;
+}
+
+.your-review .post-review:hover {
+    background-color: #218838;
+}
+
+.your-review .delete-review {
+    background-color: #dc3545;
+    color: white;
+}
+
+.your-review .delete-review:hover {
+    background-color: #c82333;
+}
+
+.all-reviews {
+    margin-top: 2.5em;
+    border: none;
+    padding: 0;
+}
+
+
+.all-reviews-header {
+    border-bottom: 2px solid #e9ecef;
+    padding-bottom: 0.5em;
+    margin-bottom: 1em;
+}
+
+.all-reviews-header h3 {
+    margin: 0;
+    font-size: 1.5em;
+    font-weight: 700;
+    color: #343a40;
+}
+
+.all-reviews-header .star-box {
+    font-size: 1.2em;
+    color: #ffc107;
+}
+
+.all-reviews-header p {
+    margin: 0;
+    color: #6c757d;
+    font-size: 1.1em;
+}
+
+.sort-selector select {
+    padding: 6px 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 1em;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.review.border {
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 0.25em;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.page-controls {
     display: flex;
     flex-direction: row;
+    gap: 0.5em;
     align-items: center;
-    gap: 1em;
+    width: min-content;
+    margin: 0 auto;
+}
+
+.review p {
+    margin: 0;
+}
+.review .rating-block {
+    display: inline-block;
+    margin: 5px 0 0 0;
+    padding: 0;
 }
 
 .review-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 0.75em;
-    margin-bottom: 10px;
+}
+
+.review-header .user-name:hover {
+    color: #1c4c7c;
+}
+
+.review-header .user-badge {
+    background-color: #f0ad4e;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    font-weight: 500;
+}
+
+.review p:last-of-type {
+    margin-top: 0;
+    line-height: 1.4;
+    color: #343a40;
 }
 
 .review-meta {
@@ -139,13 +285,8 @@
     align-items: center;
 }
 
-.border {
-    border: 1px solid black;
-    padding: 0.5em;
-}
-
 .login-to-review {
-    width: 400px;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -155,4 +296,141 @@
     border-radius: 12px;
     border: 1px solid #c6ddff;
     box-sizing: border-box;
+}
+
+.login-to-review p:first-child {
+    font-size: 1.1em;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #343a40;
+}
+
+.login-to-review p:last-child {
+    margin: 0;
+    color: #6c757d;
+}
+
+.login-to-review a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: 600;
+}
+
+.login-to-review a:hover {
+    text-decoration: underline;
+    color: #1c4c7c;
+}
+
+.review-summary-block {
+    display: flex;
+    align-items: center;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.review-summary-block .star-box {
+    margin-right: 0.5em;
+}
+
+.review-summary-block p {
+    margin: 0;
+}
+
+.user-name-block {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.follow-actions button {
+    padding: 2px 6px; /* Reduced padding for a smaller button */
+    font-size: 0.8em; /* Smaller font size */
+    border-radius: 4px; /* Less rounded than a pill */
+    margin-left: 5px; /* Slight extra space between the badge and button */
+}
+
+.follow-btn {
+    background-color: #eaf7ee;
+    color: #2f7a3d;
+    border-color: #b6e3c0;
+}
+
+.follow-btn:hover {
+    color: #218838
+}
+
+.unfollow-btn {
+    background-color: #fff0f0;
+    color: #dc3545;
+    border-color: #dc3545;
+}
+
+.user-name-block a {
+    /* Remove default link styling */
+    text-decoration: none;
+
+    /* Inherit the pointer cursor */
+    cursor: pointer;
+
+    /* Ensure the color is set to something link-like */
+    color: #007bff;
+
+    /* Add a transition for a smooth hover effect */
+    transition: color 0.2s ease-in-out;
+}
+
+/* Ensure the inner span inherits the color and retains its bold style */
+.user-name-block a span.user-name {
+    /* Set the initial style based on your requirements */
+    font-size: 1.1em;
+    font-weight: 600;
+    color: inherit; /* Inherit the color from the parent <a> */
+}
+
+/* When the mouse hovers over the <a> tag: */
+.user-name-block a:hover {
+    /* Change the color of the <a> tag */
+    color: #0056b3; /* Darker blue */
+}
+
+/* When the mouse hovers over the <a> tag, apply the underline to the inner <span> */
+.user-name-block a:hover span.user-name {
+    text-decoration: underline;
+}
+
+.product-info-border .flex-columns-spacebetween p:first-child {
+    margin: 0;
+    color: #6c757d;
+    font-size: 0.9em;
+}
+
+.product-info-border .rating-block {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.product-info-border .flex-columns-spacebetween a {
+    text-decoration: none;
+}
+
+.category-lnk {
+    font-size: 1em;
+    margin-left: 0;
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.product-info-border .flex-columns-spacebetween a:hover .category-lnk {
+    text-decoration: underline;
+    color: #1c4c7c;
+}
+
+.product-date {
+    font-size: 1em;
+    font-style: italic;
+    margin: 0;
+    color: #6c757d;
+    font-weight: 400;
 }

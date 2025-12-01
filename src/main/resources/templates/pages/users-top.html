@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout.html}">
+<html lang="en" xmlns:layout="http://www.thymeleaf.org" layout:decorate="~{layout.html}">
 <head>
     <meta charset="UTF-8">
     <title>Most Followed Users</title>
@@ -21,7 +21,9 @@
                 <td colspan="3">No users to display.</td>
             </tr>
             <tr th:each="view : ${followerCounts}">
-                <td th:text="${view.user.displayName}"></td>
+                <td>
+                    <a th:href="@{/profile/{id}(id=${view.user.getId()})}" th:text="${view.user.displayName}">Display Name</a>
+                </td>
                 <td th:text="${view.user.userName}"></td>
                 <td th:text="${view.followerCount}"></td>
             </tr>

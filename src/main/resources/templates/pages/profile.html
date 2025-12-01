@@ -144,6 +144,28 @@
 
     <hr class="separator"/>
 
+    <section th:if="${isCurrentUser}" class="discover-reviewers-section">
+        <h3 class="section-heading">Discover More Reviewers</h3>
+        <p class="text-muted">Explore the community using different metrics.</p>
+
+        <ul class="discover-list">
+            <li>
+                <a th:href="@{/users/similar}">
+                    <span class="list-item-title">Find Similar Users</span>
+                    <span class="list-item-description">Based on overlapping product reviews (Jaccard distance).</span>
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/users/most-followed}">
+                    <span class="list-item-title">See Most-Followed Reviewers</span>
+                    <span class="list-item-description">Users with the largest following in the community.</span>
+                </a>
+            </li>
+        </ul>
+    </section>
+
+    <hr class="separator"/>
+
     <section class="user-reviews">
         <h3 class="section-heading">Reviews Posted (<span th:text="${reviews.size()}">0</span>)</h3>
 

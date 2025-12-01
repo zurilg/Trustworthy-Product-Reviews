@@ -156,6 +156,7 @@ public class FrontController {
         model.addAttribute("reviews", reviewRepository.findByAuthorId(userId));
         model.addAttribute("isCurrentUser", isCurrentUser);
         model.addAttribute("isFollowingProfileOwner", isCurrentUserFollowingProfileOwner);
+        model.addAttribute("categories", categoryRepository.findAll());
 
         List<User> followers = followService.getFollowers(user);
         List<User> following = followService.getFollowing(user);
@@ -171,7 +172,7 @@ public class FrontController {
                     recommendedDistances.put(u.getId(), userRelationshipService.getDegreesOfSeparation(currentUser, u));
                 }
             }
-            model.addAttribute("categories", List.of());
+            model.addAttribute("categories", categoryRepository.findAll());
             model.addAttribute("searchParams", "");
             model.addAttribute("currentCategory", null);
             model.addAttribute("recommendedUsers", recommended);
