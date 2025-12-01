@@ -83,7 +83,7 @@ This diagram represents the core entities (`Product`, `Review`, `User`, `Categor
 
 ### Database Schema
 
-![alt text](https://github.com/zurilg/Trustworthy-Product-Reviews/blob/main/documentation/DB_Schema/TPR_DB-Schema.png?raw=true)
+<img src="https://github.com/zurilg/Trustworthy-Product-Reviews/blob/main/documentation/DB_Schema/TPR_DB-Schema.png?raw=true" alt="alt text" width="50%"/>
 
 
 
